@@ -9,7 +9,11 @@ const HomePage: React.FC = (): ReactElement => {
     dispatch(getCompanies());
   }, [dispatch]);
 
-  return <div>Home Page</div>;
+  return (
+    <div>
+      <h1>Agendamentos</h1>
+    </div>
+  );
 };
 
 export default HomePage;

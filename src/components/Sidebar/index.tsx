@@ -1,4 +1,4 @@
-import { useState, useLayoutEffect } from "react";
+import { ReactElement } from "react";
 import * as S from "./styled";
 import {
   MdPeople,
@@ -7,8 +7,6 @@ import {
   MdLibraryBooks,
   MdViewList,
 } from "react-icons/md";
-
-import { useLocation } from "react-router-dom";
 
 const routes = [
   {
@@ -34,19 +32,15 @@ const selectedStyle = {
   boxShadow: "box-shadow: rgba(149, 157, 165, 1) 0px 8px 24px",
 };
 
-export const Sidebar = () => {
-  const location = useLocation();
+type ISidebarProps = {
+  handleRoute: (route: string) => void;
+  currentPath: string;
+};
 
-  const [currentPath, setCurrentPath] = useState("/agendamentos");
-
-  const handleRoute = (route: string) => {
-    setCurrentPath(route);
-  };
-
-  useLayoutEffect(() => {
-    if (location) setCurrentPath(location.pathname);
-  }, [location]);
-
+export const Sidebar = ({
+  handleRoute,
+  currentPath,
+}: ISidebarProps): ReactElement => {
   return (
     <S.Aside>
       <div>Logo</div>

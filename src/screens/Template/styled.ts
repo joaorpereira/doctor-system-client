@@ -20,4 +20,5 @@ export const Main = styled.main`
   transform: translateX(-70px);
   border-bottom-left-radius: 90px;
   box-shadow: 0px 10px 29px -50px rgba(100, 100, 111, 0.8);
+  padding: 30px 60px;
 `;
