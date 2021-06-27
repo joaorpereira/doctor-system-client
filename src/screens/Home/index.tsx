@@ -1,31 +1,35 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useEffect } from "react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import * as S from "./styled";
-// import { useAppDispatch } from "../../hooks/hooks";
-// import { getCompanies } from "../../store/ducks/companiesSlice";
 
-import { Calendar, dateFnsLocalizer } from "react-big-calendar";
-import { format, parse, startOfWeek, getDay, addMinutes } from "date-fns";
-import pt from "date-fns/locale/pt-BR";
+import { Calendar } from "react-big-calendar";
+import { addMinutes } from "date-fns";
 
-const locales = {
-  "pt-BR": pt,
+import { localizer } from "../../utils/date";
+import { useAppDispatch } from "../../hooks/hooks";
+import { getSchedules } from "../../store/ducks/schedulesSlice";
+
+export type IScheduleProps = {
+  company_id: string;
+  range: {
+    start: string;
+    end: string;
+  };
 };
 
-const localizer = dateFnsLocalizer({
-  format,
-  parse,
-  startOfWeek,
-  getDay,
-  locales,
-});
-
 const HomePage: React.FC = (): ReactElement => {
-  // const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
 
-  // useEffect(() => {
-  //   dispatch(getCompanies());
-  // }, [dispatch]);
+  useEffect(() => {
+    const data: IScheduleProps = {
+      company_id: "60b281095398c39f2a93cd20",
+      range: {
+        start: "2021-04-26",
+        end: "2021-06-26",
+      },
+    };
+    dispatch(getSchedules(data));
+  }, [dispatch]);
 
   const date = new Date();
 
@@ -43,6 +47,7 @@ const HomePage: React.FC = (): ReactElement => {
         ]}
         startAccessor="start"
         endAccessor="end"
+        selectable
         style={{ height: 650 }}
       />
     </S.ScheduleSection>
