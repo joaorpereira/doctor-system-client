@@ -1,8 +1,8 @@
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import createSagaMiddleware from "redux-saga";
 
-import { rootSagas } from "./sagas/rootSagas";
-import { reducers } from "./ducks/rootReducers";
+import { rootSagas } from "./rootSagas";
+import { reducers } from "./rootReducers";
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
