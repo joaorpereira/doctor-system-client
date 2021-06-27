@@ -23,6 +23,7 @@ import useFormatScheduleData, {
 } from "./hooks/useFormatScheduleData";
 
 import "date-fns/locale/pt-BR";
+import { SectionTitle } from "../../styles/global";
 
 const locales = {
   "pt-BR": require("date-fns/locale/pt-BR"),
@@ -117,7 +118,9 @@ const HomePage: React.FC = (): ReactElement => {
 
   return (
     <S.ScheduleSection>
-      <h1>Agendamentos</h1>
+      <S.HeaderRow>
+        <SectionTitle>Agendamentos</SectionTitle>
+      </S.HeaderRow>
       {scheduleData && (
         <Calendar
           messages={messages}

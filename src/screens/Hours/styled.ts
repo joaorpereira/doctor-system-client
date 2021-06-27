@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const ScheduleSection = styled.section`
+export const HoursSection = styled.section`
   display: flex;
   flex-direction: column;
 `;
