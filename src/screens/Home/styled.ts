@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { colors } from "../../styles/variables";
 
 export const ScheduleSection = styled.section`
   display: flex;
@@ -9,5 +10,6 @@ export const ScheduleSection = styled.section`
     margin-bottom: 35px;
     font-size: 2.4rem;
     font-weight: 900;
+    color: ${colors.text};
   }
 `;

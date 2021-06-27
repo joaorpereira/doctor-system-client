@@ -7,6 +7,7 @@ interface IRoutes {
   isPrivate?: boolean;
   exact?: boolean;
   path: string | string[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   rest?: any;
 }
 
