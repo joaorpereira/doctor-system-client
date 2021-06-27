@@ -27,6 +27,7 @@ export const Container = styled.div`
 
 export const Body = styled.tbody`
   width: 100%;
+  background-color: #fff;
 `;
 
 export const Head = styled.thead`
