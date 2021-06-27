@@ -1,24 +1,24 @@
 import styled from "styled-components";
-import { colors } from "../../styles/variables";
 
 export interface ButtonProps {
   isOutlined?: boolean;
+  color?: string;
 }
 export const Button = styled.button<ButtonProps>`
   height: 50px;
   border-radius: 8px;
   font-weight: 800;
-  background-color: ${({ isOutlined }) =>
-    isOutlined ? "#fff" : colors.mediumBlue};
-  border: ${({ isOutlined }) => isOutlined && `1px solid ${colors.mediumBlue}`};
-  color: ${({ isOutlined }) => (isOutlined ? `${colors.mediumBlue}` : "#fff")};
+  background-color: ${({ isOutlined, color }) => (isOutlined ? "#fff" : color)};
+  border: ${({ isOutlined, color }) => isOutlined && `1px solid ${color}`};
+  color: ${({ isOutlined, color }) => (isOutlined ? color : "#fff")};
   color: #fff;
-  padding: 0 32px;
+  padding: 0 20px;
 
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 150px;
+
+  max-width: 170px;
 
   cursor: pointer;
   border: 0;

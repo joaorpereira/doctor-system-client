@@ -3,14 +3,19 @@ import * as S from "./styled";
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   isOutlined?: boolean;
+  color?: string;
 };
 
 export const Button = ({
   children,
+  color,
   isOutlined = false,
   ...rest
-}: ButtonProps) => (
-  <S.Button isOutlined={isOutlined} {...rest}>
-    {children}
-  </S.Button>
-);
+}: ButtonProps) => {
+  console.log(color);
+  return (
+    <S.Button isOutlined={isOutlined} color={color} {...rest}>
+      {children}
+    </S.Button>
+  );
+};
