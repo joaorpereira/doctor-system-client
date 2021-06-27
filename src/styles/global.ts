@@ -32,7 +32,6 @@ export default createGlobalStyle`
 
 export const SectionTitle = styled.h1`
   font-family: "Poppins", sans-serif;
-  margin-bottom: 35px;
   font-size: 2.4rem;
   font-weight: 900;
   color: ${colors.text};

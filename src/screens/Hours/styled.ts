@@ -12,4 +12,5 @@ export const HeaderRow = styled.header`
   justify-content: space-between;
   align-items: center;
   padding-right: 10px;
+  margin-bottom: 30px;
 `;
