@@ -1,4 +1,4 @@
-import { createGlobalStyle } from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 import { colors } from "./variables";
 
 export default createGlobalStyle`
@@ -28,4 +28,12 @@ export default createGlobalStyle`
   button{
     cursor: pointer;
   } 
+`;
+
+export const SectionTitle = styled.h1`
+  font-family: "Poppins", sans-serif;
+  margin-bottom: 35px;
+  font-size: 2.4rem;
+  font-weight: 900;
+  color: ${colors.text};
 `;
