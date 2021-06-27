@@ -1,8 +1,16 @@
 import styled from "styled-components";
+import { colors } from "../../styles/variables";
 
 export const ClientSection = styled.section`
   display: flex;
   flex-direction: column;
+
+  p {
+    color: ${colors.text};
+  }
+  h4 {
+    color: ${colors.text};
+  }
 `;
 
 export const HeaderRow = styled.header`
@@ -21,5 +29,22 @@ export const ButtonContainer = styled.div`
   justify-content: center;
   > button:first-child {
     margin-right: 10px;
+  }
+`;
+
+export const ActionsRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 50px;
+
+  span {
+    padding-right: 15px;
+    cursor: pointer;
+    color: ${colors.text};
+    transition: color 0.1s ease-out;
+    :hover {
+      color: ${colors.primary};
+    }
   }
 `;
