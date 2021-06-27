@@ -1,21 +1,35 @@
 import React, { ReactElement, useCallback, useEffect, useState } from "react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+
 import * as S from "./styled";
 
-import { Calendar } from "react-big-calendar";
-import { format } from "date-fns";
+import { Calendar, dateFnsLocalizer } from "react-big-calendar";
+import {
+  format,
+  parse,
+  startOfWeek,
+  getDay,
+  endOfMonth,
+  startOfMonth,
+} from "date-fns";
 
-import { localizer } from "../../utils/date";
-import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { getSchedules } from "../../store/ducks/schedulesSlice";
 import { RootState } from "../../store";
+
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import useFormatScheduleData, {
   IFormatedSchedule,
   IScheduleData,
 } from "./hooks/useFormatScheduleData";
 
+import "date-fns/locale/pt-BR";
+
+const locales = {
+  "pt-BR": require("date-fns/locale/pt-BR"),
+};
+
 type IRange = {
-  start: string;
+  start: string | Date;
   end: string | Date;
 };
 
@@ -29,6 +43,13 @@ type ISelector = {
 };
 
 const HomePage: React.FC = (): ReactElement => {
+  const localizer = dateFnsLocalizer({
+    format,
+    parse,
+    startOfWeek,
+    getDay,
+    locales,
+  });
   const dispatch = useAppDispatch();
   const [scheduleData, setScheduleData] = useState<IFormatedSchedule[]>([]);
   const { schedules } = useAppSelector<ISelector>(
@@ -37,29 +58,40 @@ const HomePage: React.FC = (): ReactElement => {
 
   const [formatScheduleData] = useFormatScheduleData({ setScheduleData });
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const rangeFormat = useCallback((range: any) => {
-    let newRange = {} as IRange;
-    if (Array.isArray(range)) {
-      newRange = {
-        start: format(range[0], "yyyy-MM-dd"),
-        end: format(range[range.length - 1], "yyyy-MM-dd"),
+  const rangeFormat = useCallback(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (range: any) => {
+      let newRange = {} as IRange;
+      if (Array.isArray(range)) {
+        newRange = {
+          start: format(range[0], "yyyy-MM-dd"),
+          end: format(range[range.length - 1], "yyyy-MM-dd"),
+        };
+      } else {
+        newRange = {
+          start: format(range?.start, "yyyy-MM-dd"),
+          end: format(range?.end, "yyyy-MM-dd"),
+        };
+      }
+
+      const data: IScheduleProps = {
+        company_id: "60b281095398c39f2a93cd20",
+        range: {
+          start: newRange.start,
+          end: newRange.end,
+        },
       };
-    } else {
-      newRange = {
-        start: format(range?.start, "yyyy-MM-dd"),
-        end: format(range?.end, "yyyy-MM-dd"),
-      };
-    }
-    return newRange;
-  }, []);
+      dispatch(getSchedules(data));
+    },
+    [dispatch]
+  );
 
   useEffect(() => {
     const data: IScheduleProps = {
       company_id: "60b281095398c39f2a93cd20",
       range: {
-        start: "2021-04-26",
-        end: "2021-06-26",
+        start: format(startOfMonth(new Date()), "yyyy-MM-dd"),
+        end: format(endOfMonth(new Date()), "yyyy-MM-dd"),
       },
     };
     dispatch(getSchedules(data));
@@ -69,11 +101,26 @@ const HomePage: React.FC = (): ReactElement => {
     if (schedules) formatScheduleData(schedules);
   }, [schedules, formatScheduleData]);
 
+  const messages = {
+    allDay: "Dia Inteiro",
+    previous: "<",
+    next: ">",
+    today: "Hoje",
+    month: "Mês",
+    week: "Semana",
+    day: "Dia",
+    agenda: "Agenda",
+    date: "Data",
+    time: "Hora",
+    event: "Evento",
+  };
+
   return (
     <S.ScheduleSection>
       <h1>Agendamentos</h1>
       {scheduleData && (
         <Calendar
+          messages={messages}
           localizer={localizer}
           onRangeChange={(range) => rangeFormat(range)}
           events={scheduleData}
