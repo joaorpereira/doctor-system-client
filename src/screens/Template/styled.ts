@@ -18,7 +18,7 @@ export const Main = styled.main`
   background-color: ${colors.backgroundcolor};
   grid-area: content;
   transform: translateX(-70px);
-  border-bottom-left-radius: 90px;
+  border-bottom-left-radius: 80px;
   box-shadow: 0px 10px 29px -50px rgba(100, 100, 111, 0.8);
   padding: 20px 60px;
 `;

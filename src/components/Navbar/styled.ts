@@ -6,7 +6,7 @@ export const Nav = styled.nav`
   height: 80px;
   grid-area: header;
   background-color: ${colors.backgroundcolor};
-  border-top-left-radius: 90px;
+  border-top-left-radius: 80px;
   transform: translateX(-70px);
 
   display: flex;

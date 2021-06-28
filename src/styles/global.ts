@@ -1,6 +1,10 @@
 import styled, { createGlobalStyle } from "styled-components";
 import { colors } from "./variables";
 
+type SectionTitleProps = {
+  fontsize?: string;
+};
+
 export default createGlobalStyle`
   html {
     width: 100vw;
@@ -15,6 +19,8 @@ export default createGlobalStyle`
   }
   body{
     font-family: 'Lato', sans-serif;
+    overflow: hidden;
+
   }
   ul, li{
     list-style: none;
@@ -30,9 +36,9 @@ export default createGlobalStyle`
   } 
 `;
 
-export const SectionTitle = styled.h1`
+export const SectionTitle = styled.h1<SectionTitleProps>`
   font-family: "Poppins", sans-serif;
-  font-size: 2.4rem;
+  font-size: ${({ fontsize }) => (fontsize ? fontsize : "2.4rem")};
   font-weight: 900;
   color: ${colors.text};
 `;
