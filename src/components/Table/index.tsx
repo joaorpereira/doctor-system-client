@@ -6,13 +6,14 @@ import * as S from "./styled";
 
 export interface TableProperties<T extends Record<string, unknown>>
   extends TableOptions<T> {
-  onClick?: (row: Row<T>) => void;
+  onClick?: (row: Row<T>) => React.MouseEventHandler<HTMLElement>;
+  handleRowData: (row: Record<string, unknown>) => void;
 }
 
 export function Table<T extends Record<string, unknown>>(
   props: PropsWithChildren<TableProperties<T>>
 ): ReactElement {
-  const { columns } = props;
+  const { columns, handleRowData } = props;
 
   const { getTableProps, headerGroups, getTableBodyProps, prepareRow, rows } =
     useTable<T>({
@@ -36,7 +37,12 @@ export function Table<T extends Record<string, unknown>>(
           {rows.map((row, i) => {
             prepareRow(row);
             return (
-              <tr {...row.getRowProps()}>
+              <tr
+                {...row.getRowProps()}
+                onClick={() =>
+                  handleRowData({ client: row.original, type: "show" })
+                }
+              >
                 {row.cells.map((cell) => {
                   return (
                     <td {...cell.getCellProps()}>{cell.render("Cell")}</td>

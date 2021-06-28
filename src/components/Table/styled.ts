@@ -10,6 +10,7 @@ export const Container = styled.div`
     border-style: hidden;
     width: 100%;
     tr {
+      cursor: pointer;
       :last-child {
         td {
           border-bottom: 0;
