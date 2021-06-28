@@ -42,3 +42,8 @@ export const SectionTitle = styled.h1<SectionTitleProps>`
   font-weight: 900;
   color: ${colors.text};
 `;
+
+export const Paragraph = styled.p`
+  color: ${({ color }) => (color ? color : `${colors.text}`)};
+  text-transform: capitalize;
+`;
