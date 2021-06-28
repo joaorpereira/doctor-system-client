@@ -3,6 +3,7 @@ import styled from "styled-components";
 export interface ButtonProps {
   isOutlined?: boolean;
   color?: string;
+  width?: string;
 }
 export const Button = styled.button<ButtonProps>`
   height: 50px;
@@ -13,12 +14,10 @@ export const Button = styled.button<ButtonProps>`
   color: ${({ isOutlined, color }) => (isOutlined ? color : "#fff")};
   color: #fff;
   padding: 0 20px;
-
+  width: ${({ width }) => (width ? width : "170px")};
   display: flex;
   align-items: center;
   justify-content: center;
-
-  max-width: 170px;
 
   cursor: pointer;
   border: 0;
