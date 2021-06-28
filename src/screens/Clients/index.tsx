@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 
 import * as S from "./styled";
 import { colors } from "../../styles/variables";
-import { SectionTitle } from "../../styles/global";
+import { Paragraph, SectionTitle } from "../../styles/global";
 import { MdEdit, MdRemoveRedEye, MdDelete, MdShare } from "react-icons/md";
 
 import {
@@ -24,14 +24,38 @@ import { CloseModalIcon } from "../../components/CloseModalIcon";
 import { useOnClickOutside } from "../../hooks/useOnClickOutside";
 
 import { RootState } from "../../store";
-import { getClients, setClientInfo } from "../../store/ducks/clientsSlice";
+import {
+  getClients,
+  removeClient,
+  setClientInfo,
+  updateClient,
+  createClient,
+} from "../../store/ducks/clientsSlice";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 
 import { format } from "date-fns";
-import { RowInfo, type } from "./types";
+
+import {
+  DocumentProps,
+  AddressProps,
+  RowInfo,
+  type,
+} from "../../utils/globalTypes";
+
+export type ClientProps = {
+  document: DocumentProps;
+  address: AddressProps;
+  name: string;
+  email: string;
+  password: string;
+  picture: string;
+  phone_number: string;
+  gender: string;
+  birth_date: string;
+};
 
 type UpdateShowClientProps = {
-  client: any;
+  client?: ClientProps;
   type: string;
 };
 
@@ -47,7 +71,8 @@ const Clients: React.FC = (): ReactElement => {
 
   useOnClickOutside(ref, () => setShowProfile(false));
 
-  const { clients, client, isUpdate } = useAppSelector<any>(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { clients, client, isUpdate }: any = useAppSelector(
     ({ clientsReducers }: RootState) => clientsReducers
   );
 
@@ -56,7 +81,7 @@ const Clients: React.FC = (): ReactElement => {
   }, [dispatch]);
 
   const handleCloseModal = () => {
-    setShowProfile((prev) => !prev);
+    setShowProfile(!showProfile);
   };
 
   const handleShowPassword = (type: string) => {
@@ -69,12 +94,19 @@ const Clients: React.FC = (): ReactElement => {
 
   const { register, handleSubmit } = useForm({});
 
-  const onSubmit = (data: any) => {
-    console.log({ ...client, data });
+  const onSubmit = (data: ClientProps) => {
+    const clientData = { ...client, ...data };
+    if (isUpdate === "update") {
+      dispatch(updateClient({ clientData, id: client._id }));
+    } else if (isUpdate === "create") {
+      dispatch(
+        createClient({ clientData, company_id: "60b281d55398c39f2a93cd21" })
+      );
+    }
   };
 
   const handleRemoveClient = (id: string) => {
-    console.log(id);
+    dispatch(removeClient({ id }));
   };
 
   const handleUpdateOrShowClient = ({
@@ -112,12 +144,9 @@ const Clients: React.FC = (): ReactElement => {
         sortType: "basic",
         show: true,
         Cell: ({ row }: RowInfo) => (
-          <p style={{ textTransform: "capitalize" }}>
-            {row.original.gender.toLowerCase()}
-          </p>
+          <Paragraph>{row.original.gender.toLowerCase()}</Paragraph>
         ),
       },
-
       {
         Header: "Data de Cadastro",
         accessor: "created_at",
@@ -125,6 +154,15 @@ const Clients: React.FC = (): ReactElement => {
         show: true,
         Cell: ({ row }: RowInfo) => (
           <p>{format(new Date(row.original.created_at), "dd/MM/yyy")}</p>
+        ),
+      },
+      {
+        Header: "Status",
+        accessor: "status",
+        sortType: "basic",
+        show: true,
+        Cell: ({ row }: RowInfo) => (
+          <Paragraph>{row.original.status.toLowerCase()}</Paragraph>
         ),
       },
       {
@@ -151,12 +189,12 @@ const Clients: React.FC = (): ReactElement => {
             <button>
               <MdRemoveRedEye
                 size={20}
-                onClick={() =>
+                onClick={() => {
                   handleUpdateOrShowClient({
                     client: row.original,
                     type: type.SHOW,
-                  })
-                }
+                  });
+                }}
               />
             </button>
             <button onClick={() => handleRemoveClient(row.original._id)}>
@@ -166,6 +204,7 @@ const Clients: React.FC = (): ReactElement => {
         ),
       },
     ];
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -173,37 +212,73 @@ const Clients: React.FC = (): ReactElement => {
       <S.HeaderRow>
         <SectionTitle>Clientes</SectionTitle>
         <S.ButtonContainer>
-          <Button color={colors.mediumBlue}>Adicionar</Button>
+          <Button
+            color={colors.mediumBlue}
+            onClick={() =>
+              handleUpdateOrShowClient({
+                type: type.CREATE,
+              })
+            }
+          >
+            Adicionar
+          </Button>
           <Button color={colors.yel}>Exportar CSV</Button>
         </S.ButtonContainer>
       </S.HeaderRow>
       {clients && clientColumns ? (
-        <Table
-          handleRowData={({ client, type }: any) =>
-            handleUpdateOrShowClient({ client, type })
-          }
-          columns={clientColumns}
-          data={clients}
-        />
+        <Table columns={clientColumns} data={clients} />
       ) : null}
       <Card ref={ref} showProfile={showProfile}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <CloseModalIcon handleCloseModal={handleCloseModal} />
           <S.CardHeader>
             <img src={client?.picture} alt={client?.name} />
-            <div>
-              <h4>Eunice Pereira</h4>
-              <p>eunicepereira@email.com</p>
-              <p>+51977776667</p>
-              <p>1967-05-12</p>
-            </div>
+            {isUpdate === "show" ? (
+              <div>
+                <h4>Eunice Pereira</h4>
+                <p>eunicepereira@email.com</p>
+                <p>+51977776667</p>
+                <p>1967-05-12</p>
+              </div>
+            ) : (
+              <S.Div column>
+                <S.Div gap="10px" bottom="10px">
+                  <Input width="77%" placeholder="Nome" {...register("name")} />
+                  {isUpdate === "create" && (
+                    <Input
+                      width="23%"
+                      placeholder="Sexo"
+                      {...register("gender")}
+                    />
+                  )}
+                </S.Div>
+                <Input
+                  width="100%"
+                  placeholder="Email"
+                  {...register("email")}
+                />
+                <S.Div gap="10px" top="10px">
+                  <Input
+                    width="45%"
+                    placeholder="Telefone"
+                    {...register("phone_number")}
+                  />
+                  <Input
+                    disabled={isUpdate === "update"}
+                    width="55%"
+                    placeholder="Data Nascimento"
+                    {...register("birth_date")}
+                  />
+                </S.Div>
+              </S.Div>
+            )}
           </S.CardHeader>
           <CardTitle>Alterar Senha</CardTitle>
           <S.Section>
             <Box>
               <Label htmlFor="password">Nova Senha:</Label>
               <Input
-                disabled={!isUpdate}
+                disabled={isUpdate === "show"}
                 type={showPassword.password ? "text" : "password"}
                 defaultValue={client?.password}
                 {...register("password")}
@@ -216,7 +291,7 @@ const Clients: React.FC = (): ReactElement => {
             <Box>
               <Label htmlFor="newPassword">Repita a Senha:</Label>
               <Input
-                disabled={!isUpdate}
+                disabled={isUpdate === "show"}
                 type={showPassword.password2 ? "text" : "password"}
                 {...register("password2")}
               />
@@ -231,7 +306,7 @@ const Clients: React.FC = (): ReactElement => {
             <Box>
               <Label htmlFor="document.type">Tipo:</Label>
               <Input
-                disabled={!isUpdate}
+                disabled={["show", "update"].includes(isUpdate)}
                 width="150px"
                 defaultValue={client?.document?.type}
                 {...register("document.type")}
@@ -240,7 +315,7 @@ const Clients: React.FC = (): ReactElement => {
             <Box>
               <Label htmlFor="document.number">Número:</Label>
               <Input
-                disabled={!isUpdate}
+                disabled={["show", "update"].includes(isUpdate)}
                 width="240px"
                 defaultValue={client?.document?.number}
                 {...register("document.number")}
@@ -252,7 +327,7 @@ const Clients: React.FC = (): ReactElement => {
             <Box>
               <Label htmlFor="address.cep">CEP:</Label>
               <Input
-                disabled={!isUpdate}
+                disabled={isUpdate === "show"}
                 defaultValue={client?.address?.cep}
                 {...register("address.cep")}
               />
@@ -260,7 +335,7 @@ const Clients: React.FC = (): ReactElement => {
             <Box>
               <Label htmlFor="address.country">País:</Label>
               <Input
-                disabled={!isUpdate}
+                disabled={isUpdate === "show"}
                 defaultValue={client?.address?.country}
                 {...register("address.country")}
               />
@@ -268,7 +343,7 @@ const Clients: React.FC = (): ReactElement => {
             <Box>
               <Label htmlFor="address.state">Estado:</Label>
               <Input
-                disabled={!isUpdate}
+                disabled={isUpdate === "show"}
                 width="90px"
                 defaultValue={client?.address?.state}
                 {...register("address.state")}
@@ -277,7 +352,7 @@ const Clients: React.FC = (): ReactElement => {
             <Box>
               <Label htmlFor="address.city">Cidade:</Label>
               <Input
-                disabled={!isUpdate}
+                disabled={isUpdate === "show"}
                 width="300px"
                 defaultValue={client?.address?.city}
                 {...register("address.city")}
@@ -286,7 +361,7 @@ const Clients: React.FC = (): ReactElement => {
             <Box>
               <Label htmlFor="address.number">Número:</Label>
               <Input
-                disabled={!isUpdate}
+                disabled={isUpdate === "show"}
                 width="90px"
                 defaultValue={client?.address?.number}
                 {...register("address.number")}
@@ -294,18 +369,17 @@ const Clients: React.FC = (): ReactElement => {
             </Box>
             <Box>
               <Label htmlFor="address.street">Rua:</Label>
-
               <Input
-                disabled={!isUpdate}
+                disabled={isUpdate === "show"}
                 defaultValue={client?.address?.street}
                 width="300px"
                 {...register("address.street")}
               />
             </Box>
           </S.Section>
-          {isUpdate && (
+          {isUpdate === "show" ? null : (
             <Button color={colors.mediumBlue} width="100%" type="submit">
-              Atualizar Dados
+              {isUpdate === "create" ? "Criar Cliente" : "Atualizar Dados"}
             </Button>
           )}
         </form>

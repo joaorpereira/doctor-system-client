@@ -1,8 +1,18 @@
 import { all, takeLatest } from "redux-saga/effects";
-import { getClients } from "./ducks/clientsSlice";
+import {
+  createClient,
+  getClients,
+  removeClient,
+  updateClient,
+} from "./ducks/clientsSlice";
 import { getCompanies } from "./ducks/companiesSlice";
 import { getSchedules } from "./ducks/schedulesSlice";
-import { handleGetClients } from "./sagas/clientsSaga";
+import {
+  handleCreateClient,
+  handleGetClients,
+  handleRemoveClient,
+  handleUpdateClient,
+} from "./sagas/clientsSaga";
 import { handleGetCompanies } from "./sagas/companiesSaga";
 import { handleGetSchedules } from "./sagas/schedulesSaga";
 
@@ -11,5 +21,8 @@ export function* rootSagas() {
     takeLatest(getCompanies.type, handleGetCompanies),
     takeLatest(getSchedules.type, handleGetSchedules),
     takeLatest(getClients.type, handleGetClients),
+    takeLatest(updateClient.type, handleUpdateClient),
+    takeLatest(removeClient.type, handleRemoveClient),
+    takeLatest(createClient.type, handleCreateClient),
   ]);
 }

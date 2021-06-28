@@ -1,10 +1,16 @@
 import styled from "styled-components";
 import { colors } from "../../styles/variables";
-import { MdRemoveRedEye } from "react-icons/md";
 
 type SectionProps = {
   wrap?: boolean;
   marginBottom?: string;
+};
+
+type DivProps = {
+  gap?: string;
+  column?: boolean;
+  bottom?: string;
+  top?: string;
 };
 
 export const ClientsSection = styled.section`
@@ -96,4 +102,12 @@ export const Section = styled.section<SectionProps>`
   width: 100%;
   gap: 10px;
   flex-wrap: ${({ wrap }) => wrap && "wrap"};
+`;
+
+export const Div = styled.div<DivProps>`
+  display: flex;
+  gap: ${({ gap }) => gap && gap};
+  flex-direction: ${({ column }) => column && "column"};
+  margin-bottom: ${({ bottom }) => bottom && bottom};
+  margin-top: ${({ top }) => top && top};
 `;
