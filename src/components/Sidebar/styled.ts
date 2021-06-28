@@ -44,7 +44,7 @@ export const ListItem = styled.li`
   transition: background 0.3s ease-out;
 
   :hover {
-    background-color: #00000015;
+    background-color: #00000020;
   }
 `;
 

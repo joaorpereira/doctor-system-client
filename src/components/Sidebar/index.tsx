@@ -27,7 +27,7 @@ const routes = [
 const selectedStyle = {
   backgroundColor: "#03123490",
   color: "#fff",
-  borderRight: "6px solid #fff",
+  borderRight: "6px solid #ececec",
   width: "230px",
   boxShadow: "box-shadow: rgba(149, 157, 165, 1) 0px 8px 24px",
 };
