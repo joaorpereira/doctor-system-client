@@ -12,3 +12,8 @@ export type RowInfo = {
   subRows: any[];
   original: any;
 };
+
+export const type = {
+  UPDATE: "update",
+  SHOW: "show",
+};

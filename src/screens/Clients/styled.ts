@@ -1,9 +1,16 @@
 import styled from "styled-components";
 import { colors } from "../../styles/variables";
+import { MdRemoveRedEye } from "react-icons/md";
 
-export const ClientSection = styled.section`
+type SectionProps = {
+  wrap?: boolean;
+  marginBottom?: string;
+};
+
+export const ClientsSection = styled.section`
   display: flex;
   flex-direction: column;
+  position: relative;
 
   p {
     color: ${colors.text};
@@ -35,11 +42,13 @@ export const ButtonContainer = styled.div`
 export const ActionsRow = styled.div`
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  width: 50px;
-
-  span {
-    padding-right: 15px;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 120px;
+  button {
+    border: none;
+    background-color: transparent;
+    outline: none;
     cursor: pointer;
     color: ${colors.text};
     transition: color 0.1s ease-out;
@@ -47,4 +56,44 @@ export const ActionsRow = styled.div`
       color: ${colors.primary};
     }
   }
+`;
+
+export const CardHeader = styled.header`
+  margin-bottom: 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  > div {
+    width: 245px;
+  }
+
+  h4 {
+    line-height: 30px;
+    font-size: 1.25rem;
+    letter-spacing: 0.04rem;
+  }
+
+  p {
+    line-height: 21px;
+    letter-spacing: 0.04rem;
+  }
+
+  > img {
+    width: 130px;
+    height: 120px;
+    border-radius: 50%;
+    box-shadow: rgba(6, 24, 44, 0.1) 0px 0px 0px 2px,
+      rgba(6, 24, 44, 0.2) 0px 4px 6px -1px,
+      rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+  }
+`;
+
+export const Section = styled.section<SectionProps>`
+  margin-bottom: ${({ marginBottom }) =>
+    marginBottom ? marginBottom : "20px"};
+  display: flex;
+  width: 100%;
+  gap: 10px;
+  flex-wrap: ${({ wrap }) => wrap && "wrap"};
 `;
