@@ -18,9 +18,6 @@ export const ClientsSection = styled.section`
   flex-direction: column;
   position: relative;
 
-  p {
-    color: ${colors.text};
-  }
   h4 {
     color: ${colors.text};
   }
@@ -87,7 +84,7 @@ export const CardHeader = styled.header`
 
   > img {
     width: 130px;
-    height: 120px;
+    height: 130px;
     border-radius: 50%;
     box-shadow: rgba(6, 24, 44, 0.1) 0px 0px 0px 2px,
       rgba(6, 24, 44, 0.2) 0px 4px 6px -1px,

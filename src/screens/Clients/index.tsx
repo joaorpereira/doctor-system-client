@@ -6,11 +6,13 @@ import React, {
   useState,
 } from "react";
 import { useForm } from "react-hook-form";
+import { format } from "date-fns";
 
 import * as S from "./styled";
 import { colors } from "../../styles/variables";
-import { Paragraph, SectionTitle } from "../../styles/global";
+import { Active, Paragraph, SectionTitle } from "../../styles/global";
 import { MdEdit, MdRemoveRedEye, MdDelete, MdShare } from "react-icons/md";
+import Avatar from "../../assets/avatar.png";
 
 import {
   CardTitle,
@@ -19,21 +21,14 @@ import {
 } from "../../components/Card/styled";
 import { Table } from "../../components/Table";
 import { Button } from "../../components/Button";
+import { Select } from "../../components/Select/styled";
 import { Input, Label, Box } from "../../components/Input/styled";
 import { CloseModalIcon } from "../../components/CloseModalIcon";
 import { useOnClickOutside } from "../../hooks/useOnClickOutside";
 
 import { RootState } from "../../store";
-import {
-  getClients,
-  removeClient,
-  setClientInfo,
-  updateClient,
-  createClient,
-} from "../../store/ducks/clientsSlice";
+import { getClients, removeClient } from "../../store/ducks/clientsSlice";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
-
-import { format } from "date-fns";
 
 import {
   DocumentProps,
@@ -41,6 +36,10 @@ import {
   RowInfo,
   type,
 } from "../../utils/globalTypes";
+
+import useHandleUpdateOrShowClient from "./hooks/useHandleUpdateOrShowClient";
+import useHandleShowPassword from "../../hooks/useHandleShowPassword";
+import useOnSubmit from "./hooks/useOnSubmit";
 
 export type ClientProps = {
   document: DocumentProps;
@@ -52,16 +51,24 @@ export type ClientProps = {
   phone_number: string;
   gender: string;
   birth_date: string;
+  _id?: string;
 };
 
-type UpdateShowClientProps = {
-  client?: ClientProps;
-  type: string;
-};
+const genderOptions = [
+  { value: "", label: null },
+  { value: "MASCULINO", label: "M" },
+  { value: "FEMININO", label: "F" },
+];
+const documentOptions = [
+  { value: "", label: null },
+  { value: "cpf", label: "CPF" },
+  { value: "cnpj", label: "CNPJ" },
+];
 
 const Clients: React.FC = (): ReactElement => {
-  const dispatch = useAppDispatch();
   const ref = useRef();
+  const dispatch = useAppDispatch();
+  const { register, handleSubmit, reset } = useForm({});
 
   const [showProfile, setShowProfile] = useState(false);
   const [showPassword, setShowPassword] = useState({
@@ -69,53 +76,43 @@ const Clients: React.FC = (): ReactElement => {
     password2: false,
   });
 
-  useOnClickOutside(ref, () => setShowProfile(false));
+  useEffect(() => {
+    dispatch(getClients());
+  }, [dispatch]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { clients, client, isUpdate }: any = useAppSelector(
     ({ clientsReducers }: RootState) => clientsReducers
   );
 
-  useEffect(() => {
-    dispatch(getClients());
-  }, [dispatch]);
+  // functions
+  const handleCloseModal = () => setShowProfile(!showProfile);
+  const handleRemoveClient = (id: string) => dispatch(removeClient({ id }));
+  const readOnlyAtShowAndUpdate = () => ["show", "update"].includes(isUpdate);
 
-  const handleCloseModal = () => {
-    setShowProfile(!showProfile);
-  };
+  // handle which type of sideModal should be displayed
+  const showContent = (): boolean => isUpdate === "show";
+  const showUpdate = (): boolean => isUpdate === "update";
+  const showCreate = (): boolean => isUpdate === "create";
 
-  const handleShowPassword = (type: string) => {
-    if (type === "password") {
-      setShowPassword({ ...showPassword, password: !showPassword.password });
-    } else if (type === "password2") {
-      setShowPassword({ ...showPassword, password2: !showPassword.password2 });
-    }
-  };
+  //custom hooks
+  useOnClickOutside({ ref, handler: () => setShowProfile(false) });
 
-  const { register, handleSubmit } = useForm({});
+  const [handleUpdateOrShowClient] = useHandleUpdateOrShowClient({
+    handleCloseModal,
+    reset,
+  });
 
-  const onSubmit = (data: ClientProps) => {
-    const clientData = { ...client, ...data };
-    if (isUpdate === "update") {
-      dispatch(updateClient({ clientData, id: client._id }));
-    } else if (isUpdate === "create") {
-      dispatch(
-        createClient({ clientData, company_id: "60b281d55398c39f2a93cd21" })
-      );
-    }
-  };
+  const [handleShowPassword] = useHandleShowPassword({
+    setShowPassword,
+    showPassword,
+  });
 
-  const handleRemoveClient = (id: string) => {
-    dispatch(removeClient({ id }));
-  };
-
-  const handleUpdateOrShowClient = ({
+  const [onSubmit] = useOnSubmit({
     client,
-    type,
-  }: UpdateShowClientProps) => {
-    handleCloseModal();
-    dispatch(setClientInfo({ client, type }));
-  };
+    showUpdate,
+    isUpdate,
+  });
 
   const clientColumns = useMemo(() => {
     return [
@@ -162,7 +159,13 @@ const Clients: React.FC = (): ReactElement => {
         sortType: "basic",
         show: true,
         Cell: ({ row }: RowInfo) => (
-          <Paragraph>{row.original.status.toLowerCase()}</Paragraph>
+          <Active color={row.original.status}>
+            <Paragraph
+              color={row.original.status === "ATIVO" ? "#87b7ff" : "#2E2E2E70"}
+            >
+              {row.original.status.toLowerCase()}
+            </Paragraph>
+          </Active>
         ),
       },
       {
@@ -232,40 +235,61 @@ const Clients: React.FC = (): ReactElement => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <CloseModalIcon handleCloseModal={handleCloseModal} />
           <S.CardHeader>
-            <img src={client?.picture} alt={client?.name} />
-            {isUpdate === "show" ? (
+            <img
+              src={client && client?.picture ? client?.picture : Avatar}
+              alt={client?.name ? client?.name : "avatar"}
+            />
+            {showContent() ? (
               <div>
-                <h4>Eunice Pereira</h4>
-                <p>eunicepereira@email.com</p>
-                <p>+51977776667</p>
-                <p>1967-05-12</p>
+                <h4>{client?.name}</h4>
+                <p>{client?.email}</p>
+                <p>{client?.phone_number}</p>
+                <p>{client?.birth_date}</p>
               </div>
             ) : (
               <S.Div column>
                 <S.Div gap="10px" bottom="10px">
-                  <Input width="77%" placeholder="Nome" {...register("name")} />
-                  {isUpdate === "create" && (
-                    <Input
+                  <Input
+                    width={showCreate() ? "77%" : "100%"}
+                    defaultValue={showUpdate() ? client?.name : ""}
+                    placeholder="Nome"
+                    {...register("name")}
+                  />
+                  {showCreate() && (
+                    <Select
                       width="23%"
                       placeholder="Sexo"
                       {...register("gender")}
-                    />
+                    >
+                      {genderOptions.map((item) => (
+                        <option
+                          key={item.value}
+                          selected={item.value === client?.gender}
+                          value={item.value}
+                        >
+                          {item.label}
+                        </option>
+                      ))}
+                    </Select>
                   )}
                 </S.Div>
                 <Input
                   width="100%"
+                  defaultValue={showUpdate() ? client?.email : ""}
                   placeholder="Email"
                   {...register("email")}
                 />
                 <S.Div gap="10px" top="10px">
                   <Input
-                    width="45%"
+                    width="50%"
+                    defaultValue={showUpdate() ? client?.phone_number : ""}
                     placeholder="Telefone"
                     {...register("phone_number")}
                   />
                   <Input
-                    disabled={isUpdate === "update"}
-                    width="55%"
+                    width="50%"
+                    defaultValue={showUpdate() ? client?.birth_date : ""}
+                    readOnly={showUpdate()}
                     placeholder="Data Nascimento"
                     {...register("birth_date")}
                   />
@@ -278,7 +302,7 @@ const Clients: React.FC = (): ReactElement => {
             <Box>
               <Label htmlFor="password">Nova Senha:</Label>
               <Input
-                disabled={isUpdate === "show"}
+                readOnly={showContent()}
                 type={showPassword.password ? "text" : "password"}
                 defaultValue={client?.password}
                 {...register("password")}
@@ -291,7 +315,7 @@ const Clients: React.FC = (): ReactElement => {
             <Box>
               <Label htmlFor="newPassword">Repita a Senha:</Label>
               <Input
-                disabled={isUpdate === "show"}
+                readOnly={showContent()}
                 type={showPassword.password2 ? "text" : "password"}
                 {...register("password2")}
               />
@@ -305,19 +329,32 @@ const Clients: React.FC = (): ReactElement => {
           <S.Section>
             <Box>
               <Label htmlFor="document.type">Tipo:</Label>
-              <Input
-                disabled={["show", "update"].includes(isUpdate)}
+              <Select
                 width="150px"
-                defaultValue={client?.document?.type}
+                defaultValue={
+                  client?.document?.type ? client?.document?.type : ""
+                }
                 {...register("document.type")}
-              />
+              >
+                {documentOptions.map((item) => (
+                  <option
+                    key={item.value}
+                    selected={item.value === client?.document?.type}
+                    value={item.value}
+                  >
+                    {item.label}
+                  </option>
+                ))}
+              </Select>
             </Box>
             <Box>
               <Label htmlFor="document.number">Número:</Label>
               <Input
-                disabled={["show", "update"].includes(isUpdate)}
+                readOnly={readOnlyAtShowAndUpdate()}
                 width="240px"
-                defaultValue={client?.document?.number}
+                defaultValue={
+                  client?.document?.number ? client?.document?.number : ""
+                }
                 {...register("document.number")}
               />
             </Box>
@@ -327,41 +364,50 @@ const Clients: React.FC = (): ReactElement => {
             <Box>
               <Label htmlFor="address.cep">CEP:</Label>
               <Input
-                disabled={isUpdate === "show"}
-                defaultValue={client?.address?.cep}
+                readOnly={showContent()}
+                defaultValue={client?.address?.cep ? client?.address?.cep : ""}
                 {...register("address.cep")}
               />
             </Box>
             <Box>
               <Label htmlFor="address.country">País:</Label>
-              <Input
-                disabled={isUpdate === "show"}
-                defaultValue={client?.address?.country}
+              <Select
+                defaultValue={
+                  client?.address?.country ? client?.address?.country : ""
+                }
                 {...register("address.country")}
-              />
+              >
+                <option selected value="br">
+                  Brasil
+                </option>
+              </Select>
             </Box>
             <Box>
               <Label htmlFor="address.state">Estado:</Label>
               <Input
-                disabled={isUpdate === "show"}
-                width="90px"
-                defaultValue={client?.address?.state}
+                readOnly={showContent()}
+                width="140px"
+                defaultValue={
+                  client?.address?.state ? client?.address?.state : ""
+                }
                 {...register("address.state")}
               />
             </Box>
             <Box>
               <Label htmlFor="address.city">Cidade:</Label>
               <Input
-                disabled={isUpdate === "show"}
-                width="300px"
-                defaultValue={client?.address?.city}
+                readOnly={showContent()}
+                width="250px"
+                defaultValue={
+                  client?.address?.city ? client?.address?.city : ""
+                }
                 {...register("address.city")}
               />
             </Box>
             <Box>
               <Label htmlFor="address.number">Número:</Label>
               <Input
-                disabled={isUpdate === "show"}
+                readOnly={showContent()}
                 width="90px"
                 defaultValue={client?.address?.number}
                 {...register("address.number")}
@@ -370,16 +416,18 @@ const Clients: React.FC = (): ReactElement => {
             <Box>
               <Label htmlFor="address.street">Rua:</Label>
               <Input
-                disabled={isUpdate === "show"}
-                defaultValue={client?.address?.street}
+                readOnly={showContent()}
+                defaultValue={
+                  client?.address?.street ? client?.address?.street : ""
+                }
                 width="300px"
                 {...register("address.street")}
               />
             </Box>
           </S.Section>
-          {isUpdate === "show" ? null : (
+          {!showContent() && (
             <Button color={colors.mediumBlue} width="100%" type="submit">
-              {isUpdate === "create" ? "Criar Cliente" : "Atualizar Dados"}
+              {showCreate() ? "Criar Cliente" : "Atualizar Dados"}
             </Button>
           )}
         </form>
