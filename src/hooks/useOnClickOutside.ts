@@ -1,6 +1,11 @@
 import { useEffect } from "react";
 
-export const useOnClickOutside = (ref: any, handler: any) => {
+type OnClickOutSideProps = {
+  ref: any;
+  handler: (value: React.SetStateAction<boolean>) => void;
+};
+
+export const useOnClickOutside = ({ ref, handler }: OnClickOutSideProps) => {
   useEffect(() => {
     const listener = (event: any) => {
       if (!ref.current || ref.current.contains(event.target)) {
