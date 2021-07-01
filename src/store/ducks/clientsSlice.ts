@@ -1,40 +1,90 @@
 /* eslint-disable eslint-comments/disable-enable-pair */
-/* eslint-disable @typescript-eslint/no-empty-function */
-import { createSlice } from "@reduxjs/toolkit";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AddressProps, DocumentProps } from "../../utils/globalTypes";
 
-const clientsSlice = createSlice({
+interface Client {
+  document: DocumentProps;
+  address: AddressProps;
+  name: string;
+  email: string;
+  password: string;
+  picture: string;
+  phone_number: string;
+  gender: string;
+  birth_date: string;
+  _id?: string;
+}
+
+interface ClientsSliceState {
+  clients: Client[];
+  client?: Record<string, never>;
+  type: string;
+  loading?: boolean;
+}
+
+const initialState: ClientsSliceState = {
+  clients: [],
+  client: {},
+  type: "",
+  loading: false,
+};
+
+export const clientsSlice = createSlice({
   name: "clients",
-  initialState: {},
+  initialState,
   reducers: {
-    getClients() {},
-    setClients(state, action) {
-      const clients = action.payload;
-      return { ...state, ...clients };
+    getClients(state) {
+      return { ...state, loading: true };
     },
-    setClientInfo(state, action) {
+    updateClient: (state, action: PayloadAction<any>) => {
+      return { ...state, loading: true };
+    },
+    createClient: (state, action: PayloadAction<any>) => {
+      return { ...state, loading: true };
+    },
+    removeClient: (state, action: PayloadAction<any>) => {
+      return { ...state, loading: true };
+    },
+    setClient: (state, action: PayloadAction<any>) => {
       const client = action.payload.client;
-      const isUpdate = action.payload.type;
-      return { ...state, client, isUpdate };
+      const type = action.payload.type;
+      return { ...state, client: client, type: type, loading: false };
     },
-    updateClient(state, action) {
-      return;
+    setClientsSuccess: (state, action: PayloadAction<any>) => {
+      const clients = action.payload.clients;
+      return { ...state, clients, loading: false };
     },
-    removeClient(state, action) {
-      return;
+    updateClientSuccess: (state, action: PayloadAction<any>) => {
+      const { client } = action.payload;
+      const clientIndex = state.clients.findIndex(
+        (item) => item._id === client._id
+      );
+      state.clients[clientIndex] = client;
+      state.loading = false;
     },
-    createClient(state, action) {
-      return;
+    createClientSuccess: (state, action: PayloadAction<any>) => {
+      const client = action.payload.client;
+      state.clients = [...state.clients, client];
+    },
+    removeClientSuccess: (state, action: PayloadAction<any>) => {
+      state.clients = state.clients.filter(
+        (item: Client) => item._id !== action.payload.id
+      );
     },
   },
 });
 
 export const {
   getClients,
-  setClients,
-  setClientInfo,
+  setClient,
   updateClient,
   removeClient,
   createClient,
+  setClientsSuccess,
+  createClientSuccess,
+  updateClientSuccess,
+  removeClientSuccess,
 } = clientsSlice.actions;
 
 export default clientsSlice.reducer;
