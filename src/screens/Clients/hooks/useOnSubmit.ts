@@ -1,21 +1,47 @@
 import { ClientProps } from "..";
 import { useAppDispatch } from "../../../hooks/hooks";
 import { createClient, updateClient } from "../../../store/ducks/clientsSlice";
+import {
+  reverseBirthDateFormat,
+  reverseDocumentNumberFormat,
+  reversePhoneNumberFormat,
+} from "../../../utils/helpers";
 
 type OnSubmitProps = {
-  isUpdate: string;
-  client: ClientProps;
-  showUpdate: () => boolean;
+  type: string;
+  id: string;
 };
 
-const useOnSubmit = ({ client, showUpdate, isUpdate }: OnSubmitProps) => {
+const useOnSubmit = ({ id, type }: OnSubmitProps) => {
   const dispatch = useAppDispatch();
   const onSubmit = (data: ClientProps) => {
-    const clientData = { ...client, ...data };
-    if (showUpdate()) dispatch(updateClient({ clientData, id: client._id }));
-    else if (isUpdate === "create")
-      dispatch(
-        createClient({ clientData, company_id: "60b281d55398c39f2a93cd21" })
+    const newPhoneNumber = reversePhoneNumberFormat(data.phone_number);
+    const newBirthDate = reverseBirthDateFormat(data.birth_date);
+    const newDocumentNumber = reverseDocumentNumberFormat(data.document);
+
+    if (type === "update") {
+      return dispatch(
+        updateClient({
+          client: {
+            ...data,
+            phone_number: newPhoneNumber,
+            birth_date: newBirthDate,
+            document: newDocumentNumber,
+          },
+          id: id,
+        })
+      );
+    } else if (type === "create")
+      return dispatch(
+        createClient({
+          client: {
+            ...data,
+            phone_number: newPhoneNumber,
+            birth_date: newBirthDate,
+            document: newDocumentNumber,
+          },
+          company_id: "60b281d55398c39f2a93cd21",
+        })
       );
   };
 
