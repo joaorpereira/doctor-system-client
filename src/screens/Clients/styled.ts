@@ -62,6 +62,7 @@ export const ActionsRow = styled.div`
 `;
 
 export const CardHeader = styled.header`
+  position: relative;
   margin-bottom: 25px;
   display: flex;
   justify-content: space-between;
