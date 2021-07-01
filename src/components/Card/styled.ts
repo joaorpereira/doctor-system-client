@@ -4,6 +4,7 @@ import { MdRemoveRedEye } from "react-icons/md";
 
 type CardProps = {
   showProfile: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ref: any;
 };
 

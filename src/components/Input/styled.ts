@@ -4,6 +4,7 @@ import { colors } from "../../styles/variables";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   width?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ref?: any;
 }
 

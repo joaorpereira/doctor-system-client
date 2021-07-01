@@ -1,3 +1,5 @@
+/* eslint-disable eslint-comments/disable-enable-pair */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export type AddressProps = {
   country: string;
   state: string;
@@ -27,8 +29,12 @@ export type RowInfo = {
   original: any;
 };
 
-export const type = {
+export const operationsTypes = {
   UPDATE: "update",
   SHOW: "show",
   CREATE: "create",
 };
+
+export interface EventTargetProps {
+  e: React.FormEvent<HTMLInputElement> & { target: HTMLInputElement };
+}
