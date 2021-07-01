@@ -1,8 +1,8 @@
 import api from "../../services/api";
-import { call, put } from "redux-saga/effects";
+import { all, call, put, takeLatest } from "redux-saga/effects";
 
-import { setSchedules } from "../ducks/schedulesSlice";
-import { ResponseGenerator } from "../types/common";
+import { getSchedules, setSchedules } from "../ducks/schedulesSlice";
+import { ResponseGenerator } from "../common/types";
 import { IScheduleProps } from "../../screens/Home";
 
 type IGetScheduleProps = {
@@ -10,7 +10,7 @@ type IGetScheduleProps = {
   payload: IScheduleProps;
 };
 
-export function* handleGetSchedules({ payload }: IGetScheduleProps) {
+function* handleGetSchedules({ payload }: IGetScheduleProps) {
   try {
     const { company_id, range } = payload;
 
@@ -27,3 +27,5 @@ export function* handleGetSchedules({ payload }: IGetScheduleProps) {
     console.log(error);
   }
 }
+
+export default all([takeLatest(getSchedules.type, handleGetSchedules)]);

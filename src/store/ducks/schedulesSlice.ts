@@ -1,6 +1,6 @@
 import { createSlice, createAction } from "@reduxjs/toolkit";
 import { IScheduleProps } from "../../screens/Home";
-import { withPayloadType } from "../types/common";
+import { withPayloadType } from "../common/types";
 
 // === ACTIONS ===
 

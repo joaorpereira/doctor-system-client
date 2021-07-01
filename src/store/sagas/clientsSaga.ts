@@ -1,6 +1,7 @@
 import api from "../../services/api";
 import { all, call, put, takeLatest } from "redux-saga/effects";
 import {
+  Client,
   getClients,
   updateClient,
   createClient,
@@ -10,13 +11,12 @@ import {
   createClientSuccess,
   removeClientSuccess,
 } from "../ducks/clientsSlice";
-import { ResponseGenerator } from "../types/common";
-import { ClientProps } from "../../screens/Clients";
+import { ResponseGenerator } from "../common/types";
 
-type UpdateClient = {
+type ClientPayloadProps = {
   payload: {
     id?: string;
-    client?: ClientProps;
+    client?: Client;
     company_id?: string;
   };
   type: string;
@@ -31,7 +31,7 @@ export function* handleGetClients() {
   }
 }
 
-export function* handleUpdateClient({ payload }: UpdateClient) {
+export function* handleUpdateClient({ payload }: ClientPayloadProps) {
   try {
     const { data }: ResponseGenerator = yield call(
       api.put,
@@ -44,7 +44,7 @@ export function* handleUpdateClient({ payload }: UpdateClient) {
   }
 }
 
-export function* handleRemoveClient({ payload }: UpdateClient) {
+export function* handleRemoveClient({ payload }: ClientPayloadProps) {
   try {
     yield call(api.delete, `/client/${payload.id}`);
     yield put(removeClientSuccess({ id: payload.id }));
@@ -53,9 +53,9 @@ export function* handleRemoveClient({ payload }: UpdateClient) {
   }
 }
 
-export function* handleCreateClient({ payload }: UpdateClient) {
+export function* handleCreateClient({ payload }: ClientPayloadProps) {
   try {
-    const { data } = yield call(api.post, `/client`, {
+    const { data } = yield call(api.post, "/client", {
       client_data: { ...payload.client },
       company_id: payload.company_id,
     });

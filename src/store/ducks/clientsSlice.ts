@@ -3,7 +3,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AddressProps, DocumentProps } from "../../utils/globalTypes";
 
-interface Client {
+export type Client = {
   document: DocumentProps;
   address: AddressProps;
   name: string;
@@ -14,7 +14,7 @@ interface Client {
   gender: string;
   birth_date: string;
   _id?: string;
-}
+};
 
 interface ClientsSliceState {
   clients: Client[];
@@ -66,11 +66,13 @@ export const clientsSlice = createSlice({
     createClientSuccess: (state, action: PayloadAction<any>) => {
       const client = action.payload.client;
       state.clients = [...state.clients, client];
+      state.loading = false;
     },
     removeClientSuccess: (state, action: PayloadAction<any>) => {
       state.clients = state.clients.filter(
         (item: Client) => item._id !== action.payload.id
       );
+      state.loading = false;
     },
   },
 });
