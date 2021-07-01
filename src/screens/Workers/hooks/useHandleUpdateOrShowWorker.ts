@@ -10,11 +10,15 @@ type UpdateShowWorkerProps = {
 type UpdateOrShowProps = {
   handleCloseModal: () => void;
   reset: UseFormReset<FieldValues>;
+  setDocumentType: React.Dispatch<React.SetStateAction<string>>;
+  setGenderValue: React.Dispatch<React.SetStateAction<string>>;
 };
 
 const useHandleUpdateOrShowWorker = ({
   handleCloseModal,
   reset,
+  setDocumentType,
+  setGenderValue,
 }: UpdateOrShowProps) => {
   const dispatch = useAppDispatch();
   const handleUpdateOrShowWorker = ({
@@ -28,6 +32,8 @@ const useHandleUpdateOrShowWorker = ({
     } else if (type === "update") {
       dispatch(setWorker({ worker, type }));
     } else {
+      setDocumentType("");
+      setGenderValue("");
       dispatch(setWorker({ worker: {}, type }));
     }
   };
