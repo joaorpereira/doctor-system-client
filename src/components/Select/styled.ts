@@ -9,7 +9,7 @@ interface Select extends SelectHTMLAttributes<HTMLSelectElement> {
 export const Select = styled.select<Select>`
   border: 1px solid ${colors.primary};
   outline: none;
-  padding: 8px 10px;
+  padding: 8px 3px;
   border-radius: 8px;
   width: ${({ width }) => (width ? width : "195px")};
   transition: border 0.15s ease-out;

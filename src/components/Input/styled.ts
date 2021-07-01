@@ -4,6 +4,7 @@ import { colors } from "../../styles/variables";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   width?: string;
+  ref?: any;
 }
 
 export const Input = styled.input<InputProps>`
