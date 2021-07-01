@@ -24,27 +24,30 @@ import { Button } from "../../components/Button";
 import { Select } from "../../components/Select/styled";
 import { Input, Label, Box } from "../../components/Input/styled";
 import { CloseModalIcon } from "../../components/CloseModalIcon";
-import { useOnClickOutside } from "../../hooks/useOnClickOutside";
 
 import { RootState } from "../../store";
-import { getClients, removeClient } from "../../store/ducks/clientsSlice";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import { getClients, removeClient } from "../../store/ducks/clientsSlice";
 
 import {
   DocumentProps,
   AddressProps,
   RowInfo,
   operationsTypes,
+  genderOptions,
+  documentOptions,
 } from "../../utils/globalTypes";
 import { formatCPForCNPJ, formatPhone } from "../../utils/helpers";
 
-import useHandleUpdateOrShowClient from "./hooks/useHandleUpdateOrShowClient";
-import useHandleShowPassword from "../../hooks/useHandleShowPassword";
 import useOnSubmit from "./hooks/useOnSubmit";
-import useHandleCpfOrCnpjMask from "../../hooks/useHandleCpfOrCnpjMask";
-import useHandlePhoneMask from "../../hooks/useHandlePhoneMask";
 import useHandleCepMask from "../../hooks/useHandleCepMask";
 import useHandleDateMask from "../../hooks/useHandleDateMask";
+import useHandlePhoneMask from "../../hooks/useHandlePhoneMask";
+import { useOnClickOutside } from "../../hooks/useOnClickOutside";
+import useHandleShowPassword from "../../hooks/useHandleShowPassword";
+import useHandleCpfOrCnpjMask from "../../hooks/useHandleCpfOrCnpjMask";
+import useHandleUpdateOrShowClient from "./hooks/useHandleUpdateOrShowClient";
+import { ButtonEdit } from "../../components/ButtonEdit/styled";
 
 export type ClientProps = {
   document: DocumentProps;
@@ -58,17 +61,6 @@ export type ClientProps = {
   birth_date: string;
   _id?: string;
 };
-
-const genderOptions = [
-  { value: "", label: "Sexo" },
-  { value: "MASCULINO", label: "M" },
-  { value: "FEMININO", label: "F" },
-];
-const documentOptions = [
-  { value: "", label: null },
-  { value: "cpf", label: "CPF" },
-  { value: "cnpj", label: "CNPJ" },
-];
 
 const Clients: React.FC = (): ReactElement => {
   const ref = useRef<HTMLInputElement>();
@@ -88,6 +80,15 @@ const Clients: React.FC = (): ReactElement => {
   useEffect(() => {
     dispatch(getClients());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (showProfile) {
+      setCpfValue("");
+      setCepValue("");
+      setPhoneValue("");
+      setDateValue("");
+    }
+  }, [showProfile]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { clients, client, type }: any = useAppSelector(
@@ -141,6 +142,7 @@ const Clients: React.FC = (): ReactElement => {
   const [onSubmit] = useOnSubmit({
     id: client._id,
     type,
+    setShowProfile,
   });
 
   const clientColumns = useMemo(() => {
@@ -265,6 +267,7 @@ const Clients: React.FC = (): ReactElement => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <CloseModalIcon handleCloseModal={handleCloseModal} />
             <S.CardHeader>
+              {!showContent() && <ButtonEdit size={24} />}
               <img
                 src={picture ? picture : Avatar}
                 alt={client ? name : "avatar"}
@@ -312,7 +315,7 @@ const Clients: React.FC = (): ReactElement => {
                   <S.Div gap="10px" top="10px">
                     <Input
                       width="51%"
-                      maxLength={11}
+                      maxLength={12}
                       placeholder="+55 99999-9999"
                       {...register("phone_number")}
                       onChange={(e) => handlePhoneMask(e)}
@@ -357,6 +360,7 @@ const Clients: React.FC = (): ReactElement => {
                 <Input
                   readOnly={showContent()}
                   {...register("password2")}
+                  defaultValue={password ? password : ""}
                   type={showPassword.password2 ? "text" : "password"}
                 />
                 <StyledMdRemoveRedEye
