@@ -1,7 +1,7 @@
 import { FieldValues, UseFormReset } from "react-hook-form";
 import { ClientProps } from "..";
 import { useAppDispatch } from "../../../hooks/hooks";
-import { setClientInfo } from "../../../store/ducks/clientsSlice";
+import { setClient } from "../../../store/ducks/clientsSlice";
 
 type UpdateShowClientProps = {
   client?: ClientProps;
@@ -22,11 +22,15 @@ const useHandleUpdateOrShowClient = ({
     client,
     type,
   }: UpdateShowClientProps) => {
+    reset();
     handleCloseModal();
-    // update or create client
-    if (client) dispatch(setClientInfo({ client, type }));
-    // show client details
-    else reset(), dispatch(setClientInfo({ client: {}, type }));
+    if (type === "show") {
+      dispatch(setClient({ client, type }));
+    } else if (type === "update") {
+      dispatch(setClient({ client, type }));
+    } else {
+      dispatch(setClient({ client: {}, type }));
+    }
   };
 
   return [handleUpdateOrShowClient];
