@@ -35,6 +35,23 @@ export const operationsTypes = {
   CREATE: "create",
 };
 
-export interface EventTargetProps {
-  e: React.FormEvent<HTMLInputElement> & { target: HTMLInputElement };
-}
+export const genderOptions = [
+  { value: "", label: "Sexo" },
+  { value: "MASCULINO", label: "M" },
+  { value: "FEMININO", label: "F" },
+];
+
+export const documentOptions = [
+  { value: "", label: null },
+  { value: "cpf", label: "CPF" },
+  { value: "cnpj", label: "CNPJ" },
+];
+
+export type BankAccount = {
+  acc_user_name: string;
+  acc_number: string;
+  acc_type: string;
+  bank_code: string;
+  bank_agency: string;
+  verify_digit: string;
+};
