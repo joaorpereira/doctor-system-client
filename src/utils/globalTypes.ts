@@ -42,7 +42,7 @@ export const genderOptions = [
 ];
 
 export const documentOptions = [
-  { value: "", label: null },
+  { value: "", label: "" },
   { value: "cpf", label: "CPF" },
   { value: "cnpj", label: "CNPJ" },
 ];
