@@ -95,7 +95,7 @@ export const CardHeader = styled.header`
 
 export const Section = styled.section<SectionProps>`
   margin-bottom: ${({ marginBottom }) =>
-    marginBottom ? marginBottom : "20px"};
+    marginBottom ? marginBottom : "10px"};
   display: flex;
   width: 100%;
   gap: 10px;
