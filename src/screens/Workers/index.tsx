@@ -6,12 +6,17 @@ import React, {
   useState,
 } from "react";
 import { format } from "date-fns";
-import ReactSelect from "react-select";
+import ReactSelect, { ValueType } from "react-select";
 import { Controller, useForm } from "react-hook-form";
 
 import * as S from "./styled";
 import { colors } from "../../styles/variables";
-import { Active, Paragraph, SectionTitle } from "../../styles/global";
+import {
+  Active,
+  Paragraph,
+  reactSelectedStyle,
+  SectionTitle,
+} from "../../styles/global";
 import { MdEdit, MdRemoveRedEye, MdDelete, MdShare } from "react-icons/md";
 import Avatar from "../../assets/avatar.png";
 
@@ -39,8 +44,14 @@ import {
   operationsTypes,
   genderOptions,
   documentOptions,
+  InputProps,
+  OptionType,
 } from "../../utils/globalTypes";
-import { formatCPForCNPJ, formatPhone } from "../../utils/helpers";
+import {
+  formatCPForCNPJ,
+  formatPhone,
+  reverseDocumentNumberFormat,
+} from "../../utils/helpers";
 
 import useOnSubmit from "./hooks/useOnSubmit";
 import useHandleDateMask from "../../hooks/useHandleDateMask";
@@ -49,16 +60,20 @@ import { useOnClickOutside } from "../../hooks/useOnClickOutside";
 import useHandleShowPassword from "../../hooks/useHandleShowPassword";
 import useHandleCpfOrCnpjMask from "../../hooks/useHandleCpfOrCnpjMask";
 import useHandleUpdateOrShowWorker from "./hooks/useHandleUpdateOrShowWorker";
-
-type InputProps = {
-  label: string;
-  value: string;
-};
+import { getServices } from "../../store/ducks/servicesSlice";
+import useHandleSelectedServicesValues from "./hooks/useHandleSelectedServicesValues";
+import useHandleFormatServicesEntry from "./hooks/useHandleFormatServicesEntry";
 
 const Workers: React.FC = (): ReactElement => {
   const ref = useRef<HTMLInputElement>();
   const dispatch = useAppDispatch();
-  const { register, handleSubmit, reset, control } = useForm({});
+  const {
+    register,
+    handleSubmit,
+    reset,
+    control,
+    formState: { isSubmitting, isDirty, isValid },
+  } = useForm({});
 
   const [showProfile, setShowProfile] = useState(false);
   const [showPassword, setShowPassword] = useState({
@@ -71,9 +86,14 @@ const Workers: React.FC = (): ReactElement => {
   const [dateValue, setDateValue] = useState("");
   const [documentType, setDocumentType] = useState("");
   const [genderValue, setGenderValue] = useState("");
+  const [selectedServices, setSelectedServices] = useState<
+    ValueType<OptionType, true>
+  >([]);
+  const [servicesOptions, setServicesOptions] = useState<OptionType[]>([]);
 
   useEffect(() => {
     dispatch(getWorkers());
+    dispatch(getServices({ id: "60d4c7762318d1e795aa7f61" }));
   }, [dispatch]);
 
   useEffect(() => {
@@ -88,6 +108,10 @@ const Workers: React.FC = (): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { workers, worker, type }: any = useAppSelector(
     ({ workersReducers }: RootState) => workersReducers
+  );
+
+  const { services } = useAppSelector(
+    ({ servicesReducers }: RootState) => servicesReducers
   );
 
   const {
@@ -106,6 +130,12 @@ const Workers: React.FC = (): ReactElement => {
   const handleCloseModal = () => setShowProfile(!showProfile);
   const handleRemoveWorker = (id: string) => dispatch(removeWorker({ id }));
   const readOnlyAtShowAndUpdate = () => ["show", "update"].includes(type);
+
+  const handleTypeChange = (e: InputProps) => setDocumentType(e.value);
+  const handleGenderChange = (e: InputProps) => setGenderValue(e.value);
+  const handleServicesChange = (option: ValueType<OptionType, true>) => {
+    setSelectedServices(option);
+  };
 
   // handle which type of sideModal should be displayed
   const showContent = (): boolean => type === "show";
@@ -137,8 +167,25 @@ const Workers: React.FC = (): ReactElement => {
   // custom hooks - submit form to create or update worker
   const [onSubmit] = useOnSubmit({
     id: worker._id,
+    company_id: "60b281d55398c39f2a93cd21",
+    services: selectedServices,
     type,
     setShowProfile,
+    documentType,
+    genderValue,
+  });
+
+  // custom hooks - format all services options
+  useHandleFormatServicesEntry({
+    services,
+    setServicesOptions,
+  });
+
+  // custom hooks - set default values for worker services options
+  useHandleSelectedServicesValues({
+    services,
+    worker,
+    setSelectedServices,
   });
 
   const workerColumns = useMemo(() => {
@@ -237,16 +284,15 @@ const Workers: React.FC = (): ReactElement => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // set default values for documentType and genderValue
   useEffect(() => {
-    if (document) {
-      setDocumentType(document.type);
-    } else if (gender) {
-      setGenderValue(gender);
-    }
-  }, [document, gender]);
+    if (document) setDocumentType(document.type);
+  }, [document]);
 
-  const handleTypeChange = (e: InputProps) => setDocumentType(e.value);
-  const handleGenderChange = (e: InputProps) => setGenderValue(e.value);
+  // set default values for genderValue
+  useEffect(() => {
+    if (gender) setGenderValue(gender);
+  }, [gender]);
 
   return (
     <S.WorkersSection>
@@ -270,7 +316,7 @@ const Workers: React.FC = (): ReactElement => {
         <Table columns={workerColumns} data={workers} />
       ) : null}
       <Card ref={ref} showProfile={showProfile}>
-        {worker && (
+        {worker && services && (
           <form onSubmit={handleSubmit(onSubmit)}>
             <CloseModalIcon handleCloseModal={handleCloseModal} />
             <S.CardHeader>
@@ -290,6 +336,7 @@ const Workers: React.FC = (): ReactElement => {
                 <S.Div column>
                   <S.Div gap="10px" bottom="10px">
                     <Input
+                      disabled={readOnlyAtShowAndUpdate()}
                       width={showCreate() ? "77%" : "100%"}
                       defaultValue={showUpdate() ? name : ""}
                       placeholder="Nome"
@@ -306,17 +353,7 @@ const Workers: React.FC = (): ReactElement => {
                               styles={{
                                 control: (base) => ({
                                   ...base,
-                                  border: `1px solid ${colors.primary}`,
-                                  height: "35px !important",
-                                  minHeight: "35px !important",
-                                  boxShadow: "none",
-                                  "&:hover": {
-                                    border: `1px solid ${colors.primary} !important`,
-                                  },
-                                  fontSize: "0.8rem",
-                                  fontFamily: "Lato !important",
-                                  fontWeight: 500,
-                                  color: `${colors.text}`,
+                                  ...reactSelectedStyle,
                                 }),
                               }}
                               value={genderOptions.filter(
@@ -354,7 +391,7 @@ const Workers: React.FC = (): ReactElement => {
                     <Input
                       width="49%"
                       maxLength={10}
-                      readOnly={showUpdate()}
+                      disabled={showUpdate()}
                       placeholder="Data Nascimento"
                       {...register("birth_date")}
                       onChange={(e) => handleDateMask(e)}
@@ -414,21 +451,12 @@ const Workers: React.FC = (): ReactElement => {
                   control={control}
                   render={({ field }) => (
                     <ReactSelect
+                      isDisabled={readOnlyAtShowAndUpdate()}
                       {...field}
                       styles={{
                         control: (base) => ({
                           ...base,
-                          border: `1px solid ${colors.primary}`,
-                          height: "35px !important",
-                          minHeight: "35px !important",
-                          boxShadow: "none",
-                          "&:hover": {
-                            border: `1px solid ${colors.primary} !important`,
-                          },
-                          fontSize: "0.8rem",
-                          fontFamily: "Lato !important",
-                          fontWeight: 500,
-                          color: `${colors.text}`,
+                          ...reactSelectedStyle,
                         }),
                       }}
                       value={documentOptions.filter(
@@ -443,7 +471,7 @@ const Workers: React.FC = (): ReactElement => {
               <Box>
                 <Label htmlFor="document.number">Número:</Label>
                 <Input
-                  readOnly={readOnlyAtShowAndUpdate()}
+                  disabled={readOnlyAtShowAndUpdate()}
                   width="240px"
                   value={
                     document?.number
@@ -455,13 +483,37 @@ const Workers: React.FC = (): ReactElement => {
                 />
               </Box>
             </S.Section>
+            <CardTitle>Serviços</CardTitle>
+            <S.Section>
+              <Box width="100%">
+                <Controller
+                  name="document.services"
+                  control={control}
+                  render={({ field }) => (
+                    <ReactSelect
+                      {...field}
+                      isMulti
+                      isDisabled={showContent()}
+                      value={selectedServices}
+                      onChange={(option) => handleServicesChange(option)}
+                      options={servicesOptions}
+                      styles={{
+                        control: (base) => ({
+                          ...base,
+                          ...reactSelectedStyle,
+                        }),
+                      }}
+                    />
+                  )}
+                />
+              </Box>
+            </S.Section>
             <CardTitle>Conta Bancária</CardTitle>
             <S.Section wrap marginBottom="40px">
               <Box>
                 <Label htmlFor="bank_account.acc_user_name">Titular:</Label>
                 <Input
-                  maxLength={9}
-                  readOnly={showContent()}
+                  disabled={readOnlyAtShowAndUpdate()}
                   {...register("bank_account.acc_user_name")}
                   defaultValue={
                     bank_account?.acc_user_name
@@ -473,6 +525,8 @@ const Workers: React.FC = (): ReactElement => {
               <Box>
                 <Label htmlFor="bank_account.acc_number">Número:</Label>
                 <Input
+                  maxLength={11}
+                  disabled={readOnlyAtShowAndUpdate()}
                   defaultValue={
                     bank_account?.acc_number ? bank_account?.acc_number : ""
                   }
@@ -482,7 +536,7 @@ const Workers: React.FC = (): ReactElement => {
               <Box>
                 <Label htmlFor="bank_account.acc_type">Tipo:</Label>
                 <Input
-                  readOnly={showContent()}
+                  disabled={readOnlyAtShowAndUpdate()}
                   width="140px"
                   defaultValue={
                     bank_account?.acc_type ? bank_account?.acc_type : ""
@@ -491,10 +545,11 @@ const Workers: React.FC = (): ReactElement => {
                 />
               </Box>
               <Box>
-                <Label htmlFor="bank_account.bank_code">Código:</Label>
+                <Label htmlFor="bank_account.bank_code">Código do Banco:</Label>
                 <Input
-                  readOnly={showContent()}
-                  width="250px"
+                  maxLength={3}
+                  disabled={readOnlyAtShowAndUpdate()}
+                  width="110px"
                   defaultValue={
                     bank_account?.bank_code ? bank_account?.bank_code : ""
                   }
@@ -504,8 +559,9 @@ const Workers: React.FC = (): ReactElement => {
               <Box>
                 <Label htmlFor="bank_account.bank_agency">Agência:</Label>
                 <Input
-                  readOnly={showContent()}
-                  width="90px"
+                  maxLength={4}
+                  disabled={readOnlyAtShowAndUpdate()}
+                  width="80px"
                   defaultValue={bank_account?.bank_agency}
                   {...register("bank_account.bank_agency")}
                 />
@@ -513,17 +569,23 @@ const Workers: React.FC = (): ReactElement => {
               <Box>
                 <Label htmlFor="bank_account.verify_digit">Dígito:</Label>
                 <Input
-                  readOnly={showContent()}
+                  maxLength={1}
+                  disabled={readOnlyAtShowAndUpdate()}
                   defaultValue={
                     bank_account?.verify_digit ? bank_account?.verify_digit : ""
                   }
-                  width="300px"
+                  width="40px"
                   {...register("bank_account.verify_digit")}
                 />
               </Box>
             </S.Section>
             {!showContent() && (
-              <Button color={colors.mediumBlue} width="100%" type="submit">
+              <Button
+                color={colors.mediumBlue}
+                width="100%"
+                type="submit"
+                disabled={isSubmitting}
+              >
                 {showCreate() ? "Criar Colaborador" : "Atualizar Dados"}
               </Button>
             )}
