@@ -26,10 +26,7 @@ const useOnSubmit = ({
   const onSubmit = (data: ClientProps) => {
     const newPhoneNumber = reversePhoneNumberFormat(data.phone_number);
     const newBirthDate = reverseBirthDateFormat(data.birth_date);
-    const newDocument = {
-      number: reverseDocumentNumberFormat(data.document),
-      type: documentType,
-    };
+    const newDocumentNumber = reverseDocumentNumberFormat(data.document);
 
     if (type === "update") {
       dispatch(
@@ -38,7 +35,6 @@ const useOnSubmit = ({
             ...data,
             phone_number: newPhoneNumber,
             birth_date: newBirthDate,
-            document: newDocument,
           },
           id: id,
         })
@@ -50,7 +46,7 @@ const useOnSubmit = ({
             ...data,
             phone_number: newPhoneNumber,
             birth_date: newBirthDate,
-            document: newDocument,
+            document: { number: newDocumentNumber, type: documentType },
             gender: genderValue,
           },
           company_id: "60b281d55398c39f2a93cd21",
