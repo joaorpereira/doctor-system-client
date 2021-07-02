@@ -76,9 +76,5 @@ type DocumentProps = {
 
 export const reverseDocumentNumberFormat = (value: DocumentProps) => {
   const newDocumentNumber: DocumentProps = value;
-  newDocumentNumber["number"] = newDocumentNumber.number
-    .replace(/[^\w\s]/gi, "")
-    .split(" ")
-    .join("");
-  return newDocumentNumber;
+  return newDocumentNumber.number.replace(/\D+/g, "");
 };
