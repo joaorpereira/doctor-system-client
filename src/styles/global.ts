@@ -66,3 +66,17 @@ export const Active = styled.div<ColorProps>`
   color: ${({ color }) => (color === "ATIVO" ? "#87b7ff" : "#D3D3D3")};
   font-weight: bold;
 `;
+
+export const reactSelectedStyle = {
+  border: `1px solid ${colors.primary}`,
+  height: "35px !important",
+  minHeight: "35px !important",
+  boxShadow: "none",
+  "&:hover": {
+    border: `1px solid ${colors.primary} !important`,
+  },
+  fontSize: "0.8rem",
+  fontFamily: "Lato !important",
+  fontWeight: 500,
+  color: `${colors.text}`,
+};
