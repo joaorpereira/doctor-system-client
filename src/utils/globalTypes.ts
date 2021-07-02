@@ -55,3 +55,13 @@ export type BankAccount = {
   bank_agency: string;
   verify_digit: string;
 };
+
+export type InputProps = {
+  label: string;
+  value: string;
+};
+
+export type OptionType = {
+  value: string;
+  label: string;
+};
