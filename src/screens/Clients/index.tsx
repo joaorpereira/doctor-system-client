@@ -5,12 +5,18 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { format } from "date-fns";
+import ReactSelect, { ValueType } from "react-select";
 
 import * as S from "./styled";
 import { colors } from "../../styles/variables";
-import { Active, Paragraph, SectionTitle } from "../../styles/global";
+import {
+  Active,
+  Paragraph,
+  reactSelectedStyle,
+  SectionTitle,
+} from "../../styles/global";
 import { MdEdit, MdRemoveRedEye, MdDelete, MdShare } from "react-icons/md";
 import Avatar from "../../assets/avatar.png";
 
@@ -36,6 +42,7 @@ import {
   operationsTypes,
   genderOptions,
   documentOptions,
+  InputProps,
 } from "../../utils/globalTypes";
 import { formatCPForCNPJ, formatPhone } from "../../utils/helpers";
 
@@ -65,7 +72,13 @@ export type ClientProps = {
 const Clients: React.FC = (): ReactElement => {
   const ref = useRef<HTMLInputElement>();
   const dispatch = useAppDispatch();
-  const { register, handleSubmit, reset } = useForm({});
+  const {
+    register,
+    handleSubmit,
+    reset,
+    control,
+    formState: { isSubmitting, isDirty, isValid },
+  } = useForm({});
 
   const [showProfile, setShowProfile] = useState(false);
   const [showPassword, setShowPassword] = useState({
@@ -76,6 +89,8 @@ const Clients: React.FC = (): ReactElement => {
   const [cepValue, setCepValue] = useState("");
   const [phoneValue, setPhoneValue] = useState("");
   const [dateValue, setDateValue] = useState("");
+  const [documentType, setDocumentType] = useState("");
+  const [genderValue, setGenderValue] = useState("");
 
   useEffect(() => {
     dispatch(getClients());
@@ -112,6 +127,9 @@ const Clients: React.FC = (): ReactElement => {
   const handleRemoveClient = (id: string) => dispatch(removeClient({ id }));
   const readOnlyAtShowAndUpdate = () => ["show", "update"].includes(type);
 
+  const handleTypeChange = (e: InputProps) => setDocumentType(e.value);
+  const handleGenderChange = (e: InputProps) => setGenderValue(e.value);
+
   // handle which type of sideModal should be displayed
   const showContent = (): boolean => type === "show";
   const showUpdate = (): boolean => type === "update";
@@ -124,6 +142,8 @@ const Clients: React.FC = (): ReactElement => {
   const [handleUpdateOrShowClient] = useHandleUpdateOrShowClient({
     handleCloseModal,
     reset,
+    setDocumentType,
+    setGenderValue,
   });
 
   // custom hooks - normalize input entry
@@ -143,6 +163,8 @@ const Clients: React.FC = (): ReactElement => {
     id: client._id,
     type,
     setShowProfile,
+    documentType,
+    genderValue,
   });
 
   const clientColumns = useMemo(() => {
@@ -241,6 +263,15 @@ const Clients: React.FC = (): ReactElement => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // set default values for documentType and genderValue
+  useEffect(() => {
+    if (document) {
+      setDocumentType(document.type);
+    } else if (gender) {
+      setGenderValue(gender);
+    }
+  }, [document, gender]);
+
   return (
     <S.ClientsSection>
       <S.HeaderRow>
@@ -289,21 +320,32 @@ const Clients: React.FC = (): ReactElement => {
                       {...register("name")}
                     />
                     {showCreate() && (
-                      <Select
-                        width="25%"
-                        placeholder="Sexo"
-                        {...register("gender")}
-                      >
-                        {genderOptions.map((item) => (
-                          <option
-                            key={item.value}
-                            selected={item.value === gender}
-                            value={item.value}
-                          >
-                            {item.label}
-                          </option>
-                        ))}
-                      </Select>
+                      <Box width="30%">
+                        <Controller
+                          name="gender"
+                          control={control}
+                          render={({ field }) => (
+                            <ReactSelect
+                              {...field}
+                              styles={{
+                                control: (base) => ({
+                                  ...base,
+                                  ...reactSelectedStyle,
+                                }),
+                              }}
+                              value={genderOptions.filter(
+                                (option: InputProps) =>
+                                  option.value === genderValue
+                              )}
+                              placeHolder=""
+                              options={genderOptions}
+                              onChange={(e) =>
+                                handleGenderChange(e as InputProps)
+                              }
+                            />
+                          )}
+                        />
+                      </Box>
                     )}
                   </S.Div>
                   <Input
@@ -371,23 +413,29 @@ const Clients: React.FC = (): ReactElement => {
             </S.Section>
             <CardTitle>Documento</CardTitle>
             <S.Section>
-              <Box>
+              <Box width="100%">
                 <Label htmlFor="document.type">Tipo:</Label>
-                <Select
-                  width="150px"
-                  {...register("document.type")}
-                  defaultValue={document ? document?.type : ""}
-                >
-                  {documentOptions.map((item) => (
-                    <option
-                      key={item.value}
-                      selected={item.value === document?.type}
-                      value={item.value}
-                    >
-                      {item.label}
-                    </option>
-                  ))}
-                </Select>
+                <Controller
+                  name="document.type"
+                  control={control}
+                  render={({ field }) => (
+                    <ReactSelect
+                      isDisabled={readOnlyAtShowAndUpdate()}
+                      {...field}
+                      styles={{
+                        control: (base) => ({
+                          ...base,
+                          ...reactSelectedStyle,
+                        }),
+                      }}
+                      value={documentOptions.filter(
+                        (option: InputProps) => option.value === documentType
+                      )}
+                      options={documentOptions}
+                      onChange={(e) => handleTypeChange(e as InputProps)}
+                    />
+                  )}
+                />
               </Box>
               <Box>
                 <Label htmlFor="document.number">Número:</Label>
@@ -466,7 +514,12 @@ const Clients: React.FC = (): ReactElement => {
               </Box>
             </S.Section>
             {!showContent() && (
-              <Button color={colors.mediumBlue} width="100%" type="submit">
+              <Button
+                color={colors.mediumBlue}
+                width="100%"
+                type="submit"
+                disabled={isSubmitting}
+              >
                 {showCreate() ? "Criar Cliente" : "Atualizar Dados"}
               </Button>
             )}

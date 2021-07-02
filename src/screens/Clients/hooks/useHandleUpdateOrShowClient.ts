@@ -11,11 +11,15 @@ type UpdateShowClientProps = {
 type UpdateOrShowProps = {
   handleCloseModal: () => void;
   reset: UseFormReset<FieldValues>;
+  setDocumentType: React.Dispatch<React.SetStateAction<string>>;
+  setGenderValue: React.Dispatch<React.SetStateAction<string>>;
 };
 
 const useHandleUpdateOrShowClient = ({
   handleCloseModal,
   reset,
+  setDocumentType,
+  setGenderValue,
 }: UpdateOrShowProps) => {
   const dispatch = useAppDispatch();
   const handleUpdateOrShowClient = ({
@@ -29,6 +33,8 @@ const useHandleUpdateOrShowClient = ({
     } else if (type === "update") {
       dispatch(setClient({ client, type }));
     } else {
+      setDocumentType("");
+      setGenderValue("");
       dispatch(setClient({ client: {}, type }));
     }
   };
