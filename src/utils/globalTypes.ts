@@ -36,7 +36,7 @@ export const operationsTypes = {
 };
 
 export const genderOptions = [
-  { value: "", label: "Sexo" },
+  { value: "", label: "" },
   { value: "MASCULINO", label: "M" },
   { value: "FEMININO", label: "F" },
 ];
@@ -56,12 +56,15 @@ export type BankAccount = {
   verify_digit: string;
 };
 
-export type InputProps = {
-  label: string;
-  value: string;
-};
-
 export type OptionType = {
   value: string;
   label: string;
 };
+
+export const accountsTypesOptions = [
+  { value: "", label: "" },
+  { value: "conta_corrente", label: "Conta Corrente" },
+  { value: "conta_poupanca", label: "Conta Poupanca" },
+  { value: "conta_poupanca_conjunta", label: "Conta Poupanca Conjunta" },
+  { value: "conta_corrente_conjunta", label: "Conta Corrente Conjunta" },
+];
