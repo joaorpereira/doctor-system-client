@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { format } from "date-fns";
-import ReactSelect, { ValueType } from "react-select";
+import ReactSelect from "react-select";
 
 import * as S from "./styled";
 import { colors } from "../../styles/variables";
@@ -42,7 +42,7 @@ import {
   operationsTypes,
   genderOptions,
   documentOptions,
-  InputProps,
+  OptionType,
 } from "../../utils/globalTypes";
 import { formatCPForCNPJ, formatPhone } from "../../utils/helpers";
 
@@ -127,8 +127,8 @@ const Clients: React.FC = (): ReactElement => {
   const handleRemoveClient = (id: string) => dispatch(removeClient({ id }));
   const readOnlyAtShowAndUpdate = () => ["show", "update"].includes(type);
 
-  const handleTypeChange = (e: InputProps) => setDocumentType(e.value);
-  const handleGenderChange = (e: InputProps) => setGenderValue(e.value);
+  const handleTypeChange = (e: OptionType) => setDocumentType(e.value);
+  const handleGenderChange = (e: OptionType) => setGenderValue(e.value);
 
   // handle which type of sideModal should be displayed
   const showContent = (): boolean => type === "show";
@@ -334,13 +334,13 @@ const Clients: React.FC = (): ReactElement => {
                                 }),
                               }}
                               value={genderOptions.filter(
-                                (option: InputProps) =>
+                                (option: OptionType) =>
                                   option.value === genderValue
                               )}
                               placeHolder=""
                               options={genderOptions}
                               onChange={(e) =>
-                                handleGenderChange(e as InputProps)
+                                handleGenderChange(e as OptionType)
                               }
                             />
                           )}
@@ -429,10 +429,10 @@ const Clients: React.FC = (): ReactElement => {
                         }),
                       }}
                       value={documentOptions.filter(
-                        (option: InputProps) => option.value === documentType
+                        (option: OptionType) => option.value === documentType
                       )}
                       options={documentOptions}
-                      onChange={(e) => handleTypeChange(e as InputProps)}
+                      onChange={(e) => handleTypeChange(e as OptionType)}
                     />
                   )}
                 />
