@@ -224,7 +224,7 @@ const Workers: React.FC = (): ReactElement => {
         sortType: "basic",
         show: true,
         Cell: ({ row }: RowInfo) => (
-          <p>{format(new Date(row.original.created_at), "dd/MM/yyy")}</p>
+          <p>{format(new Date(row.original.created_at), "dd/MM/yyyy")}</p>
         ),
       },
       {
