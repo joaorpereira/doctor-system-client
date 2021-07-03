@@ -5,8 +5,9 @@ import {
   MdUpdate,
   MdEventAvailable,
   MdLibraryBooks,
-  MdViewList,
 } from "react-icons/md";
+
+import workers from "../../assets/workers.png";
 
 const routes = [
   {
@@ -18,7 +19,7 @@ const routes = [
   {
     path: "/colaboradores",
     label: "Colaboradores",
-    icon: <MdViewList size={26} />,
+    icon: <img src={workers} alt={workers} style={{ width: "26px" }} />,
   },
   { path: "/servicos", label: "Serviços", icon: <MdLibraryBooks size={26} /> },
   { path: "/horarios", label: "Horários", icon: <MdUpdate size={26} /> },
