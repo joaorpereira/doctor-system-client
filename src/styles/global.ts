@@ -69,8 +69,8 @@ export const Active = styled.div<ColorProps>`
 
 export const reactSelectedStyle = {
   border: `1px solid ${colors.primary}`,
-  height: "35px !important",
-  minHeight: "35px !important",
+  height: "40px !important",
+  minHeight: "40px !important",
   boxShadow: "none",
   "&:hover": {
     border: `1px solid ${colors.primary} !important`,

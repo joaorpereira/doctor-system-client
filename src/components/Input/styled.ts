@@ -15,7 +15,7 @@ export const Input = styled.input<Props>`
   border-radius: 4px;
   width: ${({ width }) => (width ? width : "195px")};
   transition: border 0.15s ease-out;
-  height: 35px;
+  height: 40px;
   background-color: #fff;
   :focus {
     border: 2px solid ${colors.primary};
