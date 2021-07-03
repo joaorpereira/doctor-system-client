@@ -20,6 +20,7 @@ type OnSubmitProps = {
   setShowProfile: React.Dispatch<React.SetStateAction<boolean>>;
   company_id?: string;
   services: OptionsType<OptionType>;
+  accountType: string;
 };
 
 const useOnSubmit = ({
@@ -30,6 +31,7 @@ const useOnSubmit = ({
   genderValue,
   company_id,
   services,
+  accountType,
 }: OnSubmitProps) => {
   const dispatch = useAppDispatch();
   const onSubmit = (data: Worker) => {
@@ -44,7 +46,7 @@ const useOnSubmit = ({
           worker: {
             ...data,
             phone_number: newPhoneNumber,
-            services: services,
+            services: newServices,
           },
           id: id,
         })
@@ -59,6 +61,10 @@ const useOnSubmit = ({
             document: { number: newDocumentNumber, type: documentType },
             gender: genderValue,
             services: newServices,
+            bank_account: {
+              ...data.bank_account,
+              acc_type: accountType,
+            },
           },
           company_id: company_id,
         })

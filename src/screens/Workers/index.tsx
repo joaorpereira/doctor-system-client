@@ -44,14 +44,10 @@ import {
   operationsTypes,
   genderOptions,
   documentOptions,
-  InputProps,
   OptionType,
+  accountsTypesOptions,
 } from "../../utils/globalTypes";
-import {
-  formatCPForCNPJ,
-  formatPhone,
-  reverseDocumentNumberFormat,
-} from "../../utils/helpers";
+import { formatCPForCNPJ, formatPhone } from "../../utils/helpers";
 
 import useOnSubmit from "./hooks/useOnSubmit";
 import useHandleDateMask from "../../hooks/useHandleDateMask";
@@ -90,6 +86,7 @@ const Workers: React.FC = (): ReactElement => {
     ValueType<OptionType, true>
   >([]);
   const [servicesOptions, setServicesOptions] = useState<OptionType[]>([]);
+  const [accountType, setAccountType] = useState("");
 
   useEffect(() => {
     dispatch(getWorkers());
@@ -131,11 +128,12 @@ const Workers: React.FC = (): ReactElement => {
   const handleRemoveWorker = (id: string) => dispatch(removeWorker({ id }));
   const readOnlyAtShowAndUpdate = () => ["show", "update"].includes(type);
 
-  const handleTypeChange = (e: InputProps) => setDocumentType(e.value);
-  const handleGenderChange = (e: InputProps) => setGenderValue(e.value);
+  const handleTypeChange = (e: OptionType) => setDocumentType(e.value);
+  const handleGenderChange = (e: OptionType) => setGenderValue(e.value);
   const handleServicesChange = (option: ValueType<OptionType, true>) => {
     setSelectedServices(option);
   };
+  const handleAccountType = (e: OptionType) => setAccountType(e.value);
 
   // handle which type of sideModal should be displayed
   const showContent = (): boolean => type === "show";
@@ -151,6 +149,7 @@ const Workers: React.FC = (): ReactElement => {
     reset,
     setDocumentType,
     setGenderValue,
+    setAccountType,
   });
 
   // custom hooks - normalize input entry
@@ -173,6 +172,7 @@ const Workers: React.FC = (): ReactElement => {
     setShowProfile,
     documentType,
     genderValue,
+    accountType,
   });
 
   // custom hooks - format all services options
@@ -289,6 +289,10 @@ const Workers: React.FC = (): ReactElement => {
     if (document) setDocumentType(document.type);
   }, [document]);
 
+  useEffect(() => {
+    if (bank_account) setAccountType(bank_account.acc_type);
+  }, [bank_account]);
+
   // set default values for genderValue
   useEffect(() => {
     if (gender) setGenderValue(gender);
@@ -336,7 +340,7 @@ const Workers: React.FC = (): ReactElement => {
                 <S.Div column>
                   <S.Div gap="10px" bottom="10px">
                     <Input
-                      disabled={readOnlyAtShowAndUpdate()}
+                      readOnly={readOnlyAtShowAndUpdate()}
                       width={showCreate() ? "77%" : "100%"}
                       defaultValue={showUpdate() ? name : ""}
                       placeholder="Nome"
@@ -357,13 +361,13 @@ const Workers: React.FC = (): ReactElement => {
                                 }),
                               }}
                               value={genderOptions.filter(
-                                (option: InputProps) =>
+                                (option: OptionType) =>
                                   option.value === genderValue
                               )}
                               placeHolder=""
                               options={genderOptions}
                               onChange={(e) =>
-                                handleGenderChange(e as InputProps)
+                                handleGenderChange(e as OptionType)
                               }
                             />
                           )}
@@ -391,7 +395,7 @@ const Workers: React.FC = (): ReactElement => {
                     <Input
                       width="49%"
                       maxLength={10}
-                      disabled={showUpdate()}
+                      readOnly={showUpdate()}
                       placeholder="Data Nascimento"
                       {...register("birth_date")}
                       onChange={(e) => handleDateMask(e)}
@@ -460,10 +464,10 @@ const Workers: React.FC = (): ReactElement => {
                         }),
                       }}
                       value={documentOptions.filter(
-                        (option: InputProps) => option.value === documentType
+                        (option: OptionType) => option.value === documentType
                       )}
                       options={documentOptions}
-                      onChange={(e) => handleTypeChange(e as InputProps)}
+                      onChange={(e) => handleTypeChange(e as OptionType)}
                     />
                   )}
                 />
@@ -471,7 +475,7 @@ const Workers: React.FC = (): ReactElement => {
               <Box>
                 <Label htmlFor="document.number">Número:</Label>
                 <Input
-                  disabled={readOnlyAtShowAndUpdate()}
+                  readOnly={readOnlyAtShowAndUpdate()}
                   width="240px"
                   value={
                     document?.number
@@ -509,11 +513,11 @@ const Workers: React.FC = (): ReactElement => {
               </Box>
             </S.Section>
             <CardTitle>Conta Bancária</CardTitle>
-            <S.Section wrap marginBottom="40px">
+            <S.Section wrap marginBottom="28px">
               <Box>
                 <Label htmlFor="bank_account.acc_user_name">Titular:</Label>
                 <Input
-                  disabled={readOnlyAtShowAndUpdate()}
+                  readOnly={readOnlyAtShowAndUpdate()}
                   {...register("bank_account.acc_user_name")}
                   defaultValue={
                     bank_account?.acc_user_name
@@ -523,10 +527,40 @@ const Workers: React.FC = (): ReactElement => {
                 />
               </Box>
               <Box>
-                <Label htmlFor="bank_account.acc_number">Número:</Label>
+                <Label htmlFor="bank_account.acc_type">Tipo:</Label>
+                <Box width="195px">
+                  <Controller
+                    name="bank_account.acc_type"
+                    control={control}
+                    render={({ field }) => (
+                      <ReactSelect
+                        isDisabled={readOnlyAtShowAndUpdate()}
+                        {...field}
+                        styles={{
+                          control: (base) => ({
+                            ...base,
+                            ...reactSelectedStyle,
+                          }),
+                        }}
+                        value={accountsTypesOptions.filter(
+                          (option: OptionType) => option.value === accountType
+                        )}
+                        placeHolder=""
+                        options={accountsTypesOptions}
+                        onChange={(e) => handleAccountType(e as OptionType)}
+                      />
+                    )}
+                  />
+                </Box>
+              </Box>
+              <Box>
+                <Label htmlFor="bank_account.acc_number">
+                  Número da Conta:
+                </Label>
                 <Input
                   maxLength={11}
-                  disabled={readOnlyAtShowAndUpdate()}
+                  width="140px"
+                  readOnly={readOnlyAtShowAndUpdate()}
                   defaultValue={
                     bank_account?.acc_number ? bank_account?.acc_number : ""
                   }
@@ -534,21 +568,10 @@ const Workers: React.FC = (): ReactElement => {
                 />
               </Box>
               <Box>
-                <Label htmlFor="bank_account.acc_type">Tipo:</Label>
-                <Input
-                  disabled={readOnlyAtShowAndUpdate()}
-                  width="140px"
-                  defaultValue={
-                    bank_account?.acc_type ? bank_account?.acc_type : ""
-                  }
-                  {...register("bank_account.acc_type")}
-                />
-              </Box>
-              <Box>
                 <Label htmlFor="bank_account.bank_code">Código do Banco:</Label>
                 <Input
                   maxLength={3}
-                  disabled={readOnlyAtShowAndUpdate()}
+                  readOnly={readOnlyAtShowAndUpdate()}
                   width="110px"
                   defaultValue={
                     bank_account?.bank_code ? bank_account?.bank_code : ""
@@ -560,7 +583,7 @@ const Workers: React.FC = (): ReactElement => {
                 <Label htmlFor="bank_account.bank_agency">Agência:</Label>
                 <Input
                   maxLength={4}
-                  disabled={readOnlyAtShowAndUpdate()}
+                  readOnly={readOnlyAtShowAndUpdate()}
                   width="80px"
                   defaultValue={bank_account?.bank_agency}
                   {...register("bank_account.bank_agency")}
@@ -570,7 +593,7 @@ const Workers: React.FC = (): ReactElement => {
                 <Label htmlFor="bank_account.verify_digit">Dígito:</Label>
                 <Input
                   maxLength={1}
-                  disabled={readOnlyAtShowAndUpdate()}
+                  readOnly={readOnlyAtShowAndUpdate()}
                   defaultValue={
                     bank_account?.verify_digit ? bank_account?.verify_digit : ""
                   }

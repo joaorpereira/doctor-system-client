@@ -12,6 +12,7 @@ type UpdateOrShowProps = {
   reset: UseFormReset<FieldValues>;
   setDocumentType: React.Dispatch<React.SetStateAction<string>>;
   setGenderValue: React.Dispatch<React.SetStateAction<string>>;
+  setAccountType: React.Dispatch<React.SetStateAction<string>>;
 };
 
 const useHandleUpdateOrShowWorker = ({
@@ -19,6 +20,7 @@ const useHandleUpdateOrShowWorker = ({
   reset,
   setDocumentType,
   setGenderValue,
+  setAccountType,
 }: UpdateOrShowProps) => {
   const dispatch = useAppDispatch();
   const handleUpdateOrShowWorker = ({
@@ -34,6 +36,7 @@ const useHandleUpdateOrShowWorker = ({
     } else {
       setDocumentType("");
       setGenderValue("");
+      setAccountType("");
       dispatch(setWorker({ worker: {}, type }));
     }
   };
