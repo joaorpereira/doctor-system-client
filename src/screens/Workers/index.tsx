@@ -56,9 +56,8 @@ import { useOnClickOutside } from "../../hooks/useOnClickOutside";
 import useHandleShowPassword from "../../hooks/useHandleShowPassword";
 import useHandleCpfOrCnpjMask from "../../hooks/useHandleCpfOrCnpjMask";
 import useHandleUpdateOrShowWorker from "./hooks/useHandleUpdateOrShowWorker";
-import { getServices } from "../../store/ducks/servicesSlice";
+import { getFilteredServices } from "../../store/ducks/servicesSlice";
 import useHandleSelectedServicesValues from "./hooks/useHandleSelectedServicesValues";
-import useHandleFormatServicesEntry from "./hooks/useHandleFormatServicesEntry";
 
 const Workers: React.FC = (): ReactElement => {
   const ref = useRef<HTMLInputElement>();
@@ -85,12 +84,11 @@ const Workers: React.FC = (): ReactElement => {
   const [selectedServices, setSelectedServices] = useState<
     ValueType<OptionType, true>
   >([]);
-  const [servicesOptions, setServicesOptions] = useState<OptionType[]>([]);
   const [accountType, setAccountType] = useState("");
 
   useEffect(() => {
     dispatch(getWorkers());
-    dispatch(getServices({ id: "60d4c7762318d1e795aa7f61" }));
+    dispatch(getFilteredServices({ id: "60d4c7762318d1e795aa7f61" }));
   }, [dispatch]);
 
   useEffect(() => {
@@ -107,7 +105,7 @@ const Workers: React.FC = (): ReactElement => {
     ({ workersReducers }: RootState) => workersReducers
   );
 
-  const { services } = useAppSelector(
+  const { servicesOptions } = useAppSelector(
     ({ servicesReducers }: RootState) => servicesReducers
   );
 
@@ -175,15 +173,9 @@ const Workers: React.FC = (): ReactElement => {
     accountType,
   });
 
-  // custom hooks - format all services options
-  useHandleFormatServicesEntry({
-    services,
-    setServicesOptions,
-  });
-
   // custom hooks - set default values for worker services options
   useHandleSelectedServicesValues({
-    services,
+    servicesOptions,
     worker,
     setSelectedServices,
   });
@@ -320,7 +312,7 @@ const Workers: React.FC = (): ReactElement => {
         <Table columns={workerColumns} data={workers} />
       ) : null}
       <Card ref={ref} showProfile={showProfile}>
-        {worker && services && (
+        {worker && servicesOptions && (
           <form onSubmit={handleSubmit(onSubmit)}>
             <CloseModalIcon handleCloseModal={handleCloseModal} />
             <S.CardHeader>

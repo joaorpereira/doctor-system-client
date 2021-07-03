@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { OptionsType } from "react-select";
-import { ServiceEntry } from "../../../store/ducks/servicesSlice";
+import { ServicesOptions } from "../../../store/ducks/servicesSlice";
 import { Worker } from "../../../store/ducks/workersSlice";
 import { OptionType } from "../../../utils/globalTypes";
 
@@ -9,25 +9,22 @@ type Props = {
     React.SetStateAction<OptionsType<OptionType>>
   >;
   worker: Worker;
-  services: ServiceEntry[];
+  servicesOptions: ServicesOptions[];
 };
 
 const useHandleSelectedServicesValues = ({
-  services,
+  servicesOptions,
   worker,
   setSelectedServices,
 }: Props) => {
   useEffect(() => {
-    if (worker && services) {
-      const filteredServices = services
-        .filter(({ service }: any) => worker?.services?.includes(service._id))
-        .map(({ service }: any) => ({
-          value: service._id,
-          label: service.title,
-        }));
+    if (worker && servicesOptions) {
+      const filteredServices = servicesOptions.filter((service) =>
+        worker?.services?.includes(service.value)
+      );
       setSelectedServices(filteredServices);
     }
-  }, [services, worker, setSelectedServices]);
+  }, [servicesOptions, worker, setSelectedServices]);
 };
 
 export default useHandleSelectedServicesValues;
