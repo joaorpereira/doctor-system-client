@@ -12,12 +12,12 @@ type UpdateOrShowProps = {
   reset: UseFormReset<FieldValues>;
 };
 
-const useHandleUpdateOrShowWorker = ({
+export const useHandleUpdateOrShowService = ({
   handleCloseModal,
   reset,
 }: UpdateOrShowProps) => {
   const dispatch = useAppDispatch();
-  const handleUpdateOrShowWorker = ({
+  const handleUpdateOrShowService = ({
     service,
     type,
   }: UpdateShowServiceProps) => {
@@ -28,11 +28,9 @@ const useHandleUpdateOrShowWorker = ({
     } else if (type === "update") {
       dispatch(setService({ service, type }));
     } else {
-      dispatch(setService({ worker: {}, type }));
+      dispatch(setService({ service: {}, type }));
     }
   };
 
-  return [handleUpdateOrShowWorker];
+  return [handleUpdateOrShowService];
 };
-
-export default useHandleUpdateOrShowWorker;
