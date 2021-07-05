@@ -109,3 +109,10 @@ export const Div = styled.div<DivProps>`
   margin-bottom: ${({ bottom }) => bottom && bottom};
   margin-top: ${({ top }) => top && top};
 `;
+
+export const ImageFilesWrapper = styled.div`
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  height: 268px;
+`;

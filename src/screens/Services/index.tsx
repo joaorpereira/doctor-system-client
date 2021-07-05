@@ -6,8 +6,9 @@ import React, {
   useState,
 } from "react";
 import { format } from "date-fns";
-import ReactSelect, { ValueType } from "react-select";
+import ReactSelect from "react-select";
 import { Controller, useForm } from "react-hook-form";
+import { ImageListType } from "react-images-uploading";
 
 import * as S from "./styled";
 import { colors } from "../../styles/variables";
@@ -18,69 +19,106 @@ import {
   SectionTitle,
 } from "../../styles/global";
 import { MdEdit, MdRemoveRedEye, MdDelete, MdShare } from "react-icons/md";
-import Avatar from "../../assets/avatar.png";
 
-import {
-  CardTitle,
-  StyledMdRemoveRedEye,
-  Card,
-} from "../../components/Card/styled";
+import { CardTitle, Card } from "../../components/Card/styled";
 import { Table } from "../../components/Table";
 import { Button } from "../../components/Button";
-import { ButtonEdit } from "../../components/ButtonEdit/styled";
 import { CloseModalIcon } from "../../components/CloseModalIcon";
 import { Input, Label, Box } from "../../components/Input/styled";
 
 import { RootState } from "../../store";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 
-import { RowInfo, operationsTypes } from "../../utils/globalTypes";
+import {
+  RowInfo,
+  operationsTypes,
+  OptionType,
+  timeOptions,
+  statusOptions,
+} from "../../utils/globalTypes";
 
-import useOnSubmit from "./hooks/useOnSubmit";
+import { useOnSubmit } from "./hooks/useOnSubmit";
 import { useOnClickOutside } from "../../hooks/useOnClickOutside";
-import useHandleUpdateOrShowService from "./hooks/useHandleUpdateOrShowService";
+import { useHandleUpdateOrShowService } from "./hooks/useHandleUpdateOrShowService";
 import {
   getFilteredServices,
   getServices,
   removeService,
 } from "../../store/ducks/servicesSlice";
+import { Textarea } from "../../components/TextArea/styled";
+import { ImageUpload } from "../../components/ImageUpload";
+import { getFilteredCompanies } from "../../store/ducks/companiesSlice";
+import { formatDurationHour } from "../../utils/helpers";
+import { ImageItem } from "../../components/ImageItem";
+
+const maxNumber = 6;
 
 const Services: React.FC = (): ReactElement => {
   const ref = useRef<HTMLInputElement>();
   const dispatch = useAppDispatch();
+
+  const { services, service, type }: any = useAppSelector(
+    ({ servicesReducers }: RootState) => servicesReducers
+  );
+
+  const { companiesOptions }: any = useAppSelector(
+    ({ companiesReducers }: RootState) => companiesReducers
+  );
+
   const {
-    register,
-    handleSubmit,
-    reset,
-    control,
-    formState: { isSubmitting, isDirty, isValid },
-  } = useForm({});
+    service_recurrence,
+    service_duration,
+    price,
+    title,
+    description,
+    status,
+  } = service;
+
+  const { register, handleSubmit, reset, control } = useForm({});
 
   const [showProfile, setShowProfile] = useState(false);
+  const [images, setImages] = useState<never[]>([]);
+  const [statusValue, setStatusValue] = useState("");
+  const [companyValue, setCompanyValue] = useState("");
+  const [durationValue, setDurationValue] = useState("");
 
   useEffect(() => {
     dispatch(getServices({ id: "60d4c7762318d1e795aa7f61" }));
     dispatch(getFilteredServices({ id: "60d4c7762318d1e795aa7f61" }));
+    dispatch(getFilteredCompanies());
   }, [dispatch]);
 
-  const { services, service, type, servicesOptions }: any = useAppSelector(
-    ({ servicesReducers }: RootState) => servicesReducers
-  );
+  // set default values for statusValue
+  useEffect(() => {
+    if (status) setStatusValue(status);
+  }, [status]);
 
-  const { service: serviceData, files }: any = service;
+  // set default values for durationValue
+  useEffect(() => {
+    if (service_duration)
+      setDurationValue(new Date(service_duration).toISOString());
+  }, [service_duration]);
 
   // functions
   const handleCloseModal = () => setShowProfile(!showProfile);
   const handleRemoveService = (id: string) => dispatch(removeService({ id }));
-  const readOnlyAtShowAndUpdate = () => ["show", "update"].includes(type);
+  const handleStatusChange = (e: OptionType) => setStatusValue(e.value);
+  const handleCompanyChange = (e: OptionType) => setCompanyValue(e.value);
+  const handleDurationChange = (e: OptionType) => setDurationValue(e.value);
 
   // handle which type of sideModal should be displayed
   const showContent = (): boolean => type === "show";
   const showUpdate = (): boolean => type === "update";
   const showCreate = (): boolean => type === "create";
 
+  const handleImagesChange = (imageList: ImageListType) =>
+    setImages(imageList as never[]);
+
   // custom hooks - close modal when clicked outside
-  useOnClickOutside({ ref, handler: () => setShowProfile(false) });
+  useOnClickOutside({
+    ref,
+    handler: () => setShowProfile(false),
+  });
 
   // custom hooks - set service data to redux state
   const [handleUpdateOrShowService] = useHandleUpdateOrShowService({
@@ -90,11 +128,13 @@ const Services: React.FC = (): ReactElement => {
 
   // custom hooks - submit form to create or update service
   const [onSubmit] = useOnSubmit({
-    id: serviceData?._id,
-    company_id: "60b281d55398c39f2a93cd21",
-    files: files,
+    id: service?._id,
     type,
     setShowProfile,
+    statusValue,
+    companyValue: "60d4c7762318d1e795aa7f61",
+    durationValue,
+    images,
   });
 
   const serviceColumns = useMemo(() => {
@@ -123,6 +163,15 @@ const Services: React.FC = (): ReactElement => {
         accessor: "service_duration",
         sortType: "basic",
         show: true,
+        Cell: ({ row }: RowInfo) => {
+          return (
+            <p>
+              {row.original.service_duration
+                ? formatDurationHour(row.original.service_duration)
+                : ""}
+            </p>
+          );
+        },
       },
       {
         Header: "Data de Cadastro",
@@ -130,7 +179,11 @@ const Services: React.FC = (): ReactElement => {
         sortType: "basic",
         show: true,
         Cell: ({ row }: RowInfo) => (
-          <p>{format(new Date(row.original.created_at), "dd/MM/yyyy")}</p>
+          <p>
+            {row.original.created_at
+              ? format(new Date(row.original.created_at), "dd/MM/yyyy")
+              : ""}
+          </p>
         ),
       },
       {
@@ -190,6 +243,16 @@ const Services: React.FC = (): ReactElement => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // const imagesList = service?.map((item: any) => ({
+  //   images: item.files.map((image: any) => ({
+  //     folder: image.folder,
+  //     reference_id: image.reference_id,
+  //     id: image._id,
+  //   })),
+  // }));
+
+  console.log(service);
+
   return (
     <S.ServicesSection>
       <S.HeaderRow>
@@ -212,142 +275,46 @@ const Services: React.FC = (): ReactElement => {
         <Table columns={serviceColumns} data={services} />
       ) : null}
       <Card ref={ref} showProfile={showProfile}>
-        {/*  {service && services && (
+        {service && services && (
           <form onSubmit={handleSubmit(onSubmit)}>
-           <CloseModalIcon handleCloseModal={handleCloseModal} />
-            <S.CardHeader>
-              {!showContent() && <ButtonEdit size={24} />}
-              <img
-                src={picture ? picture : Avatar}
-                alt={service ? name : "avatar"}
-              />
-              {showContent() ? (
-                <div>
-                  <h4>{name}</h4>
-                  <p>{email}</p>
-                  <p>{phone_number}</p>
-                  <p>{format(new Date(birth_date), "dd/MM/yyyy")}</p>
-                </div>
-              ) : (
-                <S.Div column>
-                  <S.Div gap="10px" bottom="10px">
-                    <Input
-                      readOnly={readOnlyAtShowAndUpdate()}
-                      width={showCreate() ? "77%" : "100%"}
-                      defaultValue={showUpdate() ? name : ""}
-                      placeholder="Nome"
-                      {...register("name")}
-                    />
-                    {showCreate() && (
-                      <Box width="30%">
-                        <Controller
-                          name="gender"
-                          control={control}
-                          render={({ field }) => (
-                            <ReactSelect
-                              {...field}
-                              styles={{
-                                control: (base) => ({
-                                  ...base,
-                                  ...reactSelectedStyle,
-                                }),
-                              }}
-                              value={genderOptions.filter(
-                                (option: OptionType) =>
-                                  option.value === genderValue
-                              )}
-                              placeHolder=""
-                              options={genderOptions}
-                              onChange={(e) =>
-                                handleGenderChange(e as OptionType)
-                              }
-                            />
-                          )}
-                        />
-                      </Box>
-                    )}
-                  </S.Div>
-                  <Input
-                    width="100%"
-                    defaultValue={showUpdate() ? email : ""}
-                    placeholder="Email"
-                    {...register("email")}
-                  />
-                  <S.Div gap="10px" top="10px">
-                    <Input
-                      width="51%"
-                      maxLength={12}
-                      placeholder="+55 99999-9999"
-                      {...register("phone_number")}
-                      onChange={(e) => handlePhoneMask(e)}
-                      defaultValue={
-                        showUpdate() ? formatPhone(phone_number) : phoneValue
-                      }
-                    />
-                    <Input
-                      width="49%"
-                      maxLength={10}
-                      readOnly={showUpdate()}
-                      placeholder="Data Nascimento"
-                      {...register("birth_date")}
-                      onChange={(e) => handleDateMask(e)}
-                      defaultValue={
-                        showUpdate()
-                          ? format(new Date(birth_date), "dd/MM/yyyy")
-                          : dateValue
-                      }
-                    />
-                  </S.Div>
-                </S.Div>
-              )}
-            </S.CardHeader>
-            <CardTitle>Alterar Senha</CardTitle>
-            <S.Section>
+            <CloseModalIcon handleCloseModal={handleCloseModal} />
+            <S.Section marginBottom="10px">
               <Box>
-                <Label htmlFor="password">Nova Senha:</Label>
+                <Label htmlFor="title">Título:</Label>
                 <Input
-                  readOnly={showContent()}
-                  type={
-                    showPassword.password && !showContent()
-                      ? "text"
-                      : "password"
-                  }
-                  defaultValue={password}
-                  {...register("password")}
-                />
-                <StyledMdRemoveRedEye
-                  size={20}
-                  onClick={() => handleShowPassword("password")}
+                  width="270px"
+                  defaultValue={title ? title : ""}
+                  {...register("title")}
                 />
               </Box>
               <Box>
-                <Label htmlFor="newPassword">Repita a Senha:</Label>
+                <Label htmlFor="price">Preço (R$):</Label>
                 <Input
-                  readOnly={showContent()}
-                  {...register("password2")}
-                  defaultValue={password ? password : ""}
-                  type={
-                    showPassword.password2 && !showContent()
-                      ? "text"
-                      : "password"
-                  }
-                />
-                <StyledMdRemoveRedEye
-                  size={20}
-                  onClick={() => handleShowPassword("password2")}
+                  width="120px"
+                  defaultValue={price ? price.toString() : ""}
+                  {...register("price")}
                 />
               </Box>
             </S.Section>
-            <CardTitle>Documento</CardTitle>
-            <S.Section>
-              <Box width="100%">
-                <Label htmlFor="document.type">Tipo:</Label>
+            <S.Section marginBottom="10px">
+              <Box>
+                <Label htmlFor="service_recurrence">Recorrência (dias):</Label>
+                <Input
+                  width="195px"
+                  defaultValue={
+                    service_recurrence ? Number(service_recurrence) : ""
+                  }
+                  type="number"
+                  {...register("service_recurrence")}
+                />
+              </Box>
+              <Box width="195px">
+                <Label htmlFor="service_duration">Duração</Label>
                 <Controller
-                  name="document.type"
+                  name="service_duration"
                   control={control}
                   render={({ field }) => (
                     <ReactSelect
-                      isDisabled={readOnlyAtShowAndUpdate()}
                       {...field}
                       styles={{
                         control: (base) => ({
@@ -355,157 +322,99 @@ const Services: React.FC = (): ReactElement => {
                           ...reactSelectedStyle,
                         }),
                       }}
-                      value={documentOptions.filter(
-                        (option: OptionType) => option.value === documentType
+                      value={timeOptions.filter(
+                        (option: OptionType) => option.value === durationValue
                       )}
-                      options={documentOptions}
-                      onChange={(e) => handleTypeChange(e as OptionType)}
+                      options={timeOptions}
+                      onChange={(e) => handleDurationChange(e as OptionType)}
                     />
                   )}
                 />
               </Box>
-              <Box>
-                <Label htmlFor="document.number">Número:</Label>
-                <Input
-                  readOnly={readOnlyAtShowAndUpdate()}
-                  width="240px"
-                  value={
-                    document?.number
-                      ? formatCPForCNPJ(document?.number)
-                      : cpfValue
-                  }
-                  {...register("document.number")}
-                  onChange={(e) => handleCpfOrCnpjMask(e)}
-                />
-              </Box>
             </S.Section>
-            <CardTitle>Serviços</CardTitle>
-            <S.Section>
-              <Box width="100%">
+            <S.Section marginBottom="10px">
+              <Box width="195px">
+                <Label htmlFor="status">Status:</Label>
                 <Controller
-                  name="document.services"
+                  name="status"
                   control={control}
                   render={({ field }) => (
                     <ReactSelect
                       {...field}
-                      isMulti
-                      isDisabled={showContent()}
-                      value={selectedServices}
-                      onChange={(option) => handleServicesChange(option)}
-                      options={servicesOptions}
                       styles={{
                         control: (base) => ({
                           ...base,
                           ...reactSelectedStyle,
                         }),
                       }}
+                      value={statusOptions.filter(
+                        (option: OptionType) => option.value === statusValue
+                      )}
+                      options={statusOptions}
+                      onChange={(e) => handleStatusChange(e as OptionType)}
+                    />
+                  )}
+                />
+              </Box>
+              <Box width="195px">
+                <Label htmlFor="company_id">Empresa:</Label>
+                <Controller
+                  name="company_id"
+                  control={control}
+                  render={({ field }) => (
+                    <ReactSelect
+                      {...field}
+                      styles={{
+                        control: (base) => ({
+                          ...base,
+                          ...reactSelectedStyle,
+                        }),
+                      }}
+                      options={companiesOptions}
+                      onChange={(e) => handleCompanyChange(e as OptionType)}
                     />
                   )}
                 />
               </Box>
             </S.Section>
-            <CardTitle>Conta Bancária</CardTitle>
-            <S.Section wrap marginBottom="28px">
+            <S.Section>
               <Box>
-                <Label htmlFor="bank_account.acc_user_name">Titular:</Label>
-                <Input
-                  readOnly={readOnlyAtShowAndUpdate()}
-                  {...register("bank_account.acc_user_name")}
-                  defaultValue={
-                    bank_account?.acc_user_name
-                      ? bank_account?.acc_user_name
-                      : cepValue
-                  }
-                />
-              </Box>
-              <Box>
-                <Label htmlFor="bank_account.acc_type">Tipo:</Label>
-                <Box width="195px">
-                  <Controller
-                    name="bank_account.acc_type"
-                    control={control}
-                    render={({ field }) => (
-                      <ReactSelect
-                        isDisabled={readOnlyAtShowAndUpdate()}
-                        {...field}
-                        styles={{
-                          control: (base) => ({
-                            ...base,
-                            ...reactSelectedStyle,
-                          }),
-                        }}
-                        value={accountsTypesOptions.filter(
-                          (option: OptionType) => option.value === accountType
-                        )}
-                        placeHolder=""
-                        options={accountsTypesOptions}
-                        onChange={(e) => handleAccountType(e as OptionType)}
-                      />
-                    )}
-                  />
-                </Box>
-              </Box>
-              <Box>
-                <Label htmlFor="bank_account.acc_number">
-                  Número da Conta:
-                </Label>
-                <Input
-                  maxLength={11}
-                  width="140px"
-                  readOnly={readOnlyAtShowAndUpdate()}
-                  defaultValue={
-                    bank_account?.acc_number ? bank_account?.acc_number : ""
-                  }
-                  {...register("bank_account.acc_number")}
-                />
-              </Box>
-              <Box>
-                <Label htmlFor="bank_account.bank_code">Código do Banco:</Label>
-                <Input
-                  maxLength={3}
-                  readOnly={readOnlyAtShowAndUpdate()}
-                  width="110px"
-                  defaultValue={
-                    bank_account?.bank_code ? bank_account?.bank_code : ""
-                  }
-                  {...register("bank_account.bank_code")}
-                />
-              </Box>
-              <Box>
-                <Label htmlFor="bank_account.bank_agency">Agência:</Label>
-                <Input
-                  maxLength={4}
-                  readOnly={readOnlyAtShowAndUpdate()}
-                  width="80px"
-                  defaultValue={bank_account?.bank_agency}
-                  {...register("bank_account.bank_agency")}
-                />
-              </Box>
-              <Box>
-                <Label htmlFor="bank_account.verify_digit">Dígito:</Label>
-                <Input
-                  maxLength={1}
-                  readOnly={readOnlyAtShowAndUpdate()}
-                  defaultValue={
-                    bank_account?.verify_digit ? bank_account?.verify_digit : ""
-                  }
-                  width="40px"
-                  {...register("bank_account.verify_digit")}
+                <Label htmlFor="description">Descrição:</Label>
+                <Textarea
+                  style={{ width: "400px", height: "140px" }}
+                  defaultValue={description ? description : ""}
+                  {...register("description")}
                 />
               </Box>
             </S.Section>
+            <CardTitle marginBottom="5px">Imagens do Serviço</CardTitle>
+            <S.ImageFilesWrapper>
+              {service ? (
+                <ImageItem
+                  images={service.files}
+                  handleRemoveImage={() => {
+                    return;
+                  }}
+                />
+              ) : null}
+              <ImageUpload
+                onChange={handleImagesChange}
+                maxNumber={maxNumber}
+                images={images}
+              />
+            </S.ImageFilesWrapper>
             {!showContent() && (
               <Button
+                style={{ marginTop: "20px" }}
                 color={colors.mediumBlue}
                 width="100%"
                 type="submit"
-                disabled={isSubmitting}
               >
-                {showCreate() ? "Criar Colaborador" : "Atualizar Dados"}
+                {showCreate() ? "Criar Cliente" : "Atualizar Dados"}
               </Button>
             )}
           </form>
-        )} */}
+        )}
       </Card>
     </S.ServicesSection>
   );
