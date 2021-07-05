@@ -1,3 +1,5 @@
+import { OptionType, timeOptions } from "./globalTypes";
+
 export const formataCPF = (value: string) => {
   return value
     .replace(/\D/g, "")
@@ -77,4 +79,11 @@ type DocumentProps = {
 export const reverseDocumentNumberFormat = (value: DocumentProps) => {
   const newDocumentNumber: DocumentProps = value;
   return newDocumentNumber.number.replace(/\D+/g, "");
+};
+
+export const formatDurationHour = (value: string): any => {
+  const formatedDurationHour = timeOptions.find(
+    (item) => item.value === value
+  ) as OptionType;
+  return value ? formatedDurationHour?.label : "";
 };
