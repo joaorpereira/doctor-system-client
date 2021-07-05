@@ -38,6 +38,9 @@ export default createGlobalStyle`
   button{
     cursor: pointer;
   } 
+  textarea{
+    font-family: 'Lato', sans-serif;
+  }
 `;
 
 export const SectionTitle = styled.h1<SectionTitleProps>`
