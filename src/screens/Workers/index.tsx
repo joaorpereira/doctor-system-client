@@ -62,13 +62,6 @@ import useHandleSelectedServicesValues from "./hooks/useHandleSelectedServicesVa
 const Workers: React.FC = (): ReactElement => {
   const ref = useRef<HTMLInputElement>();
   const dispatch = useAppDispatch();
-  const {
-    register,
-    handleSubmit,
-    reset,
-    control,
-    formState: { isSubmitting, isDirty, isValid },
-  } = useForm({});
 
   const [showProfile, setShowProfile] = useState(false);
   const [showPassword, setShowPassword] = useState({
@@ -85,20 +78,6 @@ const Workers: React.FC = (): ReactElement => {
     ValueType<OptionType, true>
   >([]);
   const [accountType, setAccountType] = useState("");
-
-  useEffect(() => {
-    dispatch(getWorkers());
-    dispatch(getFilteredServices({ id: "60d4c7762318d1e795aa7f61" }));
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (showProfile) {
-      setCpfValue("");
-      setCepValue("");
-      setPhoneValue("");
-      setDateValue("");
-    }
-  }, [showProfile]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { workers, worker, type }: any = useAppSelector(
@@ -120,6 +99,42 @@ const Workers: React.FC = (): ReactElement => {
     gender,
     birth_date,
   }: Worker = worker;
+
+  useEffect(() => {
+    dispatch(getWorkers());
+    dispatch(getFilteredServices({ id: "60d4c7762318d1e795aa7f61" }));
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (showProfile) {
+      setCpfValue("");
+      setCepValue("");
+      setPhoneValue("");
+      setDateValue("");
+    }
+  }, [showProfile]);
+
+  // set default values for documentType and genderValue
+  useEffect(() => {
+    if (document) setDocumentType(document.type);
+  }, [document]);
+
+  useEffect(() => {
+    if (bank_account) setAccountType(bank_account.acc_type);
+  }, [bank_account]);
+
+  // set default values for genderValue
+  useEffect(() => {
+    if (gender) setGenderValue(gender);
+  }, [gender]);
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    control,
+    formState: { isSubmitting, isDirty, isValid },
+  } = useForm({});
 
   // functions
   const handleCloseModal = () => setShowProfile(!showProfile);
@@ -275,20 +290,6 @@ const Workers: React.FC = (): ReactElement => {
     ];
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // set default values for documentType and genderValue
-  useEffect(() => {
-    if (document) setDocumentType(document.type);
-  }, [document]);
-
-  useEffect(() => {
-    if (bank_account) setAccountType(bank_account.acc_type);
-  }, [bank_account]);
-
-  // set default values for genderValue
-  useEffect(() => {
-    if (gender) setGenderValue(gender);
-  }, [gender]);
 
   return (
     <S.WorkersSection>

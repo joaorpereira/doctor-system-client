@@ -72,13 +72,6 @@ export type ClientProps = {
 const Clients: React.FC = (): ReactElement => {
   const ref = useRef<HTMLInputElement>();
   const dispatch = useAppDispatch();
-  const {
-    register,
-    handleSubmit,
-    reset,
-    control,
-    formState: { isSubmitting, isDirty, isValid },
-  } = useForm({});
 
   const [showProfile, setShowProfile] = useState(false);
   const [showPassword, setShowPassword] = useState({
@@ -91,19 +84,6 @@ const Clients: React.FC = (): ReactElement => {
   const [dateValue, setDateValue] = useState("");
   const [documentType, setDocumentType] = useState("");
   const [genderValue, setGenderValue] = useState("");
-
-  useEffect(() => {
-    dispatch(getClients());
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (showProfile) {
-      setCpfValue("");
-      setCepValue("");
-      setPhoneValue("");
-      setDateValue("");
-    }
-  }, [showProfile]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { clients, client, type }: any = useAppSelector(
@@ -121,6 +101,36 @@ const Clients: React.FC = (): ReactElement => {
     gender,
     birth_date,
   }: ClientProps = client;
+
+  useEffect(() => {
+    dispatch(getClients());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (showProfile) {
+      setCpfValue("");
+      setCepValue("");
+      setPhoneValue("");
+      setDateValue("");
+    }
+  }, [showProfile]);
+
+  // set default values for documentType and genderValue
+  useEffect(() => {
+    if (document) {
+      setDocumentType(document.type);
+    } else if (gender) {
+      setGenderValue(gender);
+    }
+  }, [document, gender]);
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    control,
+    formState: { isSubmitting, isDirty, isValid },
+  } = useForm({});
 
   // functions
   const handleCloseModal = () => setShowProfile(!showProfile);
@@ -262,15 +272,6 @@ const Clients: React.FC = (): ReactElement => {
     ];
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // set default values for documentType and genderValue
-  useEffect(() => {
-    if (document) {
-      setDocumentType(document.type);
-    } else if (gender) {
-      setGenderValue(gender);
-    }
-  }, [document, gender]);
 
   return (
     <S.ClientsSection>
