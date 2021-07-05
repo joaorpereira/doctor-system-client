@@ -4,10 +4,7 @@ import * as S from "./styled";
 import { MdAddBox, MdClear } from "react-icons/md";
 
 type ImageUploadProps = {
-  onChange: (
-    value: ImageListType,
-    addUpdatedIndex?: number[] | undefined
-  ) => void;
+  onChange: (value: ImageListType) => void;
   maxNumber: number;
   images: never[];
 };
@@ -24,15 +21,9 @@ export const ImageUpload = ({
       onChange={onChange}
       maxNumber={maxNumber}
     >
-      {({
-        imageList,
-        onImageUpload,
-        onImageRemove,
-        isDragging,
-        dragProps,
-      }: any) => (
-        <S.Wrapper>
-          {imageList.map((image: any, index: number) => (
+      {({ imageList, onImageUpload, onImageRemove, isDragging, dragProps }) => (
+        <>
+          {imageList.map((image, index) => (
             <S.Box key={index}>
               <S.Image src={image.dataURL} alt={image.dataURL} />
               <S.RemoveButton onClick={() => onImageRemove(index)}>
@@ -47,7 +38,7 @@ export const ImageUpload = ({
           >
             <MdAddBox size={60} color="#fff" />
           </S.AddButton>
-        </S.Wrapper>
+        </>
       )}
     </ImageUploading>
   );
