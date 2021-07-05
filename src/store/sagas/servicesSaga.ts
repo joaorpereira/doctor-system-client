@@ -20,6 +20,7 @@ type ServicesProps = {
     id?: string;
     service?: Service;
     status?: string;
+    files?: [];
   };
   type: string;
 };
@@ -50,10 +51,27 @@ function* handleFilterServices({ payload }: ServicesProps) {
 
 function* handleCreateServices({ payload }: ServicesProps) {
   try {
-    const { data }: ResponseGenerator = yield call(api.post, "/service", {
-      service: payload.service,
-    });
-    yield put(createServicesSuccess({ services: data.services }));
+    const config = {
+      headers: {
+        "content-type": "multipart/form-data",
+      },
+    };
+
+    const formData = new FormData();
+    formData.append("service", JSON.stringify(payload.service));
+
+    payload?.files?.map((image: any, index: number) =>
+      formData.append(`file_${index}`, image.file)
+    );
+
+    const { data }: ResponseGenerator = yield call(
+      api.post,
+      "/service",
+      formData,
+      config
+    );
+
+    yield put(createServicesSuccess({ service: data.service }));
   } catch (error) {
     console.log(error);
   }

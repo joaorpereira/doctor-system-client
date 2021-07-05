@@ -7,39 +7,52 @@ import {
 
 type OnSubmitProps = {
   type: string;
-  id: string;
+  id?: string;
   setShowProfile: React.Dispatch<React.SetStateAction<boolean>>;
-  company_id?: string;
-  files?: string[];
+  statusValue: string;
+  companyValue?: string;
+  durationValue: string;
+  images: never[];
 };
 
-const useOnSubmit = ({
+export const useOnSubmit = ({
   id,
   type,
   setShowProfile,
-  company_id,
-  files,
+  statusValue,
+  companyValue,
+  durationValue,
+  images,
 }: OnSubmitProps) => {
   const dispatch = useAppDispatch();
   const onSubmit = (data: Service) => {
+    const newForm = {
+      ...data,
+      company_id: companyValue,
+      status: statusValue,
+      service_duration: durationValue,
+      price: Number(data.price),
+      service_recurrence: Number(data.service_recurrence),
+    };
+
+    // images.map((image: any, index: number) =>
+    //   newForm.append(`file_${index}`, image)
+    // );
+
     if (type === "update") {
-      dispatch(
-        updateService({
-          services: {
-            service: data,
-            files: files,
-          },
-          id: id,
-        })
-      );
+      // dispatch(
+      //   updateService({
+      //     services: {
+      //       service: data,
+      //     },
+      //     id: id,
+      //   })
+      // );
     } else if (type === "create") {
       dispatch(
         createService({
-          services: {
-            service: data,
-            files: files,
-          },
-          company_id: company_id,
+          service: { ...newForm },
+          files: images,
         })
       );
     }
@@ -48,5 +61,3 @@ const useOnSubmit = ({
 
   return [onSubmit];
 };
-
-export default useOnSubmit;
