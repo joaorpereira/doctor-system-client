@@ -81,7 +81,7 @@ export const Wrapper = styled.div`
   align-items: center;
 `;
 
-export const LoginBtn = styled.button`
+export const Button = styled.button`
   background-color: ${colors.text};
   color: #fff;
   font-weight: 600;
@@ -111,4 +111,35 @@ export const SpanLink = styled(Link)<SpanLinkProps>`
   margin-top: ${({ marginTop }) => (marginTop ? marginTop : "10px")};
   font-size: ${({ fontSize }) => (fontSize ? fontSize : "0.85rem")};
   font-weight: bold;
+`;
+
+export const BtnContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 350px;
+`;
+
+export const BtnReturn = styled.button`
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 20px 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  color: ${colors.text};
+  font-weight: bold;
+  text-transform: uppercase;
+  border: none;
+  transition: 0.2s filter;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+  transition: 0.2s filter;
+
+  :hover {
+    filter: brightness(2);
+  }
 `;
