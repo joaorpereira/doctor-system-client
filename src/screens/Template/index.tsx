@@ -24,14 +24,24 @@ const Template: React.FC = (): ReactElement => {
     if (location) setCurrentPath(location.pathname);
   }, [location]);
 
+  console.log(currentPath);
+
   return (
-    <S.Wrapper>
-      <Sidebar handleRoute={handleRoute} currentPath={currentPath} />
-      <Navbar />
-      <S.Main>
-        <Routes />
-      </S.Main>
-    </S.Wrapper>
+    <>
+      {!["/login", "signup"].includes(currentPath) ? (
+        <S.Wrapper>
+          <Sidebar handleRoute={handleRoute} currentPath={currentPath} />
+          <Navbar />
+          <S.Private>
+            <Routes />
+          </S.Private>
+        </S.Wrapper>
+      ) : (
+        <S.Public>
+          <Routes />
+        </S.Public>
+      )}
+    </>
   );
 };
 
