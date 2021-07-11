@@ -12,7 +12,7 @@ type ColorProps = {
 export default createGlobalStyle`
   html {
     width: 100vw;
-    height: 100vh;
+    height: 100%;
     background-color: ${colors.backgroundcolor};
     font-size: 16px;
   }
@@ -23,8 +23,9 @@ export default createGlobalStyle`
   }
   body{
     font-family: 'Lato', sans-serif;
-    overflow: hidden;
-
+    overflow-x: hidden;
+    overflow-y: scroll;
+    height: 100%;
   }
   ul, li{
     list-style: none;
@@ -77,6 +78,20 @@ export const reactSelectedStyle = {
   boxShadow: "none",
   "&:hover": {
     border: `1px solid ${colors.primary} !important`,
+  },
+  fontSize: "0.8rem",
+  fontFamily: "Lato !important",
+  fontWeight: 500,
+  color: `${colors.text}`,
+};
+
+export const reactSelectedStyleSigupPage = {
+  border: `1px solid ${colors.text}`,
+  height: "45px !important",
+  minHeight: "45px !important",
+  boxShadow: "none",
+  "&:hover": {
+    border: `1px solid ${colors.text} !important`,
   },
   fontSize: "0.8rem",
   fontFamily: "Lato !important",

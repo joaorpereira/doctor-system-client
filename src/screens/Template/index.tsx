@@ -24,11 +24,9 @@ const Template: React.FC = (): ReactElement => {
     if (location) setCurrentPath(location.pathname);
   }, [location]);
 
-  console.log(currentPath);
-
   return (
     <>
-      {!["/login", "signup"].includes(currentPath) ? (
+      {!["/login", "/cadastro"].includes(currentPath) ? (
         <S.Wrapper>
           <Sidebar handleRoute={handleRoute} currentPath={currentPath} />
           <Navbar />
