@@ -133,7 +133,7 @@ const Workers: React.FC = (): ReactElement => {
     handleSubmit,
     reset,
     control,
-    formState: { isSubmitting, isDirty, isValid },
+    formState: { isSubmitting },
   } = useForm({});
 
   // functions

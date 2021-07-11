@@ -60,6 +60,7 @@ function* handleCreateServices({ payload }: ServicesProps) {
     const formData = new FormData();
     formData.append("service", JSON.stringify(payload.service));
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     payload?.files?.map((image: any, index: number) =>
       formData.append(`file_${index}`, image.file)
     );
