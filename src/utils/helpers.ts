@@ -72,7 +72,7 @@ export const reverseBirthDateFormat = (value: string) => {
 };
 
 type DocumentProps = {
-  type: string;
+  type?: string;
   number: string;
 };
 
