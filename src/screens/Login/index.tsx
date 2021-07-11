@@ -14,10 +14,12 @@ const Login = () => {
 
   return (
     <S.LoginSection>
-      <S.BtnReturn onClick={() => setPage("")}>
-        <MdKeyboardReturn style={{ marginRight: "5px" }} size={25} />
-        Voltar
-      </S.BtnReturn>
+      {page !== "" && (
+        <S.BtnReturn onClick={() => handleChangePage("")}>
+          <MdKeyboardReturn style={{ marginRight: "5px" }} size={25} />
+          Voltar
+        </S.BtnReturn>
+      )}
       <S.FlexSection direction="column">
         <S.Wrapper>
           <S.Image height="200px" src={Logo} alt={Logo} />
