@@ -1,10 +1,13 @@
-import { InputHTMLAttributes } from "react";
 import styled from "styled-components";
 import { colors } from "../../styles/variables";
 
-interface Props extends InputHTMLAttributes<HTMLInputElement> {
+type Props = {
   width?: string;
-}
+};
+
+type LabelProps = {
+  secondary?: boolean;
+};
 
 export const Input = styled.input<Props>`
   border: 1px solid ${colors.primary};
@@ -26,9 +29,9 @@ export const Input = styled.input<Props>`
   }
 `;
 
-export const Label = styled.label`
-  font-size: 0.8rem;
-  color: #a9a9a9;
+export const Label = styled.label<LabelProps>`
+  font-size: ${({ secondary }) => (secondary ? "1rem" : "0.8rem")};
+  color: ${({ secondary }) => (secondary ? `${colors.text}` : "#a9a9a9")};
   margin-bottom: 5px;
 `;
 
@@ -37,4 +40,8 @@ export const Box = styled.div<Props>`
   display: flex;
   flex-direction: column;
   width: ${({ width }) => width && width};
+
+  @media only screen and (min-width: 350px) and (max-width: 800px) {
+    width: 100%;
+  }
 `;
