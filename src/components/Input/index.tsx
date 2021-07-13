@@ -3,7 +3,7 @@ import * as S from "./styled";
 
 type Props = {
   children: React.ReactNode;
-  label: string;
+  label?: string;
   name: string;
   width?: string;
   secondary?: boolean;
