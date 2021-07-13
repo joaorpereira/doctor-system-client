@@ -2,9 +2,12 @@ import api from "../../services/api";
 import { all, call, put, takeLatest } from "redux-saga/effects";
 import {
   getCompanies,
-  getFilteredCompanies,
   setCompanies,
+  createCompany,
+  getFilteredCompanies,
   setFilteredCompaniesSuccess,
+  createCompanySuccess,
+  Company,
 } from "../ducks/companiesSlice";
 import { ResponseGenerator } from "../common/types";
 
@@ -28,7 +31,17 @@ function* handleFilterCompanies() {
   }
 }
 
+export function* handleCreateCompany({ payload }: any) {
+  try {
+    const { data } = yield call(api.post, "/company", { ...payload });
+    yield put(createCompanySuccess({ company: data.company as Company }));
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export default all([
   takeLatest(getCompanies.type, handleGetCompanies),
   takeLatest(getFilteredCompanies.type, handleFilterCompanies),
+  takeLatest(createCompany.type, handleCreateCompany),
 ]);

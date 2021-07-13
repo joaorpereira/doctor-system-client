@@ -44,6 +44,9 @@ const companiesSlice = createSlice({
     getFilteredCompanies(state) {
       return { ...state, loading: true };
     },
+    createCompany: (state, action: PayloadAction<any>) => {
+      return { ...state, loading: true };
+    },
     setCompanies(state, action: PayloadAction<any>) {
       const companies = action.payload;
       return { ...state, ...companies, loading: false };
@@ -52,13 +55,20 @@ const companiesSlice = createSlice({
       const companiesOptions = action.payload;
       return { ...state, ...companiesOptions, loading: false };
     },
+    createCompanySuccess: (state, action: PayloadAction<any>) => {
+      const company = action.payload.company;
+      state.companies = [...state.companies, company];
+      state.loading = false;
+    },
   },
 });
 
 export const {
   getCompanies,
   getFilteredCompanies,
+  createCompany,
   setCompanies,
+  createCompanySuccess,
   setFilteredCompaniesSuccess,
 } = companiesSlice.actions;
 
