@@ -9,7 +9,7 @@ type FlexProps = {
 
 type SpanLinkProps = {
   align?: string;
-  marginTop?: string;
+  margintop?: string;
   fontSize?: string;
 };
 
@@ -108,9 +108,13 @@ export const Button = styled.button`
 
 export const SpanLink = styled(Link)<SpanLinkProps>`
   text-align: ${({ align }) => (align ? align : "right")};
-  margin-top: ${({ marginTop }) => (marginTop ? marginTop : "10px")};
+  margin-top: ${({ margintop }) => (margintop ? margintop : "10px")};
   font-size: ${({ fontSize }) => (fontSize ? fontSize : "0.85rem")};
   font-weight: bold;
+
+  u {
+    color: ${colors.primary};
+  }
 `;
 
 export const BtnContainer = styled.div`
