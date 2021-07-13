@@ -93,23 +93,6 @@ const SignUp = () => {
     []
   );
 
-  const resetValues = () => {
-    setGenderValue("");
-    setCpfValue("");
-    setCepValue("");
-    setPhoneValue("");
-    setDateValue("");
-    setStateValue("");
-    setCityValue("");
-    setStreetValue("");
-    setCountryValue("");
-    setCompanyValue("");
-    setPictureValue("");
-    setBackgroundImageValue("");
-    setAccountTypeValue("");
-    setBankCodeValue("");
-  };
-
   // custom hooks - normalize input entry
   const [handleCpfOrCnpjMask] = useHandleCpfOrCnpjMask({ setCpfValue });
   const [handlePhoneMask] = useHandlePhoneMask({ setPhoneValue });
@@ -133,7 +116,6 @@ const SignUp = () => {
     backgroundImageValue,
     accountTypeValue,
     bankCodeValue,
-    resetValues,
   });
 
   const handleGetAPIAdressInformation = useCallback(

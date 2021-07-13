@@ -1,5 +1,7 @@
+import { useHistory } from "react-router-dom";
 import { useAppDispatch } from "../../../hooks/hooks";
 import { createClient } from "../../../store/ducks/clientsSlice";
+import { createCompany } from "../../../store/ducks/companiesSlice";
 import {
   reverseBirthDateFormat,
   reversePhoneNumberFormat,
@@ -21,7 +23,6 @@ interface OnSubmitProps {
   backgroundImageValue: string;
   accountTypeValue: string;
   bankCodeValue: string;
-  resetValues: () => void;
 }
 
 const useOnSubmit = ({
@@ -40,9 +41,10 @@ const useOnSubmit = ({
   backgroundImageValue,
   accountTypeValue,
   bankCodeValue,
-  resetValues,
 }: OnSubmitProps) => {
   const dispatch = useAppDispatch();
+  const history = useHistory();
+
   const onSubmit = (data: any) => {
     const newPhoneNumber = reversePhoneNumberFormat(phoneValue);
     const newBirthDate = reverseBirthDateFormat(dateValue);
@@ -57,47 +59,62 @@ const useOnSubmit = ({
       street: streetValue,
     };
 
-    if (type === "cliente") {
-      dispatch(
-        createClient({
-          client: {
-            ...data,
-            picture: pictureValue,
-            birth_date: newBirthDate,
-            phone_number: newPhoneNumber,
-            gender: genderValue,
-            document: {
-              number: newDocumentNumber,
-              type: cpfValue.length > 14 ? "cnpj" : "cpf",
-            },
-            address: newAddress,
-          },
-          company_id: companyValue,
-        })
-      );
-    } else if (type === "empresa") {
-      const cord_x = Number(data.geolocation.coordinates.x);
-      const cord_y = Number(data.geolocation.coordinates.y);
-      console.log({
-        ...data,
-        picture: pictureValue,
-        background: backgroundImageValue,
-        birth_date: newBirthDate,
-        phone_number: newPhoneNumber,
-        address: newAddress,
-        geolocation: {
-          coordinates: [cord_x, cord_y],
-        },
-        bank_account: {
-          ...data.bank_account,
-          cpf_or_cnpj: newDocumentNumber,
-          acc_type: accountTypeValue,
-          bank_code: bankCodeValue,
-        },
-      });
-    }
+    try {
+      switch (type) {
+        case "cliente":
+          dispatch(
+            createClient({
+              client: {
+                ...data,
+                picture: pictureValue,
+                birth_date: newBirthDate,
+                phone_number: newPhoneNumber,
+                gender: genderValue,
+                document: {
+                  number: newDocumentNumber,
+                  type: cpfValue.length > 14 ? "cnpj" : "cpf",
+                },
+                address: newAddress,
+              },
+              company_id: companyValue,
+            })
+          );
+          history.push("/");
+          break;
 
-    resetValues();
+        case "cliente":
+          const cord_x = Number(data.geolocation.coordinates.x);
+          const cord_y = Number(data.geolocation.coordinates.y);
+          dispatch(
+            createCompany({
+              ...data,
+              picture: pictureValue,
+              background: backgroundImageValue,
+              phone_number: newPhoneNumber,
+              address: newAddress,
+              geolocation: {
+                type: "Point",
+                coordinates: [cord_x, cord_y],
+              },
+              bank_account: {
+                ...data.bank_account,
+                cpf_or_cnpj: newDocumentNumber,
+                acc_type: accountTypeValue,
+                bank_code: bankCodeValue,
+              },
+            })
+          );
+          history.push("/");
+          break;
+
+        case "worker":
+          break;
+        default:
+          return;
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return [onSubmit];

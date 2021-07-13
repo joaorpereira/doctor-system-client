@@ -224,10 +224,7 @@ const SignupCompany = ({
               name="geolocation.coordinates.x"
               label="CordX:"
             >
-              <S.Input
-                type="number"
-                {...register("geolocation.coordinates.x")}
-              />
+              <S.Input type="text" {...register("geolocation.coordinates.x")} />
             </InputComponent>
             <InputComponent
               width="150px"
@@ -235,10 +232,7 @@ const SignupCompany = ({
               name="geolocation.coordinates.y"
               label="CordY:"
             >
-              <S.Input
-                type="number"
-                {...register("geolocation.coordinates.y")}
-              />
+              <S.Input type="text" {...register("geolocation.coordinates.y")} />
             </InputComponent>
           </S.FormSection>
         </>
