@@ -7,17 +7,23 @@ import { MdKeyboardReturn } from "react-icons/md";
 
 import DoctorAndPatients from "../../assets/Doctor-And-Patients-2.svg";
 import Logo from "../../assets/logo.png";
+import { useAppDispatch } from "../../hooks/hooks";
+import { setSignupPage } from "../../store/ducks/authSlice";
 
 const Login = () => {
+  const dispatch = useAppDispatch();
   const [page, setPage] = useState("");
+
   const handleChangePage = (value: string) => setPage(value);
+  const handleSignupPage = () => {
+    dispatch(setSignupPage(page));
+  };
 
   return (
     <S.LoginSection>
       {page !== "" && (
         <S.BtnReturn onClick={() => handleChangePage("")}>
           <MdKeyboardReturn style={{ marginRight: "5px" }} size={25} />
-          Voltar
         </S.BtnReturn>
       )}
       <S.FlexSection direction="column">
@@ -54,8 +60,9 @@ const Login = () => {
               <S.SpanLink
                 to="/cadastro"
                 align="center"
-                marginTop="10px"
+                margintop="10px"
                 fontSize="1rem"
+                onClick={handleSignupPage}
               >
                 Não possui cadastro? <u>Cadastre-se aqui</u>
               </S.SpanLink>
