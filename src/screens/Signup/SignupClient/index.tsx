@@ -9,6 +9,43 @@ import { reactSelectedStyleSigupPage } from "../../../styles/global";
 import { countryList } from "../../../utils/countries";
 import { states } from "../../../utils/states";
 
+type ClientPageProps = {
+  onSubmit: (data: any) => void;
+  handleDateMask: (
+    e: React.FormEvent<HTMLInputElement> & {
+      target: HTMLInputElement;
+    }
+  ) => void;
+  handlePhoneMask: (
+    e: React.FormEvent<HTMLInputElement> & {
+      target: HTMLInputElement;
+    }
+  ) => void;
+  handleGenderChange: (e: OptionType) => void;
+  handleCompanyChange: (e: OptionType) => void;
+  handleCpfOrCnpjMask: (
+    e: React.FormEvent<HTMLInputElement> & {
+      target: HTMLInputElement;
+    }
+  ) => void;
+  handleCountryChange: (e: OptionType) => void;
+  handleCepMask: (
+    e: React.FormEvent<HTMLInputElement> & {
+      target: HTMLInputElement;
+    }
+  ) => void;
+  handleGetAPIAdressInformation: (
+    e: React.FocusEvent<HTMLInputElement>
+  ) => Promise<void>;
+  companiesOptions: any;
+  handleStateChange: (e: OptionType) => void;
+  fetchCep: boolean;
+  streetValue: string;
+  stateValue: string;
+  cityValue: string;
+  cpfValue: string;
+};
+
 const SignupClient = ({
   onSubmit,
   handleDateMask,
@@ -26,7 +63,7 @@ const SignupClient = ({
   stateValue,
   cityValue,
   cpfValue,
-}: any) => {
+}: ClientPageProps) => {
   const {
     register,
     handleSubmit,

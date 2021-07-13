@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+import axios from "../../services/api";
 
 import * as S from "./styled";
 import { colors } from "../../styles/variables";
@@ -7,15 +8,13 @@ import { colors } from "../../styles/variables";
 import { MdKeyboardReturn } from "react-icons/md";
 
 import DoctorAndPatients from "../../assets/Doctor-And-Patients-2.svg";
-import Logo from "../../assets/logo.png";
+
 import { OptionType } from "../../utils/globalTypes";
 import useHandleCpfOrCnpjMask from "../../hooks/useHandleCpfOrCnpjMask";
 import useHandlePhoneMask from "../../hooks/useHandlePhoneMask";
 import useHandleCepMask from "../../hooks/useHandleCepMask";
 import useHandleDateMask from "../../hooks/useHandleDateMask";
 import useOnSubmit from "./hooks/useOnSubmit";
-
-import axios from "../../services/api";
 
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { RootState } from "../../store";
@@ -61,27 +60,34 @@ const SignUp = () => {
     (e: OptionType) => setGenderValue(e.value),
     []
   );
+
   const handleStateChange = useCallback(
     (e: OptionType) => setStateValue(e.value),
     []
   );
+
   const handleCountryChange = useCallback(
     (e: OptionType) => setCountryValue(e.value),
     []
   );
+
   const handleCompanyChange = useCallback(
     (e: OptionType) => setCompanyValue(e.value),
     []
   );
+
   const handlePicture = useCallback((e: any) => setPictureValue(e), []);
+
   const handleBackgroundImage = useCallback(
     (e: any) => setBackgroundImageValue(e),
     []
   );
+
   const handleAccountType = useCallback(
     (e: OptionType) => setAccountTypeValue(e.value),
     []
   );
+
   const handleBankCode = useCallback(
     (e: OptionType) => setBankCodeValue(e.value),
     []

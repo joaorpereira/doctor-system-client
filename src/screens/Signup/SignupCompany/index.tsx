@@ -10,6 +10,41 @@ import { countryList } from "../../../utils/countries";
 import { states } from "../../../utils/states";
 import { bankList } from "../../../utils/banksList";
 
+type CompanyProps = {
+  onSubmit: (data: any) => void;
+  handlePhoneMask: (
+    e: React.FormEvent<HTMLInputElement> & {
+      target: HTMLInputElement;
+    }
+  ) => void;
+  handleCpfOrCnpjMask: (
+    e: React.FormEvent<HTMLInputElement> & {
+      target: HTMLInputElement;
+    }
+  ) => void;
+  handleCountryChange: (e: OptionType) => void;
+  handleCepMask: (
+    e: React.FormEvent<HTMLInputElement> & {
+      target: HTMLInputElement;
+    }
+  ) => void;
+  handleGetAPIAdressInformation: (
+    e: React.FocusEvent<HTMLInputElement>
+  ) => Promise<void>;
+  handleStateChange: (e: OptionType) => void;
+  handlePicture: (e: any) => void;
+  handleBackgroundImage: (e: any) => void;
+  handleAccountType: (e: OptionType) => void;
+  handleBankCode: (e: OptionType) => void;
+  fetchCep: boolean;
+  streetValue: string;
+  stateValue: string;
+  cityValue: string;
+  cpfValue: string;
+  bankInfoPage: boolean;
+  setBankInfoPage: (value: React.SetStateAction<boolean>) => void;
+};
+
 const SignupCompany = ({
   onSubmit,
   handlePhoneMask,
@@ -29,7 +64,7 @@ const SignupCompany = ({
   cpfValue,
   bankInfoPage,
   setBankInfoPage,
-}: any) => {
+}: CompanyProps) => {
   const {
     register,
     handleSubmit,
