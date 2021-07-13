@@ -5,7 +5,8 @@ import {
   reversePhoneNumberFormat,
 } from "../../../utils/helpers";
 
-type OnSubmitProps = {
+interface OnSubmitProps {
+  type: string;
   genderValue: string;
   cpfValue: string;
   cepValue: string;
@@ -15,18 +16,16 @@ type OnSubmitProps = {
   countryValue: string;
   streetValue: string;
   cityValue: string;
-  setGenderValue: React.Dispatch<React.SetStateAction<string>>;
-  setCpfValue: React.Dispatch<React.SetStateAction<string>>;
-  setCepValue: React.Dispatch<React.SetStateAction<string>>;
-  setPhoneValue: React.Dispatch<React.SetStateAction<string>>;
-  setDateValue: React.Dispatch<React.SetStateAction<string>>;
-  setStateValue: React.Dispatch<React.SetStateAction<string>>;
-  setCityValue: React.Dispatch<React.SetStateAction<string>>;
-  setStreetValue: React.Dispatch<React.SetStateAction<string>>;
-  setCountryValue: React.Dispatch<React.SetStateAction<string>>;
-};
+  companyValue: string;
+  pictureValue: string;
+  backgroundImageValue: string;
+  accountTypeValue: string;
+  bankCodeValue: string;
+  resetValues: () => void;
+}
 
 const useOnSubmit = ({
+  type,
   genderValue,
   cpfValue,
   cepValue,
@@ -36,15 +35,12 @@ const useOnSubmit = ({
   countryValue,
   streetValue,
   cityValue,
-  setGenderValue,
-  setCpfValue,
-  setCepValue,
-  setPhoneValue,
-  setDateValue,
-  setStateValue,
-  setCityValue,
-  setStreetValue,
-  setCountryValue,
+  companyValue,
+  pictureValue,
+  backgroundImageValue,
+  accountTypeValue,
+  bankCodeValue,
+  resetValues,
 }: OnSubmitProps) => {
   const dispatch = useAppDispatch();
   const onSubmit = (data: any) => {
@@ -52,39 +48,56 @@ const useOnSubmit = ({
     const newBirthDate = reverseBirthDateFormat(dateValue);
     const newDocumentNumber = cpfValue.replace(/\D+/g, "");
 
-    dispatch(
-      createClient({
-        client: {
-          ...data,
-          birth_date: newBirthDate,
-          phone_number: newPhoneNumber,
-          gender: genderValue,
-          document: {
-            number: newDocumentNumber,
-            type: cpfValue.length > 14 ? "cnpj" : "cpf",
-          },
-          address: {
-            ...data.address,
-            country: countryValue.toLowerCase(),
-            state: stateValue,
-            cep: cepValue,
-            city: cityValue,
-            street: streetValue,
-          },
-        },
-        company_id: "60b281d55398c39f2a93cd21",
-      })
-    );
+    const newAddress = {
+      ...data.address,
+      country: countryValue.toLowerCase(),
+      state: stateValue,
+      cep: cepValue,
+      city: cityValue,
+      street: streetValue,
+    };
 
-    setGenderValue("");
-    setCpfValue("");
-    setCepValue("");
-    setPhoneValue("");
-    setDateValue("");
-    setStateValue("");
-    setCityValue("");
-    setStreetValue("");
-    setCountryValue("");
+    if (type === "cliente") {
+      dispatch(
+        createClient({
+          client: {
+            ...data,
+            picture: pictureValue,
+            birth_date: newBirthDate,
+            phone_number: newPhoneNumber,
+            gender: genderValue,
+            document: {
+              number: newDocumentNumber,
+              type: cpfValue.length > 14 ? "cnpj" : "cpf",
+            },
+            address: newAddress,
+          },
+          company_id: companyValue,
+        })
+      );
+    } else if (type === "empresa") {
+      const cord_x = Number(data.geolocation.coordinates.x);
+      const cord_y = Number(data.geolocation.coordinates.y);
+      console.log({
+        ...data,
+        picture: pictureValue,
+        background: backgroundImageValue,
+        birth_date: newBirthDate,
+        phone_number: newPhoneNumber,
+        address: newAddress,
+        geolocation: {
+          coordinates: [cord_x, cord_y],
+        },
+        bank_account: {
+          ...data.bank_account,
+          cpf_or_cnpj: newDocumentNumber,
+          acc_type: accountTypeValue,
+          bank_code: bankCodeValue,
+        },
+      });
+    }
+
+    resetValues();
   };
 
   return [onSubmit];
