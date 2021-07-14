@@ -10,6 +10,12 @@ import Logo from "../../assets/logo.png";
 import { useAppDispatch } from "../../hooks/hooks";
 import { setSignupPage } from "../../store/ducks/authSlice";
 
+const profiles = {
+  client: "client",
+  worker: "worker",
+  company: "company",
+};
+
 const Login = () => {
   const dispatch = useAppDispatch();
   const [page, setPage] = useState("");
@@ -31,13 +37,13 @@ const Login = () => {
           <S.Image height="200px" src={Logo} alt={Logo} />
           {page === "" ? (
             <S.BtnContainer>
-              <S.Button onClick={() => handleChangePage("cliente")}>
+              <S.Button onClick={() => handleChangePage(profiles.client)}>
                 Cliente
               </S.Button>
-              <S.Button onClick={() => handleChangePage("colaborador")}>
+              <S.Button onClick={() => handleChangePage(profiles.worker)}>
                 Colaborador
               </S.Button>
-              <S.Button onClick={() => handleChangePage("empresa")}>
+              <S.Button onClick={() => handleChangePage(profiles.company)}>
                 Empresa
               </S.Button>
             </S.BtnContainer>
