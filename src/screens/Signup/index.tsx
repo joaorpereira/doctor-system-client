@@ -6,28 +6,35 @@ import * as S from "./styled";
 import { colors } from "../../styles/variables";
 
 import { MdKeyboardReturn } from "react-icons/md";
-
 import DoctorAndPatients from "../../assets/Doctor-And-Patients-2.svg";
 
 import { OptionType } from "../../utils/globalTypes";
-import useHandleCpfOrCnpjMask from "../../hooks/useHandleCpfOrCnpjMask";
-import useHandlePhoneMask from "../../hooks/useHandlePhoneMask";
-import useHandleCepMask from "../../hooks/useHandleCepMask";
-import useHandleDateMask from "../../hooks/useHandleDateMask";
-import useOnSubmit from "./hooks/useOnSubmit";
+import { ValueType } from "react-select";
+
+import useOnSubmitClient from "./hooks/useOnSubmitClient";
+import useOnSubmitWorker from "./hooks/useOnSubmitWorker";
+import useOnSubmitCompany from "./hooks/useOnSubmitCompany";
 
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import useHandleCepMask from "../../hooks/useHandleCepMask";
+import useHandleDateMask from "../../hooks/useHandleDateMask";
+import useHandlePhoneMask from "../../hooks/useHandlePhoneMask";
+import useHandleCpfOrCnpjMask from "../../hooks/useHandleCpfOrCnpjMask";
+
+import { SignupClient } from "./SignupClient";
+import { SignupCompany } from "./SignupCompany";
+import { SignupWorker } from "./SignupWorker";
+
 import { RootState } from "../../store";
+import { getFilteredServices } from "../../store/ducks/servicesSlice";
 import { getFilteredCompanies } from "../../store/ducks/companiesSlice";
-import SignupClient from "./SignupClient";
-import SignupCompany from "./SignupCompany";
-import SignupWorker from "./SignupWorker";
 
 const SignUp = () => {
   const history = useHistory();
   const dispatch = useAppDispatch();
 
   const [cpfValue, setCpfValue] = useState("");
+  const [cpfOrCnpjBankCode, setCpfOrCnpjBankCode] = useState("");
   const [cepValue, setCepValue] = useState("");
   const [phoneValue, setPhoneValue] = useState("");
   const [dateValue, setDateValue] = useState("");
@@ -43,6 +50,9 @@ const SignUp = () => {
   const [backgroundImageValue, setBackgroundImageValue] = useState("");
   const [accountTypeValue, setAccountTypeValue] = useState("");
   const [bankCodeValue, setBankCodeValue] = useState("");
+  const [selectedServices, setSelectedServices] = useState<
+    ValueType<OptionType, true>
+  >([]);
 
   const { companiesOptions }: any = useAppSelector(
     ({ companiesReducers }: RootState) => companiesReducers
@@ -52,9 +62,30 @@ const SignUp = () => {
     ({ authReducers }: RootState) => authReducers
   );
 
+  const { servicesOptions } = useAppSelector(
+    ({ servicesReducers }: RootState) => servicesReducers
+  );
+
+  const { loading: companyLoading }: any = useAppSelector(
+    ({ companiesReducers }: RootState) => companiesReducers
+  );
+
+  const { loading: clientLoading }: any = useAppSelector(
+    ({ clientsReducers }: RootState) => clientsReducers
+  );
+
+  const { loading: workerLoading }: any = useAppSelector(
+    ({ workersReducers }: RootState) => workersReducers
+  );
+
   useEffect(() => {
     dispatch(getFilteredCompanies());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (companyValue !== "")
+      dispatch(getFilteredServices({ id: companyValue }));
+  }, [dispatch, companyValue]);
 
   const handleGenderChange = useCallback(
     (e: OptionType) => setGenderValue(e.value),
@@ -93,15 +124,20 @@ const SignUp = () => {
     []
   );
 
+  const handleServicesChange = useCallback(
+    (option: ValueType<OptionType, true>) => {
+      setSelectedServices(option);
+    },
+    []
+  );
+
   // custom hooks - normalize input entry
   const [handleCpfOrCnpjMask] = useHandleCpfOrCnpjMask({ setCpfValue });
   const [handlePhoneMask] = useHandlePhoneMask({ setPhoneValue });
   const [handleCepMask] = useHandleCepMask({ setCepValue });
   const [handleDateMask] = useHandleDateMask({ setDateValue });
 
-  // custom hooks - submit form to create or update client
-  const [onSubmit] = useOnSubmit({
-    type: page,
+  const [onSubmitWorker] = useOnSubmitWorker({
     genderValue,
     cpfValue,
     cepValue,
@@ -113,9 +149,38 @@ const SignUp = () => {
     cityValue,
     companyValue,
     pictureValue,
+    accountTypeValue,
+    bankCodeValue,
+    selectedServices,
+    cpfOrCnpjBankCode,
+  });
+
+  const [onSubmitCompany] = useOnSubmitCompany({
+    cpfValue,
+    cepValue,
+    phoneValue,
+    stateValue,
+    countryValue,
+    streetValue,
+    cityValue,
+    pictureValue,
     backgroundImageValue,
     accountTypeValue,
     bankCodeValue,
+  });
+
+  const [onSubmitClient] = useOnSubmitClient({
+    genderValue,
+    cpfValue,
+    cepValue,
+    phoneValue,
+    dateValue,
+    stateValue,
+    countryValue,
+    streetValue,
+    cityValue,
+    companyValue,
+    pictureValue,
   });
 
   const handleGetAPIAdressInformation = useCallback(
@@ -153,9 +218,9 @@ const SignUp = () => {
         <MdKeyboardReturn style={{ marginRight: "5px" }} size={25} />
       </S.BtnReturn>
       <S.FlexSection direction="column">
-        {page === "cliente" && (
+        {page === "client" && (
           <SignupClient
-            onSubmit={onSubmit}
+            onSubmit={onSubmitClient}
             handleDateMask={handleDateMask}
             handlePhoneMask={handlePhoneMask}
             handleGenderChange={handleGenderChange}
@@ -171,11 +236,12 @@ const SignUp = () => {
             stateValue={stateValue}
             cityValue={cityValue}
             cpfValue={cpfValue}
+            loading={clientLoading}
           />
         )}
-        {page === "empresa" && (
+        {page === "company" && (
           <SignupCompany
-            onSubmit={onSubmit}
+            onSubmit={onSubmitCompany}
             handlePhoneMask={handlePhoneMask}
             handleCpfOrCnpjMask={handleCpfOrCnpjMask}
             handleCountryChange={handleCountryChange}
@@ -193,30 +259,37 @@ const SignUp = () => {
             cpfValue={cpfValue}
             bankInfoPage={bankInfoPage}
             setBankInfoPage={setBankInfoPage}
+            loading={companyLoading}
           />
         )}
-        {/* {page === "colaborador" && (
+        {page === "worker" && (
           <SignupWorker
-            onSubmit={onSubmit}
-            handleDateMask={handleDateMask}
+            onSubmit={onSubmitWorker}
             handlePhoneMask={handlePhoneMask}
-            handleGenderChange={handleGenderChange}
-            handleCompanyChange={handleCompanyChange}
             handleCpfOrCnpjMask={handleCpfOrCnpjMask}
             handleCountryChange={handleCountryChange}
             handleCepMask={handleCepMask}
             handleGetAPIAdressInformation={handleGetAPIAdressInformation}
-            companiesOptions={companiesOptions}
             handleStateChange={handleStateChange}
+            handlePicture={handlePicture}
+            handleAccountType={handleAccountType}
+            handleBankCode={handleBankCode}
+            handleCompanyChange={handleCompanyChange}
+            handleDateMask={handleDateMask}
+            handleGenderChange={handleGenderChange}
+            handleServicesChange={handleServicesChange}
             fetchCep={fetchCep}
             streetValue={streetValue}
             stateValue={stateValue}
             cityValue={cityValue}
             cpfValue={cpfValue}
             bankInfoPage={bankInfoPage}
+            servicesOptions={servicesOptions}
+            companiesOptions={companiesOptions}
             setBankInfoPage={setBankInfoPage}
+            loading={workerLoading}
           />
-        )} */}
+        )}
       </S.FlexSection>
       <S.FlexSection color={`${colors.primary}`}>
         <S.Image src={DoctorAndPatients} alt={DoctorAndPatients} />
