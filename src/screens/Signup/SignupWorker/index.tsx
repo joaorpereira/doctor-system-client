@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Controller, useForm } from "react-hook-form";
 import ReactSelect, { ValueType } from "react-select";
 import * as S from "./styled";
@@ -13,16 +14,19 @@ import { reactSelectedStyleSigupPage } from "../../../styles/global";
 import { countryList } from "../../../utils/countries";
 import { states } from "../../../utils/states";
 import { bankList } from "../../../utils/banksList";
-import { EventProps } from "../../../hooks/useHandleCpfOrCnpjMask";
 
-type CompanyProps = {
+type Props = {
   onSubmit: (data: any) => void;
   handlePhoneMask: (
     e: React.FormEvent<HTMLInputElement> & {
       target: HTMLInputElement;
     }
   ) => void;
-  handleCpfOrCnpjMask: ({ e, type }: EventProps) => void;
+  handleCpfOrCnpjMask: (
+    e: React.FormEvent<HTMLInputElement> & {
+      target: HTMLInputElement;
+    }
+  ) => void;
   handleCountryChange: (e: OptionType) => void;
   handleCepMask: (
     e: React.FormEvent<HTMLInputElement> & {
@@ -53,9 +57,10 @@ type CompanyProps = {
   handleGenderChange: (e: OptionType) => void;
   handleServicesChange: (option: ValueType<OptionType, true>) => void;
   servicesOptions: any;
+  loading: boolean;
 };
 
-const SignupWorker = ({
+const SignupWorkerMemoized = ({
   onSubmit,
   handlePhoneMask,
   handleCpfOrCnpjMask,
@@ -79,7 +84,8 @@ const SignupWorker = ({
   handleCompanyChange,
   handleDateMask,
   handleGenderChange,
-}: CompanyProps) => {
+  loading,
+}: Props) => {
   const {
     register,
     handleSubmit,
@@ -211,7 +217,7 @@ const SignupWorker = ({
                 type="text"
                 value={cpfValue}
                 {...register("bank_account.cpf_or_cnpj")}
-                onChange={(e) => handleCpfOrCnpjMask({ e: e, type: "bank" })}
+                onChange={(e) => handleCpfOrCnpjMask(e)}
               />
             </InputComponent>
             <InputComponent
@@ -402,7 +408,7 @@ const SignupWorker = ({
                 type="text"
                 value={cpfValue}
                 {...register("document.number")}
-                onChange={(e) => handleCpfOrCnpjMask({ e: e })}
+                onChange={(e) => handleCpfOrCnpjMask(e)}
               />
             </InputComponent>
           </S.FormSection>
@@ -434,7 +440,7 @@ const SignupWorker = ({
       <S.BtnDiv>
         {bankInfoPage ? (
           <S.Button disabled={isSubmitting} type="submit">
-            {!isSubmitting ? (
+            {!loading ? (
               <p>Enviar</p>
             ) : (
               <Spinner
@@ -453,4 +459,4 @@ const SignupWorker = ({
   );
 };
 
-export default SignupWorker;
+export const SignupWorker = memo(SignupWorkerMemoized);

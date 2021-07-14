@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Controller, useForm } from "react-hook-form";
 import ReactSelect from "react-select";
 import * as S from "./styled";
@@ -44,9 +45,10 @@ type ClientPageProps = {
   stateValue: string;
   cityValue: string;
   cpfValue: string;
+  loading: boolean;
 };
 
-const SignupClient = ({
+const SignupClientMemoized = ({
   onSubmit,
   handleDateMask,
   handlePhoneMask,
@@ -63,6 +65,7 @@ const SignupClient = ({
   stateValue,
   cityValue,
   cpfValue,
+  loading,
 }: ClientPageProps) => {
   const {
     register,
@@ -121,7 +124,6 @@ const SignupClient = ({
             )}
           />
         </InputComponent>
-
         <InputComponent
           width="180px"
           secondary
@@ -260,7 +262,7 @@ const SignupClient = ({
       </S.FormSection>
       <S.BtnDiv>
         <S.Button disabled={isSubmitting} type="submit">
-          {!isSubmitting ? (
+          {!loading ? (
             <p>Enviar</p>
           ) : (
             <Spinner
@@ -274,4 +276,4 @@ const SignupClient = ({
   );
 };
 
-export default SignupClient;
+export const SignupClient = memo(SignupClientMemoized);

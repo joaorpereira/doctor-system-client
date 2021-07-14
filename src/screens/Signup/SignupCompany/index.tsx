@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Controller, useForm } from "react-hook-form";
 import ReactSelect from "react-select";
 import * as S from "./styled";
@@ -43,9 +44,10 @@ type CompanyProps = {
   cpfValue: string;
   bankInfoPage: boolean;
   setBankInfoPage: (value: React.SetStateAction<boolean>) => void;
+  loading: boolean;
 };
 
-const SignupCompany = ({
+const SignupCompanyMemoized = ({
   onSubmit,
   handlePhoneMask,
   handleCpfOrCnpjMask,
@@ -64,6 +66,7 @@ const SignupCompany = ({
   cpfValue,
   bankInfoPage,
   setBankInfoPage,
+  loading,
 }: CompanyProps) => {
   const {
     register,
@@ -344,7 +347,7 @@ const SignupCompany = ({
       <S.BtnDiv>
         {bankInfoPage ? (
           <S.Button disabled={isSubmitting} type="submit">
-            {!isSubmitting ? (
+            {!loading ? (
               <p>Enviar</p>
             ) : (
               <Spinner
@@ -363,4 +366,4 @@ const SignupCompany = ({
   );
 };
 
-export default SignupCompany;
+export const SignupCompany = memo(SignupCompanyMemoized);
