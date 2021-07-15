@@ -6,7 +6,7 @@ type OnClickOutSideProps = {
   handler: (value: React.SetStateAction<boolean>) => void;
 };
 
-export const useOnClickOutside = ({ ref, handler }: OnClickOutSideProps) => {
+const useOnClickOutside = ({ ref, handler }: OnClickOutSideProps) => {
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const listener = (event: any) => {
@@ -23,3 +23,5 @@ export const useOnClickOutside = ({ ref, handler }: OnClickOutSideProps) => {
     };
   }, [ref, handler]);
 };
+
+export default useOnClickOutside;

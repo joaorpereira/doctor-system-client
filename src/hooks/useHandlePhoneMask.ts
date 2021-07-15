@@ -4,6 +4,7 @@ import { formatPhone } from "../utils/helpers";
 type Props = {
   setPhoneValue: Dispatch<React.SetStateAction<string>>;
 };
+
 const useHandlePhoneMask = ({ setPhoneValue }: Props) => {
   const handlePhoneMask = useCallback(
     (e: React.FormEvent<HTMLInputElement> & { target: HTMLInputElement }) => {

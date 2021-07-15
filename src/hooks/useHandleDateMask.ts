@@ -4,6 +4,7 @@ import { maskDate } from "../utils/helpers";
 type Props = {
   setDateValue: Dispatch<React.SetStateAction<string>>;
 };
+
 const useHandleDateMask = ({ setDateValue }: Props) => {
   const handlePhoneMask = useCallback(
     (e: React.FormEvent<HTMLInputElement> & { target: HTMLInputElement }) => {

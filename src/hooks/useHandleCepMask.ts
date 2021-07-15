@@ -4,6 +4,7 @@ import { formatCep } from "../utils/helpers";
 type Props = {
   setCepValue: Dispatch<React.SetStateAction<string>>;
 };
+
 const useHandleCepMask = ({ setCepValue }: Props) => {
   const handlePhoneMask = useCallback(
     (e: React.FormEvent<HTMLInputElement> & { target: HTMLInputElement }) => {
