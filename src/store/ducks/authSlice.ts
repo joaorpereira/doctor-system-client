@@ -2,6 +2,10 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState = {
   page: "",
+  loading: false,
+  user: {},
+  success: false,
+  token: null,
 };
 
 const authSlice = createSlice({
@@ -11,9 +15,35 @@ const authSlice = createSlice({
     setSignupPage(state, action: PayloadAction<string>) {
       return { ...state, page: action.payload };
     },
+    requestLogin(state, action: PayloadAction<any>) {
+      return { ...state, loading: true };
+    },
+    requestLogout(state, action: PayloadAction<any>) {
+      return { ...state, loading: true };
+    },
+    requestLoginSuccess(state, action: PayloadAction<any>) {
+      const user = action.payload.user;
+      const token = action.payload.token;
+      return {
+        ...state,
+        loading: true,
+        user: user,
+        success: true,
+        token: token,
+      };
+    },
+    requestLogoutSuccess(state, action) {
+      return { ...state, loading: true, user: {}, success: true, token: null };
+    },
   },
 });
 
-export const { setSignupPage } = authSlice.actions;
+export const {
+  setSignupPage,
+  requestLogin,
+  requestLogout,
+  requestLoginSuccess,
+  requestLogoutSuccess,
+} = authSlice.actions;
 
 export default authSlice.reducer;
