@@ -25,19 +25,10 @@ import { useFormatScheduleData } from "./hooks";
 
 import "date-fns/locale/pt-BR";
 import { SectionTitle } from "../../styles/global";
+import { IRange, IScheduleProps } from "../../store/sagas/schedulesSaga";
 
 const locales = {
   "pt-BR": require("date-fns/locale/pt-BR"),
-};
-
-type IRange = {
-  start: string | Date;
-  end: string | Date;
-};
-
-export type IScheduleProps = {
-  company_id: string;
-  range: IRange;
 };
 
 type ISelector = {

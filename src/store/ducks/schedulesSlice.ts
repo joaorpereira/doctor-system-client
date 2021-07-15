@@ -1,6 +1,7 @@
-import { createSlice, createAction } from "@reduxjs/toolkit";
-import { IScheduleProps } from "../../screens/Home";
-import { withPayloadType } from "../common/types";
+/* eslint-disable eslint-comments/disable-enable-pair */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type Schedule = {
   client_id: { _id: string; name: string };
@@ -21,17 +22,15 @@ export type FormatedSchedule = {
   end: Date;
 };
 
-export const getSchedules = createAction(
-  "schedules/getSchedules",
-  withPayloadType<IScheduleProps>()
-);
-
 // === SLICES ===
 
 const schedulesSlice = createSlice({
   name: "schedules",
   initialState: {},
   reducers: {
+    getSchedules(state, action: PayloadAction<any>) {
+      return { ...state };
+    },
     setSchedules(state, action) {
       const schedules = action.payload;
       return { ...state, ...schedules };
@@ -39,6 +38,6 @@ const schedulesSlice = createSlice({
   },
 });
 
-export const { setSchedules } = schedulesSlice.actions;
+export const { setSchedules, getSchedules } = schedulesSlice.actions;
 
 export default schedulesSlice.reducer;

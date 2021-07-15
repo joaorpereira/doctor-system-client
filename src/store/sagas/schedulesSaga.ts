@@ -1,9 +1,17 @@
 import api from "../../services/api";
 import { all, call, put, takeLatest } from "redux-saga/effects";
-
 import { getSchedules, setSchedules } from "../ducks/schedulesSlice";
 import { ResponseGenerator } from "../common/types";
-import { IScheduleProps } from "../../screens/Home";
+
+export type IRange = {
+  start: string | Date;
+  end: string | Date;
+};
+
+export type IScheduleProps = {
+  company_id: string;
+  range: IRange;
+};
 
 type IGetScheduleProps = {
   type: string;
