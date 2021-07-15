@@ -1,13 +1,14 @@
 import React from "react";
 import * as S from "./styled";
 
-const SpinnerComponent = (props: any) => (
-  <S.StyledSpinner
-    viewBox="0 0 50 50"
-    loading={props.loading}
-    {...props}
-    size={props.size}
-  >
+type SpinnerProps = {
+  loading?: boolean;
+  size: string;
+  style?: React.CSSProperties;
+};
+
+const SpinnerComponent = ({ loading, size, ...props }: SpinnerProps) => (
+  <S.StyledSpinner viewBox="0 0 50 50" loading={loading} {...props} size={size}>
     <circle
       className="path"
       cx="25"
