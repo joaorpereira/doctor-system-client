@@ -37,25 +37,25 @@ export const clientsSlice = createSlice({
     getClients(state) {
       return { ...state, loading: true };
     },
-    updateClient: (state, action: PayloadAction<any>) => {
+    updateClient(state, action: PayloadAction<any>) {
       return { ...state, loading: true };
     },
-    createClient: (state, action: PayloadAction<any>) => {
+    createClient(state, action: PayloadAction<any>) {
       return { ...state, loading: true };
     },
-    removeClient: (state, action: PayloadAction<any>) => {
+    removeClient(state, action: PayloadAction<any>) {
       return { ...state, loading: true };
     },
-    setClient: (state, action: PayloadAction<any>) => {
+    setClient(state, action: PayloadAction<any>) {
       const client = action.payload.client;
       const type = action.payload.type;
       return { ...state, client: client, type: type, loading: false };
     },
-    setClientsSuccess: (state, action: PayloadAction<any>) => {
+    setClientsSuccess(state, action: PayloadAction<any>) {
       const clients = action.payload.clients;
       return { ...state, clients, loading: false };
     },
-    updateClientSuccess: (state, action: PayloadAction<any>) => {
+    updateClientSuccess(state, action: PayloadAction<any>) {
       const { client } = action.payload;
       const clientIndex = state.clients.findIndex(
         (item) => item._id === client._id
@@ -63,12 +63,12 @@ export const clientsSlice = createSlice({
       state.clients[clientIndex] = client;
       state.loading = false;
     },
-    createClientSuccess: (state, action: PayloadAction<any>) => {
+    createClientSuccess(state, action: PayloadAction<any>) {
       const client = action.payload.client;
       state.clients = [...state.clients, client];
       state.loading = false;
     },
-    removeClientSuccess: (state, action: PayloadAction<any>) => {
+    removeClientSuccess(state, action: PayloadAction<any>) {
       state.clients = state.clients.filter(
         (item: Client) => item._id !== action.payload.id
       );

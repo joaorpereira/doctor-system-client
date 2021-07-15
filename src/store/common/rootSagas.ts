@@ -5,6 +5,7 @@ import watchCompanies from "../sagas/companiesSaga";
 import watchSchedules from "../sagas/schedulesSaga";
 import watchWorkers from "../sagas/workersSaga";
 import watchServices from "../sagas/servicesSaga";
+import watchAuth from "../sagas/authSaga";
 
 export function* rootSagas() {
   yield all([
@@ -13,5 +14,6 @@ export function* rootSagas() {
     watchSchedules,
     watchWorkers,
     watchServices,
+    watchAuth,
   ]);
 }
