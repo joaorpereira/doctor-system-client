@@ -1,5 +1,4 @@
-import { useAppDispatch } from "../../../hooks/hooks";
-import { history } from "../../../services/history";
+import { useAppDispatch } from "../../../hooks";
 import { createClient } from "../../../store/ducks/clientsSlice";
 import {
   reverseBirthDateFormat,
@@ -20,7 +19,7 @@ interface Props {
   pictureValue: string;
 }
 
-export const useOnSubmitClient = ({
+const useOnSubmitClient = ({
   genderValue,
   cpfValue,
   cepValue,
@@ -66,9 +65,9 @@ export const useOnSubmitClient = ({
             address: newAddress,
           },
           company_id: companyValue,
+          isSignUp: true,
         })
       );
-      history.push("/");
     } catch (error) {
       console.log(error);
     }
@@ -76,3 +75,5 @@ export const useOnSubmitClient = ({
 
   return [onSubmitClient];
 };
+
+export default useOnSubmitClient;

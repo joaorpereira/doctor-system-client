@@ -1,6 +1,5 @@
 import { OptionsType } from "react-select";
-import { useAppDispatch } from "../../../hooks/hooks";
-import { history } from "../../../services/history";
+import { useAppDispatch } from "../../../hooks";
 import { createWorker } from "../../../store/ducks/workersSlice";
 import { OptionType } from "../../../utils/globalTypes";
 import {
@@ -21,7 +20,7 @@ interface Props {
   selectedServices: OptionsType<OptionType>;
 }
 
-export const useOnSubmitWorker = ({
+const useOnSubmitWorker = ({
   genderValue,
   cpfValue,
   phoneValue,
@@ -68,9 +67,9 @@ export const useOnSubmitWorker = ({
             services: newServices,
           },
           company_id: companyValue,
+          isSignUp: true,
         })
       );
-      history.push("/");
     } catch (error) {
       console.log(error);
     }
@@ -78,3 +77,5 @@ export const useOnSubmitWorker = ({
 
   return [onSubmit];
 };
+
+export default useOnSubmitWorker;

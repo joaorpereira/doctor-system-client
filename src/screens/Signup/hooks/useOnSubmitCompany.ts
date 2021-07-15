@@ -1,5 +1,4 @@
-import { useAppDispatch } from "../../../hooks/hooks";
-import { history } from "../../../services/history";
+import { useAppDispatch } from "../../../hooks";
 import { createCompany } from "../../../store/ducks/companiesSlice";
 import { reversePhoneNumberFormat } from "../../../utils/helpers";
 
@@ -17,7 +16,7 @@ interface Props {
   bankCodeValue: string;
 }
 
-export const useOnSubmitCompany = ({
+const useOnSubmitCompany = ({
   cpfValue,
   cepValue,
   phoneValue,
@@ -62,16 +61,18 @@ export const useOnSubmitCompany = ({
     try {
       dispatch(
         createCompany({
-          ...data,
-          picture: pictureValue,
-          background: backgroundImageValue,
-          phone_number: newPhoneNumber,
-          address: newAddress,
-          geolocation: newGeolocation,
-          bank_account: newBankAccount,
+          company: {
+            ...data,
+            picture: pictureValue,
+            background: backgroundImageValue,
+            phone_number: newPhoneNumber,
+            address: newAddress,
+            geolocation: newGeolocation,
+            bank_account: newBankAccount,
+          },
+          isSignUp: true,
         })
       );
-      history.push("/");
     } catch (error) {
       console.log(error);
     }
@@ -79,3 +80,5 @@ export const useOnSubmitCompany = ({
 
   return [onSubmitCompany];
 };
+
+export default useOnSubmitCompany;
