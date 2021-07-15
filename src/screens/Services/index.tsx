@@ -27,7 +27,7 @@ import { CloseModalIcon } from "../../components/CloseModalIcon";
 import { Input, Label, Box } from "../../components/Input/styled";
 
 import { RootState } from "../../store";
-import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import { useAppDispatch, useAppSelector, useOnClickOutside } from "../../hooks";
 
 import {
   RowInfo,
@@ -37,9 +37,7 @@ import {
   statusOptions,
 } from "../../utils/globalTypes";
 
-import { useOnSubmit } from "./hooks/useOnSubmit";
-import { useOnClickOutside } from "../../hooks/useOnClickOutside";
-import { useHandleUpdateOrShowService } from "./hooks/useHandleUpdateOrShowService";
+import { useOnSubmit, useHandleUpdateOrShowService } from "./hooks";
 import {
   getFilteredServices,
   getServices,

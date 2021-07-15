@@ -30,14 +30,16 @@ import { Button } from "../../components/Button";
 import { Select } from "../../components/Select/styled";
 import { Input, Label, Box } from "../../components/Input/styled";
 import { CloseModalIcon } from "../../components/CloseModalIcon";
+import { ButtonEdit } from "../../components/ButtonEdit/styled";
 
 import { RootState } from "../../store";
-import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
-import { getClients, removeClient } from "../../store/ducks/clientsSlice";
+import {
+  Client,
+  getClients,
+  removeClient,
+} from "../../store/ducks/clientsSlice";
 
 import {
-  DocumentProps,
-  AddressProps,
   RowInfo,
   operationsTypes,
   genderOptions,
@@ -46,28 +48,18 @@ import {
 } from "../../utils/globalTypes";
 import { formatCPForCNPJ, formatPhone } from "../../utils/helpers";
 
-import useOnSubmit from "./hooks/useOnSubmit";
-import useHandleCepMask from "../../hooks/useHandleCepMask";
-import useHandleDateMask from "../../hooks/useHandleDateMask";
-import useHandlePhoneMask from "../../hooks/useHandlePhoneMask";
-import { useOnClickOutside } from "../../hooks/useOnClickOutside";
-import useHandleShowPassword from "../../hooks/useHandleShowPassword";
-import useHandleCpfOrCnpjMask from "../../hooks/useHandleCpfOrCnpjMask";
-import useHandleUpdateOrShowClient from "./hooks/useHandleUpdateOrShowClient";
-import { ButtonEdit } from "../../components/ButtonEdit/styled";
+import { useOnSubmit, useHandleUpdateOrShowClient } from "./hooks";
 
-export type ClientProps = {
-  document: DocumentProps;
-  address: AddressProps;
-  name: string;
-  email: string;
-  password: string;
-  picture: string;
-  phone_number: string;
-  gender: string;
-  birth_date: string;
-  _id?: string;
-};
+import {
+  useAppDispatch,
+  useAppSelector,
+  useHandleCepMask,
+  useHandleDateMask,
+  useHandlePhoneMask,
+  useOnClickOutside,
+  useHandleShowPassword,
+  useHandleCpfOrCnpjMask,
+} from "../../hooks";
 
 const Clients: React.FC = (): ReactElement => {
   const ref = useRef<HTMLInputElement>();
@@ -100,7 +92,7 @@ const Clients: React.FC = (): ReactElement => {
     phone_number,
     gender,
     birth_date,
-  }: ClientProps = client;
+  }: Client = client;
 
   useEffect(() => {
     dispatch(getClients());

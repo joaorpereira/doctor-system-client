@@ -13,14 +13,15 @@ import {
   startOfMonth,
 } from "date-fns";
 
-import { getSchedules } from "../../store/ducks/schedulesSlice";
+import {
+  FormatedSchedule,
+  getSchedules,
+  Schedule,
+} from "../../store/ducks/schedulesSlice";
 import { RootState } from "../../store";
 
-import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
-import useFormatScheduleData, {
-  IFormatedSchedule,
-  IScheduleData,
-} from "./hooks/useFormatScheduleData";
+import { useAppDispatch, useAppSelector } from "../../hooks";
+import { useFormatScheduleData } from "./hooks";
 
 import "date-fns/locale/pt-BR";
 import { SectionTitle } from "../../styles/global";
@@ -40,7 +41,7 @@ export type IScheduleProps = {
 };
 
 type ISelector = {
-  schedules?: IScheduleData[];
+  schedules?: Schedule[];
 };
 
 const HomePage: React.FC = (): ReactElement => {
@@ -52,7 +53,7 @@ const HomePage: React.FC = (): ReactElement => {
     locales,
   });
   const dispatch = useAppDispatch();
-  const [scheduleData, setScheduleData] = useState<IFormatedSchedule[]>([]);
+  const [scheduleData, setScheduleData] = useState<FormatedSchedule[]>([]);
   const { schedules } = useAppSelector<ISelector>(
     ({ schedulesReducers }: RootState) => schedulesReducers
   );

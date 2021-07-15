@@ -32,7 +32,16 @@ import { CloseModalIcon } from "../../components/CloseModalIcon";
 import { Input, Label, Box } from "../../components/Input/styled";
 
 import { RootState } from "../../store";
-import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import {
+  useAppDispatch,
+  useAppSelector,
+  useHandleShowPassword,
+  useHandleCpfOrCnpjMask,
+  useHandleDateMask,
+  useHandlePhoneMask,
+  useOnClickOutside,
+} from "../../hooks";
+
 import {
   getWorkers,
   removeWorker,
@@ -49,15 +58,12 @@ import {
 } from "../../utils/globalTypes";
 import { formatCPForCNPJ, formatPhone } from "../../utils/helpers";
 
-import useOnSubmit from "./hooks/useOnSubmit";
-import useHandleDateMask from "../../hooks/useHandleDateMask";
-import useHandlePhoneMask from "../../hooks/useHandlePhoneMask";
-import { useOnClickOutside } from "../../hooks/useOnClickOutside";
-import useHandleShowPassword from "../../hooks/useHandleShowPassword";
-import useHandleCpfOrCnpjMask from "../../hooks/useHandleCpfOrCnpjMask";
-import useHandleUpdateOrShowWorker from "./hooks/useHandleUpdateOrShowWorker";
 import { getFilteredServices } from "../../store/ducks/servicesSlice";
-import useHandleSelectedServicesValues from "./hooks/useHandleSelectedServicesValues";
+import {
+  useHandleSelectedServicesValues,
+  useOnSubmit,
+  useHandleUpdateOrShowWorker,
+} from "./hooks";
 
 const Workers: React.FC = (): ReactElement => {
   const ref = useRef<HTMLInputElement>();

@@ -11,15 +11,21 @@ import DoctorAndPatients from "../../assets/Doctor-And-Patients-2.svg";
 import { OptionType } from "../../utils/globalTypes";
 import { ValueType } from "react-select";
 
-import { useOnSubmitClient } from "./hooks/useOnSubmitClient";
-import { useOnSubmitWorker } from "./hooks/useOnSubmitWorker";
-import { useOnSubmitCompany } from "./hooks/useOnSubmitCompany";
+import {
+  useOnSubmitClient,
+  useOnSubmitWorker,
+  useOnSubmitCompany,
+} from "./hooks";
 
-import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
-import useHandleCepMask from "../../hooks/useHandleCepMask";
-import useHandleDateMask from "../../hooks/useHandleDateMask";
-import useHandlePhoneMask from "../../hooks/useHandlePhoneMask";
-import useHandleCpfOrCnpjMask from "../../hooks/useHandleCpfOrCnpjMask";
+import {
+  useAppDispatch,
+  useAppSelector,
+  useLocalStorage,
+  useHandleCepMask,
+  useHandleDateMask,
+  useHandlePhoneMask,
+  useHandleCpfOrCnpjMask,
+} from "../../hooks";
 
 import { SignupClient } from "./SignupClient";
 import { SignupCompany } from "./SignupCompany";
@@ -28,7 +34,6 @@ import { SignupWorker } from "./SignupWorker";
 import { RootState } from "../../store";
 import { getFilteredServices } from "../../store/ducks/servicesSlice";
 import { getFilteredCompanies } from "../../store/ducks/companiesSlice";
-import { useLocalStorage } from "../../hooks/useLocalStorage";
 
 const profiles = ["client", "worker", "company"];
 

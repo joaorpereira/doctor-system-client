@@ -10,10 +10,9 @@ import { MdKeyboardReturn } from "react-icons/md";
 import { Spinner } from "../../components/Spinner";
 
 import { RootState } from "../../store";
-import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import { useAppDispatch, useAppSelector, useLocalStorage } from "../../hooks";
 import { requestLogin, setSignupPage } from "../../store/ducks/authSlice";
 import { useHistory } from "react-router-dom";
-import { useLocalStorage } from "../../hooks/useLocalStorage";
 
 const profiles = {
   client: "client",
