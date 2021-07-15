@@ -17,11 +17,11 @@ const Routes: React.FC = (): ReactElement => {
       <Switch>
         <Route path="/login" exact component={LoginPage} />
         <Route path="/cadastro" exact component={SignUp} />
-        <Route path={["/", "/agendamentos"]} exact component={Home} />
-        <Route path="/clientes" exact component={Clients} />
-        <Route path="/colaboradores" exact component={Workers} />
-        <Route path="/servicos" exact component={Services} />
-        <Route path="/horarios" exact component={Hours} />
+        <Route path={["/", "/agendamentos"]} exact component={Home} isPrivate />
+        <Route path="/clientes" exact component={Clients} isPrivate />
+        <Route path="/colaboradores" exact component={Workers} isPrivate />
+        <Route path="/servicos" exact component={Services} isPrivate />
+        <Route path="/horarios" exact component={Hours} isPrivate />
       </Switch>
     </Suspense>
   );
