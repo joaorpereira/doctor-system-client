@@ -11,11 +11,10 @@ import {
   OptionType,
 } from "../../../utils/globalTypes";
 import { reactSelectedStyleSigupPage } from "../../../styles/global";
-import { countryList } from "../../../utils/countries";
-import { states } from "../../../utils/states";
 import { bankList } from "../../../utils/banksList";
 
 type Props = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onSubmit: (data: any) => void;
   handlePhoneMask: (
     e: React.FormEvent<HTMLInputElement> & {
@@ -27,27 +26,14 @@ type Props = {
       target: HTMLInputElement;
     }
   ) => void;
-  handleCountryChange: (e: OptionType) => void;
-  handleCepMask: (
-    e: React.FormEvent<HTMLInputElement> & {
-      target: HTMLInputElement;
-    }
-  ) => void;
-  handleGetAPIAdressInformation: (
-    e: React.FocusEvent<HTMLInputElement>
-  ) => Promise<void>;
-  handleStateChange: (e: OptionType) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handlePicture: (e: any) => void;
   handleAccountType: (e: OptionType) => void;
   handleBankCode: (e: OptionType) => void;
-  fetchCep: boolean;
-  streetValue: string;
-  stateValue: string;
-  cityValue: string;
   cpfValue: string;
   bankInfoPage: boolean;
   setBankInfoPage: (value: React.SetStateAction<boolean>) => void;
-  companiesOptions: any;
+  companiesOptions: OptionType[];
   handleCompanyChange: (e: OptionType) => void;
   handleDateMask: (
     e: React.FormEvent<HTMLInputElement> & {
@@ -56,7 +42,8 @@ type Props = {
   ) => void;
   handleGenderChange: (e: OptionType) => void;
   handleServicesChange: (option: ValueType<OptionType, true>) => void;
-  servicesOptions: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  servicesOptions: OptionType[];
   loading: boolean;
 };
 
@@ -64,17 +51,9 @@ const SignupWorkerMemoized = ({
   onSubmit,
   handlePhoneMask,
   handleCpfOrCnpjMask,
-  handleCountryChange,
-  handleCepMask,
-  handleGetAPIAdressInformation,
-  handleStateChange,
   handlePicture,
   handleAccountType,
   handleBankCode,
-  fetchCep,
-  streetValue,
-  stateValue,
-  cityValue,
   cpfValue,
   bankInfoPage,
   companiesOptions,
@@ -97,103 +76,6 @@ const SignupWorkerMemoized = ({
     <S.Form onSubmit={handleSubmit(onSubmit)}>
       {bankInfoPage && servicesOptions.length > 0 ? (
         <>
-          <h1>Endereço</h1>
-          <S.FormSection>
-            <InputComponent secondary name="address.country" label="País:">
-              <Controller
-                name="address.country"
-                control={control}
-                render={({ field }) => (
-                  <ReactSelect
-                    {...field}
-                    styles={{
-                      control: (base) => ({
-                        ...base,
-                        ...reactSelectedStyleSigupPage,
-                        width: "177px !important",
-                      }),
-                    }}
-                    value={countryList.filter(
-                      (option: OptionType) => option.value === "BR"
-                    )}
-                    options={countryList}
-                    onChange={(e) => handleCountryChange(e as OptionType)}
-                  />
-                )}
-              />
-            </InputComponent>
-            <InputComponent
-              width="200px"
-              secondary
-              name="address.cep"
-              label="CEP:"
-            >
-              <S.Input
-                type="text"
-                maxLength={9}
-                {...register("address.cep")}
-                placeholder="99999-999"
-                onChange={(e) => handleCepMask(e)}
-                onBlur={(e) => handleGetAPIAdressInformation(e)}
-              />
-              {fetchCep && <Spinner loading size="30px" />}
-            </InputComponent>
-            <InputComponent secondary name="address.state" label="Estado:">
-              <Controller
-                name="address.state"
-                control={control}
-                render={({ field }) => (
-                  <ReactSelect
-                    {...field}
-                    value={states.filter(
-                      (option: OptionType) => option.value === stateValue
-                    )}
-                    styles={{
-                      control: (base) => ({
-                        ...base,
-                        ...reactSelectedStyleSigupPage,
-                        width: "177px !important",
-                      }),
-                    }}
-                    options={states}
-                    onChange={(e) => handleStateChange(e as OptionType)}
-                  />
-                )}
-              />
-            </InputComponent>
-            <InputComponent
-              width="201px"
-              secondary
-              name="address.city"
-              label="Cidade:"
-            >
-              <S.Input
-                type="text"
-                defaultValue={cityValue}
-                {...register("address.city")}
-              />
-            </InputComponent>
-            <InputComponent
-              width="297px"
-              secondary
-              name="address.street"
-              label="Rua:"
-            >
-              <S.Input
-                type="text"
-                defaultValue={streetValue}
-                {...register("address.street")}
-              />
-            </InputComponent>
-            <InputComponent
-              width="80px"
-              secondary
-              name="address.number"
-              label="Número:"
-            >
-              <S.Input type="text" {...register("address.number")} />
-            </InputComponent>
-          </S.FormSection>
           <h1>Dados Bancários</h1>
           <S.FormSection>
             <InputComponent

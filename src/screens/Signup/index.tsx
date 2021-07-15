@@ -11,9 +11,9 @@ import DoctorAndPatients from "../../assets/Doctor-And-Patients-2.svg";
 import { OptionType } from "../../utils/globalTypes";
 import { ValueType } from "react-select";
 
-import useOnSubmitClient from "./hooks/useOnSubmitClient";
-import useOnSubmitWorker from "./hooks/useOnSubmitWorker";
-import useOnSubmitCompany from "./hooks/useOnSubmitCompany";
+import { useOnSubmitClient } from "./hooks/useOnSubmitClient";
+import { useOnSubmitWorker } from "./hooks/useOnSubmitWorker";
+import { useOnSubmitCompany } from "./hooks/useOnSubmitCompany";
 
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import useHandleCepMask from "../../hooks/useHandleCepMask";
@@ -28,12 +28,16 @@ import { SignupWorker } from "./SignupWorker";
 import { RootState } from "../../store";
 import { getFilteredServices } from "../../store/ducks/servicesSlice";
 import { getFilteredCompanies } from "../../store/ducks/companiesSlice";
+import { useLocalStorage } from "../../hooks/useLocalStorage";
+
+const profiles = ["client", "worker", "company"];
 
 const SignUp = () => {
   const history = useHistory();
   const dispatch = useAppDispatch();
 
   const [cpfValue, setCpfValue] = useState("");
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [cpfOrCnpjBankCode, setCpfOrCnpjBankCode] = useState("");
   const [cepValue, setCepValue] = useState("");
   const [phoneValue, setPhoneValue] = useState("");
@@ -54,10 +58,15 @@ const SignUp = () => {
     ValueType<OptionType, true>
   >([]);
 
+  const { loading, success, token } = useAppSelector(
+    ({ authReducers }: RootState) => authReducers
+  );
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { companiesOptions }: any = useAppSelector(
     ({ companiesReducers }: RootState) => companiesReducers
   );
-
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { page }: any = useAppSelector(
     ({ authReducers }: RootState) => authReducers
   );
@@ -66,17 +75,7 @@ const SignUp = () => {
     ({ servicesReducers }: RootState) => servicesReducers
   );
 
-  const { loading: companyLoading }: any = useAppSelector(
-    ({ companiesReducers }: RootState) => companiesReducers
-  );
-
-  const { loading: clientLoading }: any = useAppSelector(
-    ({ clientsReducers }: RootState) => clientsReducers
-  );
-
-  const { loading: workerLoading }: any = useAppSelector(
-    ({ workersReducers }: RootState) => workersReducers
-  );
+  const { storedValue, setValue } = useLocalStorage();
 
   useEffect(() => {
     dispatch(getFilteredCompanies());
@@ -86,6 +85,28 @@ const SignUp = () => {
     if (companyValue !== "")
       dispatch(getFilteredServices({ id: companyValue }));
   }, [dispatch, companyValue]);
+
+  const handleReturnPage = () => {
+    if (bankInfoPage) setBankInfoPage(false);
+    else history.push("/login");
+  };
+
+  useEffect(() => {
+    if (success) history.push("/");
+  }, [success, history]);
+
+  useEffect(() => {
+    if (token) setValue(token);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token]);
+
+  useEffect(() => {
+    if (storedValue) history.push("/");
+  }, [storedValue, history]);
+
+  useEffect(() => {
+    if (!profiles.includes(page)) history.push("/login");
+  }, [history, page]);
 
   const handleGenderChange = useCallback(
     (e: OptionType) => setGenderValue(e.value),
@@ -107,10 +128,10 @@ const SignUp = () => {
     []
   );
 
-  const handlePicture = useCallback((e: any) => setPictureValue(e), []);
+  const handlePicture = useCallback((e) => setPictureValue(e), []);
 
   const handleBackgroundImage = useCallback(
-    (e: any) => setBackgroundImageValue(e),
+    (e) => setBackgroundImageValue(e),
     []
   );
 
@@ -140,13 +161,8 @@ const SignUp = () => {
   const [onSubmitWorker] = useOnSubmitWorker({
     genderValue,
     cpfValue,
-    cepValue,
     phoneValue,
     dateValue,
-    stateValue,
-    countryValue,
-    streetValue,
-    cityValue,
     companyValue,
     pictureValue,
     accountTypeValue,
@@ -207,11 +223,6 @@ const SignUp = () => {
     []
   );
 
-  const handleReturnPage = () => {
-    if (bankInfoPage) setBankInfoPage(false);
-    else history.push("/login");
-  };
-
   return (
     <S.LoginSection>
       <S.BtnReturn onClick={handleReturnPage}>
@@ -236,7 +247,7 @@ const SignUp = () => {
             stateValue={stateValue}
             cityValue={cityValue}
             cpfValue={cpfValue}
-            loading={clientLoading}
+            loading={loading}
           />
         )}
         {page === "company" && (
@@ -259,7 +270,7 @@ const SignUp = () => {
             cpfValue={cpfValue}
             bankInfoPage={bankInfoPage}
             setBankInfoPage={setBankInfoPage}
-            loading={companyLoading}
+            loading={loading}
           />
         )}
         {page === "worker" && (
@@ -267,10 +278,6 @@ const SignUp = () => {
             onSubmit={onSubmitWorker}
             handlePhoneMask={handlePhoneMask}
             handleCpfOrCnpjMask={handleCpfOrCnpjMask}
-            handleCountryChange={handleCountryChange}
-            handleCepMask={handleCepMask}
-            handleGetAPIAdressInformation={handleGetAPIAdressInformation}
-            handleStateChange={handleStateChange}
             handlePicture={handlePicture}
             handleAccountType={handleAccountType}
             handleBankCode={handleBankCode}
@@ -278,16 +285,12 @@ const SignUp = () => {
             handleDateMask={handleDateMask}
             handleGenderChange={handleGenderChange}
             handleServicesChange={handleServicesChange}
-            fetchCep={fetchCep}
-            streetValue={streetValue}
-            stateValue={stateValue}
-            cityValue={cityValue}
             cpfValue={cpfValue}
             bankInfoPage={bankInfoPage}
             servicesOptions={servicesOptions}
             companiesOptions={companiesOptions}
             setBankInfoPage={setBankInfoPage}
-            loading={workerLoading}
+            loading={loading}
           />
         )}
       </S.FlexSection>
