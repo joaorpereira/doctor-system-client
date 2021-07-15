@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 import { Route, Redirect } from "react-router-dom";
-import { useLocalStorage } from "../hooks/useLocalStorage";
+import { useLocalStorage } from "../hooks";
 
 interface IRoutes {
   component: React.ComponentType<React.FC>;

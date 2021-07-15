@@ -7,7 +7,6 @@ const Clients = lazy(() => import("../screens/Clients"));
 const Workers = lazy(() => import("../screens/Workers"));
 const Services = lazy(() => import("../screens/Services"));
 const Hours = lazy(() => import("../screens/Hours"));
-
 const LoginPage = lazy(() => import("../screens/Login"));
 const SignUp = lazy(() => import("../screens/Signup"));
 
