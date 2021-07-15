@@ -17,7 +17,7 @@ interface Props {
   bankCodeValue: string;
 }
 
-const useOnSubmitCompany = ({
+export const useOnSubmitCompany = ({
   cpfValue,
   cepValue,
   phoneValue,
@@ -31,7 +31,7 @@ const useOnSubmitCompany = ({
   bankCodeValue,
 }: Props) => {
   const dispatch = useAppDispatch();
-
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSubmitCompany = (data: any) => {
     const newPhoneNumber = reversePhoneNumberFormat(phoneValue);
     const newDocumentNumber = cpfValue.replace(/\D+/g, "");
@@ -79,5 +79,3 @@ const useOnSubmitCompany = ({
 
   return [onSubmitCompany];
 };
-
-export default useOnSubmitCompany;

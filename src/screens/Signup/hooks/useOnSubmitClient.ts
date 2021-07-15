@@ -20,7 +20,7 @@ interface Props {
   pictureValue: string;
 }
 
-const useOnSubmitClient = ({
+export const useOnSubmitClient = ({
   genderValue,
   cpfValue,
   cepValue,
@@ -34,6 +34,7 @@ const useOnSubmitClient = ({
   pictureValue,
 }: Props) => {
   const dispatch = useAppDispatch();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSubmitClient = (data: any) => {
     const newPhoneNumber = reversePhoneNumberFormat(phoneValue);
     const newBirthDate = reverseBirthDateFormat(dateValue);
@@ -75,5 +76,3 @@ const useOnSubmitClient = ({
 
   return [onSubmitClient];
 };
-
-export default useOnSubmitClient;

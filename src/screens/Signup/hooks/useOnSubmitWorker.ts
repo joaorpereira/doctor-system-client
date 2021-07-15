@@ -11,13 +11,8 @@ import {
 interface Props {
   genderValue: string;
   cpfValue: string;
-  cepValue: string;
   phoneValue: string;
   dateValue: string;
-  stateValue: string;
-  countryValue: string;
-  streetValue: string;
-  cityValue: string;
   companyValue: string;
   pictureValue: string;
   accountTypeValue: string;
@@ -26,16 +21,11 @@ interface Props {
   selectedServices: OptionsType<OptionType>;
 }
 
-const useOnSubmitWorker = ({
+export const useOnSubmitWorker = ({
   genderValue,
   cpfValue,
-  cepValue,
   phoneValue,
   dateValue,
-  stateValue,
-  countryValue,
-  streetValue,
-  cityValue,
   companyValue,
   pictureValue,
   accountTypeValue,
@@ -44,20 +34,12 @@ const useOnSubmitWorker = ({
   cpfOrCnpjBankCode,
 }: Props) => {
   const dispatch = useAppDispatch();
-
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSubmit = (data: any) => {
     const newPhoneNumber = reversePhoneNumberFormat(phoneValue);
     const newBirthDate = reverseBirthDateFormat(dateValue);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const newBankNumber = cpfOrCnpjBankCode?.replace(/\D+/g, "");
-
-    const newAddress = {
-      ...data.address,
-      country: countryValue.toLowerCase(),
-      state: stateValue,
-      cep: cepValue,
-      city: cityValue,
-      street: streetValue,
-    };
 
     const newBankAccount = {
       ...data.bank_account,
@@ -79,7 +61,6 @@ const useOnSubmitWorker = ({
           worker: {
             picture: pictureValue,
             phone_number: newPhoneNumber,
-            address: newAddress,
             gender: genderValue,
             birth_date: newBirthDate,
             document: newDocument,
@@ -97,5 +78,3 @@ const useOnSubmitWorker = ({
 
   return [onSubmit];
 };
-
-export default useOnSubmitWorker;
