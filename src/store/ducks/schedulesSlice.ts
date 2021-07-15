@@ -2,7 +2,24 @@ import { createSlice, createAction } from "@reduxjs/toolkit";
 import { IScheduleProps } from "../../screens/Home";
 import { withPayloadType } from "../common/types";
 
-// === ACTIONS ===
+export type Schedule = {
+  client_id: { _id: string; name: string };
+  schedule_date: string;
+  service_id: { _id: string; title: string; service_duration: string };
+  worker_id: { _id: string; name: string };
+  company_id: string;
+  created_at: string;
+  transaction_id: string;
+  updated_at: string;
+  __v: string;
+  _id: string;
+};
+
+export type FormatedSchedule = {
+  title: string;
+  start: Date;
+  end: Date;
+};
 
 export const getSchedules = createAction(
   "schedules/getSchedules",
