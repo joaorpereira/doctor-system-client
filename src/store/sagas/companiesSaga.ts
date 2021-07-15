@@ -10,6 +10,16 @@ import {
   Company,
 } from "../ducks/companiesSlice";
 import { ResponseGenerator } from "../common/types";
+import { requestLoginSuccess } from "../ducks/authSlice";
+
+type CompanyPayloadProps = {
+  payload: {
+    id?: string;
+    company?: Company;
+    isSignUp?: boolean;
+  };
+  type: string;
+};
 
 function* handleGetCompanies() {
   try {
@@ -31,10 +41,14 @@ function* handleFilterCompanies() {
   }
 }
 
-export function* handleCreateCompany({ payload }: any) {
+export function* handleCreateCompany({ payload }: CompanyPayloadProps) {
   try {
-    const { data } = yield call(api.post, "/company", { ...payload });
+    const company = payload.company;
+    const { data } = yield call(api.post, "/company", { ...company });
     yield put(createCompanySuccess({ company: data.company as Company }));
+    if (payload.isSignUp) {
+      yield put(requestLoginSuccess({ user: data.company, token: data.token }));
+    }
   } catch (error) {
     console.log(error);
   }

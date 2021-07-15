@@ -7,7 +7,7 @@ import {
   requestLogoutSuccess,
 } from "../ducks/authSlice";
 import { ResponseGenerator } from "../common/types";
-import { key } from "../../hooks/useLocalStorage";
+import { key } from "../../utils/localStorageKey";
 
 type PropsPayload = {
   type: string;

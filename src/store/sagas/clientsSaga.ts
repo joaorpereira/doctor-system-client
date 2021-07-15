@@ -12,12 +12,14 @@ import {
   removeClientSuccess,
 } from "../ducks/clientsSlice";
 import { ResponseGenerator } from "../common/types";
+import { requestLoginSuccess } from "../ducks/authSlice";
 
 type ClientPayloadProps = {
   payload: {
     id?: string;
     client?: Client;
     company_id?: string;
+    isSignUp?: boolean;
   };
   type: string;
 };
@@ -60,6 +62,9 @@ export function* handleCreateClient({ payload }: ClientPayloadProps) {
       company_id: payload.company_id,
     });
     yield put(createClientSuccess({ client: data.client }));
+    if (payload.isSignUp) {
+      yield put(requestLoginSuccess({ user: data.client, token: data.token }));
+    }
   } catch (error) {
     console.log(error);
   }

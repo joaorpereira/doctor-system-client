@@ -13,12 +13,14 @@ import {
   removeWorkerSuccess,
 } from "../ducks/workersSlice";
 import { ResponseGenerator } from "../common/types";
+import { requestLoginSuccess } from "../ducks/authSlice";
 
-type WorkerProps = {
+type WorkerPayloadProps = {
   payload: {
     id?: string;
     worker?: Worker;
     company_id?: string;
+    isSignUp?: boolean;
   };
   type: string;
 };
@@ -32,7 +34,7 @@ export function* handleGetWorkers() {
   }
 }
 
-export function* handleGetWorkersByCompany({ payload }: WorkerProps) {
+export function* handleGetWorkersByCompany({ payload }: WorkerPayloadProps) {
   try {
     const { data }: ResponseGenerator = yield call(
       api.get,
@@ -44,7 +46,7 @@ export function* handleGetWorkersByCompany({ payload }: WorkerProps) {
   }
 }
 
-export function* handleUpdateWorker({ payload }: WorkerProps) {
+export function* handleUpdateWorker({ payload }: WorkerPayloadProps) {
   try {
     const { data }: ResponseGenerator = yield call(
       api.put,
@@ -57,7 +59,7 @@ export function* handleUpdateWorker({ payload }: WorkerProps) {
   }
 }
 
-export function* handleRemoveWorker({ payload }: WorkerProps) {
+export function* handleRemoveWorker({ payload }: WorkerPayloadProps) {
   try {
     yield call(api.delete, `/worker/${payload.id}`);
     yield put(removeWorkerSuccess({ id: payload.id }));
@@ -66,13 +68,16 @@ export function* handleRemoveWorker({ payload }: WorkerProps) {
   }
 }
 
-export function* handleCreateWorker({ payload }: WorkerProps) {
+export function* handleCreateWorker({ payload }: WorkerPayloadProps) {
   try {
     const { data } = yield call(api.post, `/worker`, {
       worker_data: { ...payload.worker },
       company_id: payload.company_id,
     });
     yield put(createWorkerSuccess({ worker: data.worker }));
+    if (payload.isSignUp) {
+      yield put(requestLoginSuccess({ user: data.worker, token: data.token }));
+    }
   } catch (error) {
     console.log(error);
   }
