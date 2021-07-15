@@ -1,5 +1,5 @@
 import { FieldValues, UseFormReset } from "react-hook-form";
-import { useAppDispatch } from "../../../hooks/hooks";
+import { useAppDispatch } from "../../../hooks";
 import { setWorker, Worker } from "../../../store/ducks/workersSlice";
 
 type UpdateShowWorkerProps = {

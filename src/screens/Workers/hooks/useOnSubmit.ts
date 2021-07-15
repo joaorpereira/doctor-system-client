@@ -1,5 +1,5 @@
 import { OptionsType } from "react-select";
-import { useAppDispatch } from "../../../hooks/hooks";
+import { useAppDispatch } from "../../../hooks";
 import {
   createWorker,
   updateWorker,
