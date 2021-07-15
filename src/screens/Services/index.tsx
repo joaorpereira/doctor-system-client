@@ -57,10 +57,12 @@ const Services: React.FC = (): ReactElement => {
   const ref = useRef<HTMLInputElement>();
   const dispatch = useAppDispatch();
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { services, service, type }: any = useAppSelector(
     ({ servicesReducers }: RootState) => servicesReducers
   );
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { companiesOptions }: any = useAppSelector(
     ({ companiesReducers }: RootState) => companiesReducers
   );
@@ -250,8 +252,6 @@ const Services: React.FC = (): ReactElement => {
   //     id: image._id,
   //   })),
   // }));
-
-  console.log(service);
 
   return (
     <S.ServicesSection>

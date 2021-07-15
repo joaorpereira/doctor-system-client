@@ -11,6 +11,7 @@ import { countryList } from "../../../utils/countries";
 import { states } from "../../../utils/states";
 
 type ClientPageProps = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onSubmit: (data: any) => void;
   handleDateMask: (
     e: React.FormEvent<HTMLInputElement> & {
@@ -38,7 +39,7 @@ type ClientPageProps = {
   handleGetAPIAdressInformation: (
     e: React.FocusEvent<HTMLInputElement>
   ) => Promise<void>;
-  companiesOptions: any;
+  companiesOptions: OptionType[];
   handleStateChange: (e: OptionType) => void;
   fetchCep: boolean;
   streetValue: string;

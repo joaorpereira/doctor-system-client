@@ -12,6 +12,7 @@ import { states } from "../../../utils/states";
 import { bankList } from "../../../utils/banksList";
 
 type CompanyProps = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onSubmit: (data: any) => void;
   handlePhoneMask: (
     e: React.FormEvent<HTMLInputElement> & {
@@ -33,7 +34,9 @@ type CompanyProps = {
     e: React.FocusEvent<HTMLInputElement>
   ) => Promise<void>;
   handleStateChange: (e: OptionType) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handlePicture: (e: any) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handleBackgroundImage: (e: any) => void;
   handleAccountType: (e: OptionType) => void;
   handleBankCode: (e: OptionType) => void;
