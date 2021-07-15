@@ -1,6 +1,6 @@
 import { useAppDispatch } from "../../../hooks";
 import { createCompany } from "../../../store/ducks/companiesSlice";
-import { reversePhoneNumberFormat } from "../../../utils/helpers";
+import { reversePhoneNumberFormat } from "../../../utils";
 
 interface Props {
   cpfValue: string;

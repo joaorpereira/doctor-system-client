@@ -1,11 +1,11 @@
 import { OptionsType } from "react-select";
 import { useAppDispatch } from "../../../hooks";
 import { createWorker } from "../../../store/ducks/workersSlice";
-import { OptionType } from "../../../utils/globalTypes";
+import { OptionType } from "../../../utils/types";
 import {
   reverseBirthDateFormat,
   reversePhoneNumberFormat,
-} from "../../../utils/helpers";
+} from "../../../utils/helpers/functions";
 
 interface Props {
   genderValue: string;

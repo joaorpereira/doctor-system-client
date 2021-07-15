@@ -3,7 +3,7 @@ import { createClient } from "../../../store/ducks/clientsSlice";
 import {
   reverseBirthDateFormat,
   reversePhoneNumberFormat,
-} from "../../../utils/helpers";
+} from "../../../utils";
 
 interface Props {
   genderValue: string;

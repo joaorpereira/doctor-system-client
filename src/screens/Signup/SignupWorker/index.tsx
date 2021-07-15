@@ -4,13 +4,10 @@ import ReactSelect, { ValueType } from "react-select";
 import * as S from "./styled";
 
 import { Spinner, InputComponent } from "../../../components";
-import {
-  accountsTypesOptions,
-  genderOptions,
-  OptionType,
-} from "../../../utils/globalTypes";
+import { accountsTypesOptions, genderOptions } from "../../../utils";
+import { OptionType } from "../../../utils/types";
 import { reactSelectedStyleSigupPage } from "../../../styles/global";
-import { bankList } from "../../../utils/banksList";
+import { bankList } from "../../../utils/constants/bankList";
 
 type Props = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

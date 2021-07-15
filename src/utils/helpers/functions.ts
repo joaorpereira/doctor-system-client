@@ -1,4 +1,5 @@
-import { OptionType, timeOptions } from "./globalTypes";
+import { OptionType } from "../types";
+import { timeOptions } from "../constants/globalTypes";
 
 export const formataCPF = (value: string) => {
   return value

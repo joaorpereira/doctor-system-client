@@ -41,14 +41,14 @@ import {
   removeClient,
 } from "../../store/ducks/clientsSlice";
 
+import { RowInfo, OptionType } from "../../utils/types";
 import {
-  RowInfo,
   operationsTypes,
   genderOptions,
   documentOptions,
-  OptionType,
-} from "../../utils/globalTypes";
-import { formatCPForCNPJ, formatPhone } from "../../utils/helpers";
+  formatCPForCNPJ,
+  formatPhone,
+} from "../../utils";
 
 import {
   useAppDispatch,

@@ -1,5 +1,5 @@
 import React, { useCallback, Dispatch } from "react";
-import { maskDate } from "../utils/helpers";
+import { maskDate } from "../utils";
 
 type Props = {
   setDateValue: Dispatch<React.SetStateAction<string>>;

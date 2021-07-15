@@ -8,7 +8,7 @@ import { colors } from "../../styles/variables";
 import { MdKeyboardReturn } from "react-icons/md";
 import DoctorAndPatients from "../../assets/Doctor-And-Patients-2.svg";
 
-import { OptionType } from "../../utils/globalTypes";
+import { OptionType } from "../../utils/types";
 import { ValueType } from "react-select";
 
 import {

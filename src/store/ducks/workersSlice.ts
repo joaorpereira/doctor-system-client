@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { BankAccount, DocumentProps } from "../../utils/globalTypes";
+import { BankAccount, DocumentProps } from "../../utils/types";
 
 export type Worker = {
   name: string;

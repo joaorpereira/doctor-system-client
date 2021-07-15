@@ -36,13 +36,13 @@ import {
 
 import { RootState } from "../../store";
 
+import { RowInfo, OptionType } from "../../utils/types";
 import {
-  RowInfo,
+  formatDurationHour,
   operationsTypes,
-  OptionType,
   timeOptions,
   statusOptions,
-} from "../../utils/globalTypes";
+} from "../../utils";
 
 import { useAppDispatch, useAppSelector, useOnClickOutside } from "../../hooks";
 import { useOnSubmit, useHandleUpdateOrShowService } from "./hooks";
@@ -53,7 +53,6 @@ import {
 } from "../../store/ducks/servicesSlice";
 
 import { getFilteredCompanies } from "../../store/ducks/companiesSlice";
-import { formatDurationHour } from "../../utils/helpers";
 
 const maxNumber = 6;
 

@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { OptionsType } from "react-select";
 import { ServicesOptions } from "../../../store/ducks/servicesSlice";
 import { Worker } from "../../../store/ducks/workersSlice";
-import { OptionType } from "../../../utils/globalTypes";
+import { OptionType } from "../../../utils/types";
 
 type Props = {
   setSelectedServices: React.Dispatch<

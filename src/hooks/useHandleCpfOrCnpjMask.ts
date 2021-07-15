@@ -1,5 +1,5 @@
 import React, { useCallback, Dispatch } from "react";
-import { normalizeCPForCNPJ } from "../utils/helpers";
+import { normalizeCPForCNPJ } from "../utils";
 
 type Props = {
   setCpfValue: Dispatch<React.SetStateAction<string>>;

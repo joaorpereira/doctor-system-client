@@ -8,7 +8,7 @@ import {
   reverseBirthDateFormat,
   reverseDocumentNumberFormat,
   reversePhoneNumberFormat,
-} from "../../../utils/helpers";
+} from "../../../utils";
 
 type OnSubmitProps = {
   type: string;

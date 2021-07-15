@@ -1,5 +1,5 @@
 import axios from "axios";
-import { key } from "../utils/localStorageKey";
+import { key } from "../utils";
 
 const api = axios.create({
   baseURL: process.env.REACT_APP_URL || "http://localhost:3003",

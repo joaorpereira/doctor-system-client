@@ -1,5 +1,5 @@
 import React, { useCallback, Dispatch } from "react";
-import { formatCep } from "../utils/helpers";
+import { formatCep } from "../utils";
 
 type Props = {
   setCepValue: Dispatch<React.SetStateAction<string>>;

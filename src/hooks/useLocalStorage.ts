@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { key } from "../utils/localStorageKey";
+import { key } from "../utils";
 
 const initialValue = null;
 

@@ -5,12 +5,12 @@ import {
   updateWorker,
   Worker,
 } from "../../../store/ducks/workersSlice";
-import { OptionType } from "../../../utils/globalTypes";
+import { OptionType } from "../../../utils/types";
 import {
   reverseBirthDateFormat,
   reverseDocumentNumberFormat,
   reversePhoneNumberFormat,
-} from "../../../utils/helpers";
+} from "../../../utils/helpers/functions";
 
 type OnSubmitProps = {
   type: string;

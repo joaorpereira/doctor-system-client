@@ -51,15 +51,14 @@ import {
 } from "../../store/ducks/workersSlice";
 
 import {
-  RowInfo,
   operationsTypes,
   genderOptions,
   documentOptions,
-  OptionType,
   accountsTypesOptions,
-} from "../../utils/globalTypes";
-import { formatCPForCNPJ, formatPhone } from "../../utils/helpers";
-
+  formatCPForCNPJ,
+  formatPhone,
+} from "../../utils";
+import { RowInfo, OptionType } from "../../utils/types";
 import { getFilteredServices } from "../../store/ducks/servicesSlice";
 import {
   useHandleSelectedServicesValues,

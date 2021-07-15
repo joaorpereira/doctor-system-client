@@ -1,5 +1,5 @@
 import React, { useCallback, Dispatch } from "react";
-import { formatPhone } from "../utils/helpers";
+import { formatPhone } from "../utils";
 
 type Props = {
   setPhoneValue: Dispatch<React.SetStateAction<string>>;

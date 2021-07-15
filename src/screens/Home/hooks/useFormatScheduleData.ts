@@ -4,7 +4,7 @@ import {
   FormatedSchedule,
   Schedule,
 } from "../../../store/ducks/schedulesSlice";
-import { convertHourToMinutes } from "../../../utils/date";
+import { convertHourToMinutes } from "../../../utils";
 
 type ISetState = {
   setScheduleData: Dispatch<SetStateAction<FormatedSchedule[]>>;

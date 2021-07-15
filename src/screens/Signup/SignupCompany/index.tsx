@@ -4,11 +4,14 @@ import ReactSelect from "react-select";
 import * as S from "./styled";
 
 import { Spinner, InputComponent } from "../../../components";
-import { accountsTypesOptions, OptionType } from "../../../utils/globalTypes";
+import {
+  accountsTypesOptions,
+  countries,
+  states,
+  bankList,
+} from "../../../utils";
+import { OptionType } from "../../../utils/types";
 import { reactSelectedStyleSigupPage } from "../../../styles/global";
-import { countryList } from "../../../utils/countries";
-import { states } from "../../../utils/states";
-import { bankList } from "../../../utils/banksList";
 
 type CompanyProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -143,10 +146,10 @@ const SignupCompanyMemoized = ({
                         width: "177px !important",
                       }),
                     }}
-                    value={countryList.filter(
+                    value={countries.filter(
                       (option: OptionType) => option.value === "BR"
                     )}
-                    options={countryList}
+                    options={countries}
                     onChange={(e) => handleCountryChange(e as OptionType)}
                   />
                 )}
