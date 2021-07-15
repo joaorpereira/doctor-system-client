@@ -1,4 +1,5 @@
 import axios from "axios";
+import { key } from "../hooks/useLocalStorage";
 
 const api = axios.create({
   baseURL: process.env.REACT_APP_URL || "http://localhost:3003",
@@ -7,13 +8,7 @@ const api = axios.create({
   },
 });
 
-// import store from "../store";
-
-// const listener = () => {
-//   const token = store.getState().token;
-//   api.defaults.headers.common["Authorization"] = token;
-// };
-
-// store.subscribe(listener);
+const token = localStorage.getItem(key);
+api.defaults.headers.common["Authorization"] = token;
 
 export default api;
