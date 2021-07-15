@@ -1,14 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 
 import * as S from "./styled";
 import { colors } from "../../styles/variables";
-
-import { MdKeyboardReturn } from "react-icons/md";
-
 import DoctorAndPatients from "../../assets/Doctor-And-Patients-2.svg";
 import Logo from "../../assets/logo.png";
-import { useAppDispatch } from "../../hooks/hooks";
-import { setSignupPage } from "../../store/ducks/authSlice";
+
+import { MdKeyboardReturn } from "react-icons/md";
+import { Spinner } from "../../components/Spinner";
+
+import { RootState } from "../../store";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import { requestLogin, setSignupPage } from "../../store/ducks/authSlice";
+import { useHistory } from "react-router-dom";
+import { useLocalStorage } from "../../hooks/useLocalStorage";
 
 const profiles = {
   client: "client",
@@ -16,13 +21,58 @@ const profiles = {
   company: "company",
 };
 
+type FormProps = {
+  email: string;
+  password: string;
+};
+
 const Login = () => {
   const dispatch = useAppDispatch();
   const [page, setPage] = useState("");
+  const history = useHistory();
+
+  const { loading, success, token } = useAppSelector(
+    ({ authReducers }: RootState) => authReducers
+  );
+
+  const { storedValue, setValue } = useLocalStorage();
+
+  useEffect(() => {
+    if (success) history.push("/");
+  }, [success, history]);
+
+  useEffect(() => {
+    if (token) setValue(token);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token]);
+
+  useEffect(() => {
+    if (storedValue) history.push("/");
+  }, [storedValue, history]);
 
   const handleChangePage = (value: string) => setPage(value);
   const handleSignupPage = () => {
     dispatch(setSignupPage(page));
+  };
+
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm({});
+
+  const onSubmit = (data: FormProps) => {
+    switch (page) {
+      case profiles.client:
+        dispatch(requestLogin({ ...data, typeUser: profiles.client }));
+        break;
+      case profiles.worker:
+        dispatch(requestLogin({ ...data, typeUser: profiles.worker }));
+        break;
+      case profiles.company:
+        dispatch(requestLogin({ ...data, typeUser: profiles.company }));
+        break;
+    }
   };
 
   return (
@@ -49,19 +99,28 @@ const Login = () => {
             </S.BtnContainer>
           ) : (
             <>
-              <form>
+              <form onSubmit={handleSubmit(onSubmit)}>
                 <S.Box>
                   <S.Label htmlFor="email">Email:</S.Label>
-                  <S.Input name="email" type="password" />
+                  <S.Input type="text" {...register("email")} />
                 </S.Box>
                 <S.Box>
                   <S.Label htmlFor="password">Senha:</S.Label>
-                  <S.Input name="password" type="password" />
+                  <S.Input type="password" {...register("password")} />
                   <S.SpanLink to="/recuperar-senha">
                     Esqueceu sua senha, <u>clique aqui</u>
                   </S.SpanLink>
                 </S.Box>
-                <S.Button type="submit">Login</S.Button>
+                <S.Button disabled={isSubmitting} type="submit">
+                  {!loading && !success ? (
+                    <p>Login</p>
+                  ) : (
+                    <Spinner
+                      size="35px"
+                      style={{ position: "absolute", top: 35, left: 195 }}
+                    />
+                  )}
+                </S.Button>
               </form>
               <S.SpanLink
                 to="/cadastro"

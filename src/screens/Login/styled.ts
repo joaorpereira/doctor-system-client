@@ -82,6 +82,7 @@ export const Wrapper = styled.div`
 `;
 
 export const Button = styled.button`
+  position: relative;
   background-color: ${colors.text};
   color: #fff;
   font-weight: 600;
