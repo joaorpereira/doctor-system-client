@@ -20,14 +20,21 @@ import {
 } from "../../styles/global";
 import { MdEdit, MdRemoveRedEye, MdDelete, MdShare } from "react-icons/md";
 
-import { CardTitle, Card } from "../../components/Card/styled";
-import { Table } from "../../components/Table";
-import { Button } from "../../components/Button";
-import { CloseModalIcon } from "../../components/CloseModalIcon";
-import { Input, Label, Box } from "../../components/Input/styled";
+import {
+  CardTitle,
+  Card,
+  Table,
+  Button,
+  CloseModalIcon,
+  Input,
+  Label,
+  Box,
+  TextArea,
+  ImageUpload,
+  ImageItem,
+} from "../../components";
 
 import { RootState } from "../../store";
-import { useAppDispatch, useAppSelector, useOnClickOutside } from "../../hooks";
 
 import {
   RowInfo,
@@ -37,17 +44,16 @@ import {
   statusOptions,
 } from "../../utils/globalTypes";
 
+import { useAppDispatch, useAppSelector, useOnClickOutside } from "../../hooks";
 import { useOnSubmit, useHandleUpdateOrShowService } from "./hooks";
 import {
   getFilteredServices,
   getServices,
   removeService,
 } from "../../store/ducks/servicesSlice";
-import { Textarea } from "../../components/TextArea/styled";
-import { ImageUpload } from "../../components/ImageUpload";
+
 import { getFilteredCompanies } from "../../store/ducks/companiesSlice";
 import { formatDurationHour } from "../../utils/helpers";
-import { ImageItem } from "../../components/ImageItem";
 
 const maxNumber = 6;
 
@@ -378,7 +384,7 @@ const Services: React.FC = (): ReactElement => {
             <S.Section>
               <Box>
                 <Label htmlFor="description">Descrição:</Label>
-                <Textarea
+                <TextArea
                   style={{ width: "400px", height: "140px" }}
                   defaultValue={description ? description : ""}
                   {...register("description")}

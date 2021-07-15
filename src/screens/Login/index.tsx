@@ -7,7 +7,7 @@ import DoctorAndPatients from "../../assets/Doctor-And-Patients-2.svg";
 import Logo from "../../assets/logo.png";
 
 import { MdKeyboardReturn } from "react-icons/md";
-import { Spinner } from "../../components/Spinner";
+import { Spinner } from "../../components";
 
 import { RootState } from "../../store";
 import { useAppDispatch, useAppSelector, useLocalStorage } from "../../hooks";

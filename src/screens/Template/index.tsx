@@ -4,12 +4,11 @@ import React, {
   useState,
   useCallback,
 } from "react";
-import { Sidebar } from "../../components/Sidebar";
-import { Navbar } from "../../components/Navbar";
-import Routes from "../../routes/routes";
-
-import * as S from "./styled";
 import { useLocation } from "react-router-dom";
+import { Sidebar, Navbar } from "../../components";
+
+import Routes from "../../routes/routes";
+import * as S from "./styled";
 
 const Template: React.FC = (): ReactElement => {
   const location = useLocation();

@@ -7,7 +7,7 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   width?: string;
 };
 
-export const Button = ({
+const Button = ({
   children,
   color,
   width,
@@ -20,3 +20,5 @@ export const Button = ({
     </S.Button>
   );
 };
+
+export default Button;

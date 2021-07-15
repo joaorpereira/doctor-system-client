@@ -1,7 +1,7 @@
 import * as S from "./styled";
 import { MdExpandMore } from "react-icons/md";
 
-export const Navbar = () => {
+const Navbar = () => {
   return (
     <S.Nav>
       <S.Wrapper>
@@ -17,3 +17,5 @@ export const Navbar = () => {
     </S.Nav>
   );
 };
+
+export default Navbar;

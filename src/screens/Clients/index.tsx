@@ -17,20 +17,22 @@ import {
   reactSelectedStyle,
   SectionTitle,
 } from "../../styles/global";
-import { MdEdit, MdRemoveRedEye, MdDelete, MdShare } from "react-icons/md";
-import Avatar from "../../assets/avatar.png";
 
+import Avatar from "../../assets/avatar.png";
+import { MdEdit, MdRemoveRedEye, MdDelete, MdShare } from "react-icons/md";
 import {
+  Table,
+  Button,
+  CloseModalIcon,
   CardTitle,
   StyledMdRemoveRedEye,
   Card,
-} from "../../components/Card/styled";
-import { Table } from "../../components/Table";
-import { Button } from "../../components/Button";
-import { Select } from "../../components/Select/styled";
-import { Input, Label, Box } from "../../components/Input/styled";
-import { CloseModalIcon } from "../../components/CloseModalIcon";
-import { ButtonEdit } from "../../components/ButtonEdit/styled";
+  Select,
+  ButtonEdit,
+  Input,
+  Label,
+  Box,
+} from "../../components";
 
 import { RootState } from "../../store";
 import {
@@ -48,8 +50,6 @@ import {
 } from "../../utils/globalTypes";
 import { formatCPForCNPJ, formatPhone } from "../../utils/helpers";
 
-import { useOnSubmit, useHandleUpdateOrShowClient } from "./hooks";
-
 import {
   useAppDispatch,
   useAppSelector,
@@ -60,6 +60,7 @@ import {
   useHandleShowPassword,
   useHandleCpfOrCnpjMask,
 } from "../../hooks";
+import { useOnSubmit, useHandleUpdateOrShowClient } from "./hooks";
 
 const Clients: React.FC = (): ReactElement => {
   const ref = useRef<HTMLInputElement>();

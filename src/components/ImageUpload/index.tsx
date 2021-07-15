@@ -9,11 +9,7 @@ type ImageUploadProps = {
   images: never[];
 };
 
-export const ImageUpload = ({
-  onChange,
-  maxNumber,
-  images,
-}: ImageUploadProps) => {
+const ImageUpload = ({ onChange, maxNumber, images }: ImageUploadProps) => {
   return (
     <ImageUploading
       multiple
@@ -43,3 +39,5 @@ export const ImageUpload = ({
     </ImageUploading>
   );
 };
+
+export default ImageUpload;

@@ -17,7 +17,7 @@ type Props = {
   handleRemoveImage: () => void;
 };
 
-export const ImageItem = ({ images, handleRemoveImage }: Props) => {
+const ImageItem = ({ images, handleRemoveImage }: Props) => {
   const BUCKET_URL = process.env.REACT_APP_BUCKET_URL;
   return (
     <>
@@ -33,3 +33,5 @@ export const ImageItem = ({ images, handleRemoveImage }: Props) => {
     </>
   );
 };
+
+export default ImageItem;

@@ -20,4 +20,5 @@ const SpinnerComponent = ({ loading, size, ...props }: SpinnerProps) => (
   </S.StyledSpinner>
 );
 
-export const Spinner = React.memo(SpinnerComponent);
+const Spinner = React.memo(SpinnerComponent);
+export default Spinner;

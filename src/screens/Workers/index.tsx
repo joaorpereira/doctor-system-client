@@ -24,12 +24,14 @@ import {
   CardTitle,
   StyledMdRemoveRedEye,
   Card,
-} from "../../components/Card/styled";
-import { Table } from "../../components/Table";
-import { Button } from "../../components/Button";
-import { ButtonEdit } from "../../components/ButtonEdit/styled";
-import { CloseModalIcon } from "../../components/CloseModalIcon";
-import { Input, Label, Box } from "../../components/Input/styled";
+  Table,
+  Button,
+  ButtonEdit,
+  CloseModalIcon,
+  Input,
+  Label,
+  Box,
+} from "../../components";
 
 import { RootState } from "../../store";
 import {

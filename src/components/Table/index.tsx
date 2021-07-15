@@ -9,7 +9,7 @@ export interface TableProperties<T extends Record<string, unknown>>
   onClick?: (row: Row<T>) => React.MouseEventHandler<HTMLElement>;
 }
 
-export function Table<T extends Record<string, unknown>>(
+function Table<T extends Record<string, unknown>>(
   props: PropsWithChildren<TableProperties<T>>
 ): ReactElement {
   const { columns } = props;
@@ -50,3 +50,5 @@ export function Table<T extends Record<string, unknown>>(
     </S.Container>
   );
 }
+
+export default Table;

@@ -5,8 +5,10 @@ type CloseIconProps = {
   handleCloseModal: React.MouseEventHandler<HTMLButtonElement>;
 };
 
-export const CloseModalIcon = ({ handleCloseModal }: CloseIconProps) => (
+const CloseModalIcon = ({ handleCloseModal }: CloseIconProps) => (
   <S.CloseIcon onClick={handleCloseModal}>
     <MdFastForward size={20} color="#fff" style={{ marginRight: "4px" }} />
   </S.CloseIcon>
 );
+
+export default CloseModalIcon;

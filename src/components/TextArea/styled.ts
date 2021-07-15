@@ -6,7 +6,7 @@ interface Props extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   width?: string;
 }
 
-export const Textarea = styled.textarea<Props>`
+export const TextArea = styled.textarea<Props>`
   border: 1px solid ${colors.primary};
   outline: none;
   padding: 8px 10px;

@@ -3,8 +3,7 @@ import { Controller, useForm } from "react-hook-form";
 import ReactSelect, { ValueType } from "react-select";
 import * as S from "./styled";
 
-import { Spinner } from "../../../components/Spinner";
-import InputComponent from "../../../components/Input";
+import { Spinner, InputComponent } from "../../../components";
 import {
   accountsTypesOptions,
   genderOptions,

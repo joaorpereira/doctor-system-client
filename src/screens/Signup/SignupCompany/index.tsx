@@ -3,8 +3,7 @@ import { Controller, useForm } from "react-hook-form";
 import ReactSelect from "react-select";
 import * as S from "./styled";
 
-import { Spinner } from "../../../components/Spinner";
-import InputComponent from "../../../components/Input";
+import { Spinner, InputComponent } from "../../../components";
 import { accountsTypesOptions, OptionType } from "../../../utils/globalTypes";
 import { reactSelectedStyleSigupPage } from "../../../styles/global";
 import { countryList } from "../../../utils/countries";

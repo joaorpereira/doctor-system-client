@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react";
-import { Button } from "../../components/Button";
+import { Button } from "../../components";
 import { SectionTitle } from "../../styles/global";
 import * as S from "./styled";
 

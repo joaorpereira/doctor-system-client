@@ -38,10 +38,7 @@ type ISidebarProps = {
   currentPath: string;
 };
 
-export const Sidebar = ({
-  handleRoute,
-  currentPath,
-}: ISidebarProps): ReactElement => {
+const Sidebar = ({ handleRoute, currentPath }: ISidebarProps): ReactElement => {
   return (
     <S.Aside>
       <div>Logo</div>
@@ -60,3 +57,5 @@ export const Sidebar = ({
     </S.Aside>
   );
 };
+
+export default Sidebar;
