@@ -1,5 +1,5 @@
 import { FieldValues, UseFormReset } from "react-hook-form";
-import { useAppDispatch } from "../../../hooks/hooks";
+import { useAppDispatch } from "../../../hooks";
 import { ServicePayload, setService } from "../../../store/ducks/servicesSlice";
 
 type UpdateShowServiceProps = {
@@ -12,7 +12,7 @@ type UpdateOrShowProps = {
   reset: UseFormReset<FieldValues>;
 };
 
-export const useHandleUpdateOrShowService = ({
+const useHandleUpdateOrShowService = ({
   handleCloseModal,
   reset,
 }: UpdateOrShowProps) => {
@@ -34,3 +34,5 @@ export const useHandleUpdateOrShowService = ({
 
   return [handleUpdateOrShowService];
 };
+
+export default useHandleUpdateOrShowService;

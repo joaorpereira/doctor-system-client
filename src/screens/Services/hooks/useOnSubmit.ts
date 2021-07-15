@@ -1,4 +1,4 @@
-import { useAppDispatch } from "../../../hooks/hooks";
+import { useAppDispatch } from "../../../hooks";
 import {
   Service,
   updateService,
@@ -15,7 +15,7 @@ type OnSubmitProps = {
   images: never[];
 };
 
-export const useOnSubmit = ({
+const useOnSubmit = ({
   id,
   type,
   setShowProfile,
@@ -61,3 +61,5 @@ export const useOnSubmit = ({
 
   return [onSubmit];
 };
+
+export default useOnSubmit;
