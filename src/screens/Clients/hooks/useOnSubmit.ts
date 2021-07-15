@@ -1,6 +1,9 @@
-import { ClientProps } from "..";
-import { useAppDispatch } from "../../../hooks/hooks";
-import { createClient, updateClient } from "../../../store/ducks/clientsSlice";
+import { useAppDispatch } from "../../../hooks";
+import {
+  Client,
+  createClient,
+  updateClient,
+} from "../../../store/ducks/clientsSlice";
 import {
   reverseBirthDateFormat,
   reverseDocumentNumberFormat,
@@ -23,7 +26,7 @@ const useOnSubmit = ({
   genderValue,
 }: OnSubmitProps) => {
   const dispatch = useAppDispatch();
-  const onSubmit = (data: ClientProps) => {
+  const onSubmit = (data: Client) => {
     const newPhoneNumber = reversePhoneNumberFormat(data.phone_number);
     const newBirthDate = reverseBirthDateFormat(data.birth_date);
     const newDocumentNumber = reverseDocumentNumberFormat(data.document);
