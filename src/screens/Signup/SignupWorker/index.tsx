@@ -6,7 +6,7 @@ import * as S from "./styled";
 import { Spinner, InputComponent } from "../../../components";
 import { accountsTypesOptions, genderOptions } from "../../../utils";
 import { OptionType } from "../../../utils/types";
-import { reactSelectedStyleSigupPage } from "../../../styles/global";
+import { reactSelectedStyleSigupPage } from "../../../styles";
 import { bankList } from "../../../utils/constants/bankList";
 
 type Props = {

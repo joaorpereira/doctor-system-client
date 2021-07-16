@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { MdEdit } from "react-icons/md";
-import { colors } from "../../styles/variables";
+import { colors } from "../../styles";
 
 export const ButtonEdit = styled(MdEdit)`
   position: absolute;

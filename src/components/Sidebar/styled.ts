@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { colors } from "../../styles/variables";
+import { colors } from "../../styles";
 
 export const Aside = styled.aside`
   width: 300px;

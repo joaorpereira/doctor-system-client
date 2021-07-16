@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 import { Button } from "../../components";
-import { SectionTitle } from "../../styles/global";
+import { SectionTitle } from "../../styles";
 import * as S from "./styled";
 
 const Hours: React.FC = (): ReactElement => {

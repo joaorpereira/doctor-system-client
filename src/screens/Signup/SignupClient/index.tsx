@@ -5,7 +5,7 @@ import * as S from "./styled";
 
 import { Spinner, InputComponent } from "../../../components";
 import { OptionType } from "../../../utils/types";
-import { reactSelectedStyleSigupPage } from "../../../styles/global";
+import { reactSelectedStyleSigupPage } from "../../../styles";
 import { states, countries, genderOptions } from "../../../utils";
 
 type ClientPageProps = {

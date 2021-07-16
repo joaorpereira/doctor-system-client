@@ -1,4 +1,4 @@
-import { colors } from "../../styles/variables";
+import { colors } from "../../styles";
 import styled from "styled-components";
 
 export const CloseIcon = styled.button`

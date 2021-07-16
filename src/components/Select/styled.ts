@@ -1,6 +1,6 @@
 import { SelectHTMLAttributes } from "react";
 import styled from "styled-components";
-import { colors } from "../../styles/variables";
+import { colors } from "../../styles";
 
 interface Select extends SelectHTMLAttributes<HTMLSelectElement> {
   width?: string;

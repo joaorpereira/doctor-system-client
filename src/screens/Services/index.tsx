@@ -11,7 +11,7 @@ import { Controller, useForm } from "react-hook-form";
 import { ImageListType } from "react-images-uploading";
 
 import * as S from "./styled";
-import { colors } from "../../styles/variables";
+import { colors } from "../../styles";
 import {
   Active,
   Paragraph,

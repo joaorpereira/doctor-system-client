@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import axios from "../../services/api";
 
 import * as S from "./styled";
-import { colors } from "../../styles/variables";
+import { colors } from "../../styles";
 
 import { MdKeyboardReturn } from "react-icons/md";
 import DoctorAndPatients from "../../assets/Doctor-And-Patients-2.svg";

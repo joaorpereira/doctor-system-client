@@ -10,7 +10,7 @@ import { format } from "date-fns";
 import ReactSelect from "react-select";
 
 import * as S from "./styled";
-import { colors } from "../../styles/variables";
+import { colors } from "../../styles";
 import {
   Active,
   Paragraph,

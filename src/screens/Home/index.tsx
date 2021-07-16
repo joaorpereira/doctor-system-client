@@ -24,7 +24,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks";
 import { useFormatScheduleData } from "./hooks";
 
 import "date-fns/locale/pt-BR";
-import { SectionTitle } from "../../styles/global";
+import { SectionTitle } from "../../styles";
 import { IRange, IScheduleProps } from "../../store/sagas/schedulesSaga";
 
 const locales = {

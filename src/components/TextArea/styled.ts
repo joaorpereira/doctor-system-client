@@ -1,6 +1,6 @@
 import { TextareaHTMLAttributes } from "react";
 import styled from "styled-components";
-import { colors } from "../../styles/variables";
+import { colors } from "../../styles";
 
 interface Props extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   width?: string;

@@ -10,13 +10,14 @@ import ReactSelect, { ValueType } from "react-select";
 import { Controller, useForm } from "react-hook-form";
 
 import * as S from "./styled";
-import { colors } from "../../styles/variables";
+
 import {
+  colors,
   Active,
   Paragraph,
   reactSelectedStyle,
   SectionTitle,
-} from "../../styles/global";
+} from "../../styles";
 import { MdEdit, MdRemoveRedEye, MdDelete, MdShare } from "react-icons/md";
 import Avatar from "../../assets/avatar.png";
 

@@ -11,7 +11,7 @@ import {
   bankList,
 } from "../../../utils";
 import { OptionType } from "../../../utils/types";
-import { reactSelectedStyleSigupPage } from "../../../styles/global";
+import { reactSelectedStyleSigupPage } from "../../../styles";
 
 type CompanyProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
