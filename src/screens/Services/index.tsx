@@ -106,7 +106,8 @@ const Services: React.FC = (): ReactElement => {
 
   // functions
   const handleCloseModal = () => setShowProfile(!showProfile);
-  const handleRemoveService = (id: string) => dispatch(removeService({ id }));
+  const handleRemoveService = (id: string) =>
+    dispatch(removeService({ id, status: "INATIVO" }));
   const handleStatusChange = (e: OptionType) => setStatusValue(e.value);
   const handleCompanyChange = (e: OptionType) => setCompanyValue(e.value);
   const handleDurationChange = (e: OptionType) => setDurationValue(e.value);

@@ -96,7 +96,7 @@ function* handleRemoveServices({ payload }: ServicesProps) {
       api.delete,
       `/service/${payload.id}/${payload.status}`
     );
-    yield put(removeServiceSuccess({ services: data.services }));
+    yield put(removeServiceSuccess({ service: data.service }));
   } catch (error) {
     console.log(error);
   }

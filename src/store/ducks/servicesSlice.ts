@@ -97,9 +97,12 @@ const servicesSlice = createSlice({
       state.loading = false;
     },
     removeServiceSuccess: (state, action: PayloadAction<any>) => {
-      state.services = state.services.filter(
-        (item: any) => item._id !== action.payload.id
+      const service = action.payload.service;
+      service.status = "INATIVO";
+      const serviceIndex = state.services.findIndex(
+        (item: any) => item._id === service._id
       );
+      state.services[serviceIndex] = service;
       state.loading = false;
     },
   },
