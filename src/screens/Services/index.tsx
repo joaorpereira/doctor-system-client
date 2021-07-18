@@ -70,6 +70,10 @@ const Services: React.FC = (): ReactElement => {
     ({ companiesReducers }: RootState) => companiesReducers
   );
 
+  const { user } = useAppSelector(
+    ({ authReducers }: RootState) => authReducers
+  );
+
   const {
     service_recurrence,
     service_duration,
@@ -88,10 +92,10 @@ const Services: React.FC = (): ReactElement => {
   const [durationValue, setDurationValue] = useState("");
 
   useEffect(() => {
-    dispatch(getServices({ id: "60d4c7762318d1e795aa7f61" }));
-    dispatch(getFilteredServices({ id: "60d4c7762318d1e795aa7f61" }));
+    dispatch(getServices({ id: user._id }));
+    dispatch(getFilteredServices({ id: user._id }));
     dispatch(getFilteredCompanies());
-  }, [dispatch]);
+  }, [dispatch, user]);
 
   // set default values for statusValue
   useEffect(() => {
@@ -138,7 +142,7 @@ const Services: React.FC = (): ReactElement => {
     type,
     setShowProfile,
     statusValue,
-    companyValue: "60d4c7762318d1e795aa7f61",
+    companyValue: user && user.role === "COMPANY" ? user._id : companyValue,
     durationValue,
     images,
   });
