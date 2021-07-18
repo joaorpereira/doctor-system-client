@@ -13,7 +13,7 @@ import {
   updateService,
   createService,
 } from "../ducks/servicesSlice";
-import { ResponseGenerator } from "../common/types";
+import { ResponseGenerator } from "../types";
 
 type ServicesProps = {
   payload: {

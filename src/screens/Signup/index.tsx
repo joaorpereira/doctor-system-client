@@ -20,7 +20,6 @@ import {
 import {
   useAppDispatch,
   useAppSelector,
-  useLocalStorage,
   useHandleCepMask,
   useHandleDateMask,
   useHandlePhoneMask,
@@ -80,8 +79,6 @@ const SignUp = () => {
     ({ servicesReducers }: RootState) => servicesReducers
   );
 
-  const { storedValue, setValue } = useLocalStorage();
-
   useEffect(() => {
     dispatch(getFilteredCompanies());
   }, [dispatch]);
@@ -101,13 +98,8 @@ const SignUp = () => {
   }, [success, history]);
 
   useEffect(() => {
-    if (token) setValue(token);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token]);
-
-  useEffect(() => {
-    if (storedValue) history.push("/");
-  }, [storedValue, history]);
+    if (token) history.push("/");
+  }, [token, history]);
 
   useEffect(() => {
     if (!profiles.includes(page)) history.push("/login");

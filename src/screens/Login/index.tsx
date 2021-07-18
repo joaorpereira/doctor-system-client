@@ -10,7 +10,7 @@ import { MdKeyboardReturn } from "react-icons/md";
 import { Spinner } from "../../components";
 
 import { RootState } from "../../store";
-import { useAppDispatch, useAppSelector, useLocalStorage } from "../../hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks";
 import { requestLogin, setSignupPage } from "../../store/ducks/authSlice";
 import { useHistory } from "react-router-dom";
 
@@ -34,20 +34,13 @@ const Login = () => {
     ({ authReducers }: RootState) => authReducers
   );
 
-  const { storedValue, setValue } = useLocalStorage();
-
   useEffect(() => {
     if (success) history.push("/");
   }, [success, history]);
 
   useEffect(() => {
-    if (token) setValue(token);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token]);
-
-  useEffect(() => {
-    if (storedValue) history.push("/");
-  }, [storedValue, history]);
+    if (token) history.push("/");
+  }, [token, history]);
 
   const handleChangePage = (value: string) => setPage(value);
   const handleSignupPage = () => {

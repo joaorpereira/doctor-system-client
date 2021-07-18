@@ -1,6 +1,7 @@
 import React, { ReactElement } from "react";
 import { Route, Redirect } from "react-router-dom";
-import { useLocalStorage } from "../hooks";
+import { useAppSelector } from "../hooks";
+import { RootState } from "../store";
 
 interface IRoutes {
   component: React.ComponentType<React.FC>;
@@ -16,9 +17,11 @@ const Routes: React.FC<IRoutes> = ({
   isPrivate,
   ...rest
 }): ReactElement => {
-  const { storedValue } = useLocalStorage();
+  const { token } = useAppSelector(
+    ({ authReducers }: RootState) => authReducers
+  );
 
-  if (isPrivate && !storedValue) {
+  if (isPrivate && !token) {
     return <Redirect to={"/login"} />;
   }
 

@@ -11,7 +11,7 @@ import {
   createClientSuccess,
   removeClientSuccess,
 } from "../ducks/clientsSlice";
-import { ResponseGenerator } from "../common/types";
+import { ResponseGenerator } from "../types";
 import { requestLoginSuccess } from "../ducks/authSlice";
 
 type ClientPayloadProps = {
