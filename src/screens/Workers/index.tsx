@@ -96,6 +96,10 @@ const Workers: React.FC = (): ReactElement => {
     ({ servicesReducers }: RootState) => servicesReducers
   );
 
+  const { user } = useAppSelector(
+    ({ authReducers }: RootState) => authReducers
+  );
+
   const {
     document,
     bank_account,
@@ -110,7 +114,7 @@ const Workers: React.FC = (): ReactElement => {
 
   useEffect(() => {
     dispatch(getWorkers());
-    dispatch(getFilteredServices({ id: "60d4c7762318d1e795aa7f61" }));
+    dispatch(getFilteredServices({ id: user._id }));
   }, [dispatch]);
 
   useEffect(() => {
@@ -187,7 +191,7 @@ const Workers: React.FC = (): ReactElement => {
   // custom hooks - submit form to create or update worker
   const [onSubmit] = useOnSubmit({
     id: worker._id,
-    company_id: "60b281d55398c39f2a93cd21",
+    company_id: user._id,
     services: selectedServices,
     type,
     setShowProfile,
