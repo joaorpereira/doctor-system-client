@@ -45,8 +45,12 @@ const HomePage: React.FC = (): ReactElement => {
   });
   const dispatch = useAppDispatch();
   const [scheduleData, setScheduleData] = useState<FormatedSchedule[]>([]);
+
   const { schedules } = useAppSelector<ISelector>(
     ({ schedulesReducers }: RootState) => schedulesReducers
+  );
+  const { user } = useAppSelector(
+    ({ authReducers }: RootState) => authReducers
   );
 
   const [formatScheduleData] = useFormatScheduleData({ setScheduleData });
@@ -68,7 +72,7 @@ const HomePage: React.FC = (): ReactElement => {
       }
 
       const data: IScheduleProps = {
-        company_id: "60b281095398c39f2a93cd20",
+        company_id: user._id,
         range: {
           start: newRange.start,
           end: newRange.end,
@@ -76,19 +80,19 @@ const HomePage: React.FC = (): ReactElement => {
       };
       dispatch(getSchedules(data));
     },
-    [dispatch]
+    [dispatch, user]
   );
 
   useEffect(() => {
     const data: IScheduleProps = {
-      company_id: "60b281095398c39f2a93cd20",
+      company_id: user._id,
       range: {
         start: format(startOfMonth(new Date()), "yyyy-MM-dd"),
         end: format(endOfMonth(new Date()), "yyyy-MM-dd"),
       },
     };
     dispatch(getSchedules(data));
-  }, [dispatch]);
+  }, [dispatch, user]);
 
   useEffect(() => {
     if (schedules) formatScheduleData(schedules);
