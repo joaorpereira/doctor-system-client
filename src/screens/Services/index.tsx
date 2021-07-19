@@ -61,9 +61,8 @@ const Services: React.FC = (): ReactElement => {
   const dispatch = useAppDispatch();
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { services, service, type }: any = useAppSelector(
-    ({ servicesReducers }: RootState) => servicesReducers
-  );
+  const { services, service, type, loading, loadingFiltered }: any =
+    useAppSelector(({ servicesReducers }: RootState) => servicesReducers);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { companiesOptions }: any = useAppSelector(
@@ -280,7 +279,11 @@ const Services: React.FC = (): ReactElement => {
         </S.ButtonContainer>
       </S.HeaderRow>
       {services && serviceColumns ? (
-        <Table columns={serviceColumns} data={services} />
+        <Table
+          columns={serviceColumns}
+          data={services}
+          loading={loadingFiltered || loading}
+        />
       ) : null}
       <Card ref={ref} showProfile={showProfile}>
         {service && services && (

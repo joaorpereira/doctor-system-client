@@ -37,6 +37,7 @@ interface ServicesSliceState {
   service?: Service;
   type: string;
   loading?: boolean;
+  loadingFiltered?: boolean;
   servicesOptions: ServicesOptions[];
 }
 
@@ -46,6 +47,7 @@ const initialState: ServicesSliceState = {
   servicesOptions: [],
   type: "",
   loading: false,
+  loadingFiltered: false,
 };
 
 const servicesSlice = createSlice({
@@ -81,7 +83,7 @@ const servicesSlice = createSlice({
     },
     setFilteredServicesSuccess(state, action: PayloadAction<any>) {
       const servicesOptions = action.payload;
-      return { ...state, ...servicesOptions, loading: false };
+      return { ...state, ...servicesOptions, loadingFiltered: false };
     },
     createServicesSuccess(state, action: PayloadAction<any>) {
       const service = action.payload.service;
