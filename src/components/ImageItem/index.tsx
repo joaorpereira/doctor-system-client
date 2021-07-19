@@ -15,9 +15,10 @@ type ImageProps = {
 type Props = {
   images: ImageProps[];
   handleRemoveImage: () => void;
+  showUpdate: () => boolean;
 };
 
-const ImageItem = ({ images, handleRemoveImage }: Props) => {
+const ImageItem = ({ images, handleRemoveImage, showUpdate }: Props) => {
   const BUCKET_URL = process.env.REACT_APP_BUCKET_URL;
   return (
     <>
@@ -25,9 +26,11 @@ const ImageItem = ({ images, handleRemoveImage }: Props) => {
         images.map((image) => (
           <S.Box key={image._id}>
             <S.Image src={`${BUCKET_URL}${image.folder}`} alt={image.folder} />
-            <S.RemoveButton onClick={() => handleRemoveImage()}>
-              <MdClear size={23} color="#c70000" />
-            </S.RemoveButton>
+            {showUpdate() ? (
+              <S.RemoveButton onClick={() => handleRemoveImage()}>
+                <MdClear size={23} color="#c70000" />
+              </S.RemoveButton>
+            ) : null}
           </S.Box>
         ))}
     </>
