@@ -6,7 +6,7 @@ import React, {
   useState,
 } from "react";
 import { format } from "date-fns";
-import ReactSelect from "react-select";
+import ReactSelect, { OptionTypeBase } from "react-select";
 import { Controller, useForm } from "react-hook-form";
 import { ImageListType } from "react-images-uploading";
 
@@ -378,6 +378,13 @@ const Services: React.FC = (): ReactElement => {
                           ...reactSelectedStyle,
                         }),
                       }}
+                      value={
+                        user.role === "COMPANY" &&
+                        ({
+                          value: user?._id,
+                          label: user?.name,
+                        } as OptionTypeBase)
+                      }
                       options={companiesOptions}
                       onChange={(e) => handleCompanyChange(e as OptionType)}
                     />
@@ -399,6 +406,7 @@ const Services: React.FC = (): ReactElement => {
             <S.ImageFilesWrapper>
               {service ? (
                 <ImageItem
+                  showUpdate={showUpdate}
                   images={service.files}
                   handleRemoveImage={() => {
                     return;
