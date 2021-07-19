@@ -89,11 +89,12 @@ const servicesSlice = createSlice({
       state.loading = false;
     },
     updateServiceSuccess(state, action: PayloadAction<any>) {
-      const { service } = action.payload;
+      const service = action.payload.service;
       const serviceIndex = state.services.findIndex(
         (item: any) => item._id === service._id
       );
       state.services[serviceIndex] = service;
+      state.service = {};
       state.loading = false;
     },
     removeServiceSuccess: (state, action: PayloadAction<any>) => {

@@ -35,19 +35,14 @@ const useOnSubmit = ({
       service_recurrence: Number(data.service_recurrence),
     };
 
-    // images.map((image: any, index: number) =>
-    //   newForm.append(`file_${index}`, image)
-    // );
-
     if (type === "update") {
-      // dispatch(
-      //   updateService({
-      //     services: {
-      //       service: data,
-      //     },
-      //     id: id,
-      //   })
-      // );
+      dispatch(
+        updateService({
+          id: id,
+          service: { ...newForm },
+          files: images,
+        })
+      );
     } else if (type === "create") {
       dispatch(
         createService({

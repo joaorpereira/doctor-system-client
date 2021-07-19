@@ -31,7 +31,7 @@ function* handleGetServices({ payload }: ServicesProps) {
       api.get,
       `/service/${payload.id}`
     );
-    yield put(setServicesSuccess({ services: data.services }));
+    yield put(setServicesSuccess({ services: data.data }));
   } catch (error) {
     console.log(error);
   }
@@ -43,7 +43,7 @@ function* handleFilterServices({ payload }: ServicesProps) {
       api.get,
       `/service/filter/${payload.id}`
     );
-    yield put(setFilteredServicesSuccess({ servicesOptions: data.services }));
+    yield put(setFilteredServicesSuccess({ servicesOptions: data.data }));
   } catch (error) {
     console.log(error);
   }
@@ -72,7 +72,7 @@ function* handleCreateServices({ payload }: ServicesProps) {
       config
     );
 
-    yield put(createServicesSuccess({ service: data.service }));
+    yield put(createServicesSuccess({ service: data.data }));
   } catch (error) {
     console.log(error);
   }
@@ -80,11 +80,30 @@ function* handleCreateServices({ payload }: ServicesProps) {
 
 function* handleUpdateServices({ payload }: ServicesProps) {
   try {
+    const config = {
+      headers: {
+        "content-type": "multipart/form-data",
+      },
+    };
+
+    const formData = new FormData();
+    formData.append("service", JSON.stringify(payload.service));
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    payload?.files?.map((image: any, index: number) =>
+      formData.append(`file_${index}`, image.file)
+    );
+
     const { data }: ResponseGenerator = yield call(
       api.put,
-      `/service/${payload.id}`
+      `/service/${payload.id}`,
+      formData,
+      config
     );
-    yield put(updateServiceSuccess({ services: data.services }));
+
+    console.log(data);
+
+    yield put(updateServiceSuccess({ service: data.data }));
   } catch (error) {
     console.log(error);
   }
@@ -96,7 +115,7 @@ function* handleRemoveServices({ payload }: ServicesProps) {
       api.delete,
       `/service/${payload.id}/${payload.status}`
     );
-    yield put(removeServiceSuccess({ service: data.service }));
+    yield put(removeServiceSuccess({ service: data.data }));
   } catch (error) {
     console.log(error);
   }
