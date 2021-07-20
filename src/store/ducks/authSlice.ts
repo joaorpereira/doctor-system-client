@@ -3,7 +3,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialState = {
+export interface AuthSliceState {
+  page: string;
+  loading: boolean;
+  user: Record<string, any>;
+  success: boolean;
+  token: null;
+}
+
+const initialState: AuthSliceState = {
   page: "",
   loading: false,
   user: {},
