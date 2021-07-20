@@ -6,6 +6,7 @@ export interface ButtonProps {
   width?: string;
 }
 export const Button = styled.button<ButtonProps>`
+  position: relative;
   height: 50px;
   border-radius: 8px;
   font-weight: 800;
