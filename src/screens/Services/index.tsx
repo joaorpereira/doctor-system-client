@@ -32,6 +32,7 @@ import {
   TextArea,
   ImageUpload,
   ImageItem,
+  Spinner,
 } from "../../components";
 
 import { RootState } from "../../store";
@@ -50,26 +51,49 @@ import {
   getFilteredServices,
   getServices,
   removeService,
+  Service,
 } from "../../store/ducks/servicesSlice";
 
-import { getFilteredCompanies } from "../../store/ducks/companiesSlice";
+import {
+  CompaniesSliceState,
+  getFilteredCompanies,
+} from "../../store/ducks/companiesSlice";
+import { AuthSliceState } from "../../store/ducks/authSlice";
 
 const maxNumber = 6;
+
+type ServiceReducerProps = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  services: any;
+  service: Service;
+  type: string;
+  loading: boolean;
+  loadingFiltered: boolean;
+  success: boolean;
+  loadingData: boolean;
+};
 
 const Services: React.FC = (): ReactElement => {
   const ref = useRef<HTMLInputElement>();
   const dispatch = useAppDispatch();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { services, service, type, loading, loadingFiltered }: any =
-    useAppSelector(({ servicesReducers }: RootState) => servicesReducers);
+  const {
+    services,
+    service,
+    type,
+    loading,
+    loadingFiltered,
+    success,
+    loadingData,
+  }: ServiceReducerProps = useAppSelector(
+    ({ servicesReducers }: RootState) => servicesReducers
+  );
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { companiesOptions }: any = useAppSelector(
+  const { companiesOptions }: CompaniesSliceState = useAppSelector(
     ({ companiesReducers }: RootState) => companiesReducers
   );
 
-  const { user } = useAppSelector(
+  const { user }: AuthSliceState = useAppSelector(
     ({ authReducers }: RootState) => authReducers
   );
 
@@ -107,6 +131,10 @@ const Services: React.FC = (): ReactElement => {
       setDurationValue(new Date(service_duration).toISOString());
   }, [service_duration]);
 
+  useEffect(() => {
+    if (success) setShowProfile(false);
+  }, [success]);
+
   // functions
   const handleCloseModal = () => setShowProfile(!showProfile);
   const handleRemoveService = (id: string) =>
@@ -139,7 +167,6 @@ const Services: React.FC = (): ReactElement => {
   const [onSubmit] = useOnSubmit({
     id: service?._id,
     type,
-    setShowProfile,
     statusValue,
     companyValue: user && user.role === "COMPANY" ? user._id : companyValue,
     durationValue,
@@ -252,14 +279,6 @@ const Services: React.FC = (): ReactElement => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // const imagesList = service?.map((item: any) => ({
-  //   images: item.files.map((image: any) => ({
-  //     folder: image.folder,
-  //     reference_id: image.reference_id,
-  //     id: image._id,
-  //   })),
-  // }));
-
   return (
     <S.ServicesSection>
       <S.HeaderRow>
@@ -282,7 +301,7 @@ const Services: React.FC = (): ReactElement => {
         <Table
           columns={serviceColumns}
           data={services}
-          loading={loadingFiltered || loading}
+          loading={loading || loadingFiltered}
         />
       ) : null}
       <Card ref={ref} showProfile={showProfile}>
@@ -399,7 +418,8 @@ const Services: React.FC = (): ReactElement => {
               <Box>
                 <Label htmlFor="description">Descrição:</Label>
                 <TextArea
-                  style={{ width: "400px", height: "140px" }}
+                  width="400px"
+                  height="140px"
                   defaultValue={description ? description : ""}
                   {...register("description")}
                 />
@@ -407,20 +427,28 @@ const Services: React.FC = (): ReactElement => {
             </S.Section>
             <CardTitle marginBottom="5px">Imagens do Serviço</CardTitle>
             <S.ImageFilesWrapper>
-              {service ? (
+              {service && service?.files?.length > 0 ? (
                 <ImageItem
                   showUpdate={showUpdate}
-                  images={service.files}
+                  images={service?.files}
                   handleRemoveImage={() => {
                     return;
                   }}
                 />
-              ) : null}
-              <ImageUpload
-                onChange={handleImagesChange}
-                maxNumber={maxNumber}
-                images={images}
-              />
+              ) : (
+                type === "show" && (
+                  <S.ParagraphNoneImage>
+                    Nenhuma imagem disponível
+                  </S.ParagraphNoneImage>
+                )
+              )}
+              {type !== "show" && (
+                <ImageUpload
+                  onChange={handleImagesChange}
+                  maxNumber={maxNumber}
+                  images={images}
+                />
+              )}
             </S.ImageFilesWrapper>
             {!showContent() && (
               <Button
@@ -429,7 +457,17 @@ const Services: React.FC = (): ReactElement => {
                 width="100%"
                 type="submit"
               >
-                {showCreate() ? "Criar Cliente" : "Atualizar Dados"}
+                {loadingData && !success ? (
+                  <Spinner
+                    size="35px"
+                    color="#fff"
+                    style={{ position: "absolute", top: "65%", left: "50%" }}
+                  />
+                ) : showCreate() ? (
+                  "Criar Cliente"
+                ) : (
+                  "Atualizar Dados"
+                )}
               </Button>
             )}
           </form>
