@@ -12,6 +12,8 @@ type UpdateOrShowProps = {
   reset: UseFormReset<FieldValues>;
 };
 
+const types = ["show", "update"];
+
 const useHandleUpdateOrShowService = ({
   handleCloseModal,
   reset,
@@ -23,9 +25,7 @@ const useHandleUpdateOrShowService = ({
   }: UpdateShowServiceProps) => {
     reset();
     handleCloseModal();
-    if (type === "show") {
-      dispatch(setService({ service, type }));
-    } else if (type === "update") {
+    if (types.includes(type)) {
       dispatch(setService({ service, type }));
     } else {
       dispatch(setService({ service: {}, type }));
