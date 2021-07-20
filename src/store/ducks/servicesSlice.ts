@@ -4,23 +4,22 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type File = {
-  reference_id: string;
-  model: string;
   folder: string;
-  created_at: string;
+  reference_id: string;
+  _id: string;
 };
 
 export type Service = {
-  status?: string;
-  created_at?: Date;
-  _id?: string;
-  company_id?: string;
-  title?: string;
-  price?: number;
-  service_duration?: string;
-  service_recurrence?: number;
-  description?: string;
-  files?: File[];
+  status: string;
+  created_at: Date;
+  _id: string;
+  company_id: string;
+  title: string;
+  price: number;
+  service_duration: string;
+  service_recurrence: number;
+  description: string;
+  files: File[];
 };
 
 export type ServicesOptions = {
@@ -32,13 +31,15 @@ export type ServicePayload = {
   service: Service;
 };
 
-interface ServicesSliceState {
+export interface ServicesSliceState {
   services: ServicePayload[];
-  service?: Service;
+  service: Service | Record<string, any>;
   type: string;
   loading?: boolean;
   loadingFiltered?: boolean;
+  loadingData?: boolean;
   servicesOptions: ServicesOptions[];
+  success?: boolean;
 }
 
 const initialState: ServicesSliceState = {
@@ -47,7 +48,9 @@ const initialState: ServicesSliceState = {
   servicesOptions: [],
   type: "",
   loading: false,
+  loadingData: false,
   loadingFiltered: false,
+  success: false,
 };
 
 const servicesSlice = createSlice({
@@ -61,16 +64,16 @@ const servicesSlice = createSlice({
       return { ...state, loading: true };
     },
     getFilteredServices(state, action: PayloadAction<any>) {
-      return { ...state, loading: true };
+      return { ...state, loadingFiltered: true };
     },
     createService(state, action: PayloadAction<any>) {
-      return { ...state, loading: true };
+      return { ...state, loadingData: true };
     },
     updateService(state, action: PayloadAction<any>) {
-      return { ...state, loading: true };
+      return { ...state, loadingData: true };
     },
     removeService(state, action: PayloadAction<any>) {
-      return { ...state, loading: true };
+      return { ...state, loadingData: true };
     },
     setService: (state, action: PayloadAction<any>) => {
       const service = action.payload.service;
@@ -88,7 +91,8 @@ const servicesSlice = createSlice({
     createServicesSuccess(state, action: PayloadAction<any>) {
       const service = action.payload.service;
       state.services = [...state.services, service];
-      state.loading = false;
+      state.loadingData = false;
+      state.success = true;
     },
     updateServiceSuccess(state, action: PayloadAction<any>) {
       const service = action.payload.service;
@@ -97,7 +101,8 @@ const servicesSlice = createSlice({
       );
       state.services[serviceIndex] = service;
       state.service = {};
-      state.loading = false;
+      state.loadingData = false;
+      state.success = true;
     },
     removeServiceSuccess: (state, action: PayloadAction<any>) => {
       const service = action.payload.service;
@@ -106,7 +111,8 @@ const servicesSlice = createSlice({
         (item: any) => item._id === service._id
       );
       state.services[serviceIndex] = service;
-      state.loading = false;
+      state.loadingData = false;
+      state.success = true;
     },
   },
 });
