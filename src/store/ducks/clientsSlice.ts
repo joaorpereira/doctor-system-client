@@ -19,7 +19,7 @@ export type Client = {
 
 interface ClientsSliceState {
   clients: Client[];
-  client?: Record<string, never>;
+  client?: Record<string, any>;
   type: string;
   loading?: boolean;
 }

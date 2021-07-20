@@ -25,7 +25,8 @@ export type CompanyOptions = {
 export type CompanyPayload = {
   company: Company;
 };
-interface CompaniesSliceState {
+
+export interface CompaniesSliceState {
   companies: CompanyPayload[];
   companiesOptions: CompanyOptions[];
   loading?: boolean;
