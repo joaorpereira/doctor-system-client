@@ -4,6 +4,7 @@ import { colors } from "../../styles";
 type Props = {
   size: string;
   loading?: boolean;
+  color?: string;
 };
 
 export const StyledSpinner = styled.svg<Props>`
@@ -17,7 +18,7 @@ export const StyledSpinner = styled.svg<Props>`
   margin: ${({ loading }) => loading && "7px"};
 
   & .path {
-    stroke: ${colors.primary};
+    stroke: ${({ color }) => (color ? color : `${colors.primary}`)};
     stroke-linecap: round;
     animation: dash 1.5s ease-in-out infinite;
   }

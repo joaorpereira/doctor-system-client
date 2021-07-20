@@ -5,10 +5,17 @@ type SpinnerProps = {
   loading?: boolean;
   size: string;
   style?: React.CSSProperties;
+  color?: string;
 };
 
-const SpinnerComponent = ({ loading, size, ...props }: SpinnerProps) => (
-  <S.StyledSpinner viewBox="0 0 50 50" loading={loading} {...props} size={size}>
+const SpinnerComponent = ({ loading, size, color, ...props }: SpinnerProps) => (
+  <S.StyledSpinner
+    viewBox="0 0 50 50"
+    loading={loading}
+    color={color}
+    {...props}
+    size={size}
+  >
     <circle
       className="path"
       cx="25"
