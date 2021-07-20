@@ -116,3 +116,8 @@ export const ImageFilesWrapper = styled.div`
   flex-wrap: wrap;
   height: 268px;
 `;
+
+export const ParagraphNoneImage = styled.p`
+  font-size: 11px;
+  margin-top: 5px;
+`;
