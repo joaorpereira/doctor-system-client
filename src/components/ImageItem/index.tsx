@@ -1,19 +1,10 @@
 import * as S from "./styled";
 
 import { MdClear } from "react-icons/md";
-
-type ImageProps = {
-  created_at: string;
-  folder: string;
-  model: string;
-  reference_id: string;
-  updated_at: string;
-  __v: number;
-  _id: string;
-};
+import { File } from "../../store/ducks/servicesSlice";
 
 type Props = {
-  images: ImageProps[];
+  images: File[];
   handleRemoveImage: () => void;
   showUpdate: () => boolean;
 };
