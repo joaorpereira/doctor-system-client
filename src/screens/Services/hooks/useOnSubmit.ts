@@ -8,7 +8,6 @@ import {
 type OnSubmitProps = {
   type: string;
   id?: string;
-  setShowProfile: React.Dispatch<React.SetStateAction<boolean>>;
   statusValue: string;
   companyValue?: string;
   durationValue: string;
@@ -18,7 +17,6 @@ type OnSubmitProps = {
 const useOnSubmit = ({
   id,
   type,
-  setShowProfile,
   statusValue,
   companyValue,
   durationValue,
@@ -51,7 +49,6 @@ const useOnSubmit = ({
         })
       );
     }
-    setShowProfile(false);
   };
 
   return [onSubmit];
