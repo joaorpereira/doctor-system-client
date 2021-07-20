@@ -4,6 +4,7 @@ import { colors } from "../../styles";
 
 interface Props extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   width?: string;
+  height?: string;
 }
 
 export const TextArea = styled.textarea<Props>`
@@ -13,7 +14,7 @@ export const TextArea = styled.textarea<Props>`
   border-radius: 4px;
   width: ${({ width }) => (width ? width : "195px")};
   transition: border 0.15s ease-out;
-  height: 40px;
+  height: ${({ height }) => (height ? height : "40px")};
   background-color: #fff;
   :focus {
     border: 2px solid ${colors.primary};
