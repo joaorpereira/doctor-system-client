@@ -21,14 +21,18 @@ interface ClientsSliceState {
   clients: Client[];
   client?: Record<string, any>;
   type: string;
-  loading?: boolean;
+  loadingData?: boolean;
+  loadingRequest?: boolean;
+  success?: boolean;
 }
 
 const initialState: ClientsSliceState = {
   clients: [],
   client: {},
   type: "",
-  loading: false,
+  loadingData: false,
+  loadingRequest: false,
+  success: false,
 };
 
 export const clientsSlice = createSlice({
@@ -36,25 +40,25 @@ export const clientsSlice = createSlice({
   initialState,
   reducers: {
     getClients(state) {
-      return { ...state, loading: true };
+      return { ...state, loadingData: true };
     },
     updateClient(state, action: PayloadAction<any>) {
-      return { ...state, loading: true };
+      return { ...state, loadingRequest: true };
     },
     createClient(state, action: PayloadAction<any>) {
-      return { ...state, loading: true };
+      return { ...state, loadingRequest: true };
     },
     removeClient(state, action: PayloadAction<any>) {
-      return { ...state, loading: true };
+      return { ...state, loadingRequest: true };
     },
     setClient(state, action: PayloadAction<any>) {
       const client = action.payload.client;
       const type = action.payload.type;
-      return { ...state, client: client, type: type, loading: false };
+      return { ...state, client: client, type: type };
     },
     setClientsSuccess(state, action: PayloadAction<any>) {
       const clients = action.payload.clients;
-      return { ...state, clients, loading: false };
+      return { ...state, clients, loadingData: false };
     },
     updateClientSuccess(state, action: PayloadAction<any>) {
       const { client } = action.payload;
@@ -62,18 +66,18 @@ export const clientsSlice = createSlice({
         (item) => item._id === client._id
       );
       state.clients[clientIndex] = client;
-      state.loading = false;
+      state.loadingRequest = false;
     },
     createClientSuccess(state, action: PayloadAction<any>) {
       const client = action.payload.client;
       state.clients = [...state.clients, client];
-      state.loading = false;
+      state.loadingRequest = false;
     },
     removeClientSuccess(state, action: PayloadAction<any>) {
       state.clients = state.clients.filter(
         (item: Client) => item._id !== action.payload.id
       );
-      state.loading = false;
+      state.loadingRequest = false;
     },
   },
 });

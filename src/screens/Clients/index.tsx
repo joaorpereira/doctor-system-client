@@ -32,6 +32,7 @@ import {
   Input,
   Label,
   Box,
+  Spinner,
 } from "../../components";
 
 import { RootState } from "../../store";
@@ -61,6 +62,17 @@ import {
   useHandleCpfOrCnpjMask,
 } from "../../hooks";
 import { useOnSubmit, useHandleUpdateOrShowClient } from "./hooks";
+import { AuthSliceState } from "../../store/ducks/authSlice";
+
+type ClientReducerProps = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  clients: any;
+  client: Client;
+  type: string;
+  loadingData: boolean;
+  loadingRequest: boolean;
+  success: boolean;
+};
 
 const Clients: React.FC = (): ReactElement => {
   const ref = useRef<HTMLInputElement>();
@@ -78,8 +90,18 @@ const Clients: React.FC = (): ReactElement => {
   const [documentType, setDocumentType] = useState("");
   const [genderValue, setGenderValue] = useState("");
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { clients, client, type }: any = useAppSelector(
+  const { user }: AuthSliceState = useAppSelector(
+    ({ authReducers }: RootState) => authReducers
+  );
+
+  const {
+    clients,
+    client,
+    type,
+    loadingData,
+    loadingRequest,
+    success,
+  }: ClientReducerProps = useAppSelector(
     ({ clientsReducers }: RootState) => clientsReducers
   );
 
@@ -93,7 +115,8 @@ const Clients: React.FC = (): ReactElement => {
     phone_number,
     gender,
     birth_date,
-  }: Client = client;
+    _id,
+  } = client;
 
   useEffect(() => {
     dispatch(getClients());
@@ -107,6 +130,10 @@ const Clients: React.FC = (): ReactElement => {
       setDateValue("");
     }
   }, [showProfile]);
+
+  useEffect(() => {
+    if (success) setShowProfile(false);
+  }, [success]);
 
   // set default values for documentType and genderValue
   useEffect(() => {
@@ -163,11 +190,11 @@ const Clients: React.FC = (): ReactElement => {
 
   // custom hooks - submit form to create or update client
   const [onSubmit] = useOnSubmit({
-    id: client._id,
+    id: _id,
     type,
-    setShowProfile,
     documentType,
     genderValue,
+    company_id: user && user.role === "COMPANY" && user._id,
   });
 
   const clientColumns = useMemo(() => {
@@ -285,7 +312,7 @@ const Clients: React.FC = (): ReactElement => {
         </S.ButtonContainer>
       </S.HeaderRow>
       {clients && clientColumns ? (
-        <Table columns={clientColumns} data={clients} />
+        <Table columns={clientColumns} data={clients} loading={loadingData} />
       ) : null}
       <Card ref={ref} showProfile={showProfile}>
         {client && (
@@ -514,7 +541,17 @@ const Clients: React.FC = (): ReactElement => {
                 type="submit"
                 disabled={isSubmitting}
               >
-                {showCreate() ? "Criar Cliente" : "Atualizar Dados"}
+                {loadingRequest && !success ? (
+                  <Spinner
+                    size="35px"
+                    color="#fff"
+                    style={{ position: "absolute", top: "65%", left: "50%" }}
+                  />
+                ) : showCreate() ? (
+                  "Criar Colaborador"
+                ) : (
+                  "Atualizar Colaborador"
+                )}
               </Button>
             )}
           </form>

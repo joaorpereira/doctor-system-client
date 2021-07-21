@@ -12,18 +12,18 @@ import {
 
 type OnSubmitProps = {
   type: string;
-  id: string;
+  id: string | undefined;
   documentType: string;
   genderValue: string;
-  setShowProfile: React.Dispatch<React.SetStateAction<boolean>>;
+  company_id?: string;
 };
 
 const useOnSubmit = ({
   id,
   type,
-  setShowProfile,
   documentType,
   genderValue,
+  company_id,
 }: OnSubmitProps) => {
   const dispatch = useAppDispatch();
   const onSubmit = (data: Client) => {
@@ -52,11 +52,10 @@ const useOnSubmit = ({
             document: { number: newDocumentNumber, type: documentType },
             gender: genderValue,
           },
-          company_id: "60b281d55398c39f2a93cd21",
+          company_id: company_id,
         })
       );
     }
-    setShowProfile(false);
   };
 
   return [onSubmit];

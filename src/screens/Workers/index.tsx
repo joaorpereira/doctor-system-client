@@ -218,7 +218,7 @@ const Workers: React.FC = (): ReactElement => {
   // custom hooks - submit form to create or update worker
   const [onSubmit] = useOnSubmit({
     id: worker._id,
-    company_id: user._id,
+    company_id: user && user.role === "COMPANY" && user._id,
     services: selectedServices,
     type,
     documentType,
