@@ -1,7 +1,7 @@
 import api from "../../services/api";
 import { all, call, put, takeLatest } from "redux-saga/effects";
 import { getSchedules, setSchedules } from "../ducks/schedulesSlice";
-import { ResponseGenerator } from "../types";
+import { ResponseGenerator } from "../../utils/types";
 
 export type IRange = {
   start: string | Date;

@@ -52,3 +52,12 @@ export type OptionType = {
   value: string;
   label: string;
 };
+
+export interface ResponseGenerator {
+  config?: any;
+  data?: any;
+  headers?: any;
+  request?: any;
+  status?: number;
+  statusText?: string;
+}

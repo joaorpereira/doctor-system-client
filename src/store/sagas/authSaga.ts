@@ -6,8 +6,8 @@ import {
   requestLoginSuccess,
   requestLogoutSuccess,
 } from "../ducks/authSlice";
-import { ResponseGenerator } from "../types";
 import { key } from "../../utils";
+import { ResponseGenerator } from "../../utils/types";
 
 type PropsPayload = {
   type: string;
