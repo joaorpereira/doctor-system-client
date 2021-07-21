@@ -28,7 +28,7 @@ type WorkerPayloadProps = {
 export function* handleGetWorkers() {
   try {
     const { data }: ResponseGenerator = yield call(api.get, "/worker");
-    yield put(setWorkersSuccess({ ...data }));
+    yield put(setWorkersSuccess({ workers: data.data }));
   } catch (error) {
     console.log(error);
   }
@@ -40,7 +40,7 @@ export function* handleGetWorkersByCompany({ payload }: WorkerPayloadProps) {
       api.get,
       `/worker/${payload.id}`
     );
-    yield put(setWorkersSuccess({ workers: data.lifOfWorkers }));
+    yield put(setWorkersSuccess({ workers: data.data }));
   } catch (error) {
     console.log(error);
   }
@@ -53,7 +53,7 @@ export function* handleUpdateWorker({ payload }: WorkerPayloadProps) {
       `/worker/${payload.id}`,
       { ...payload.worker }
     );
-    yield put(updateWorkerSuccess({ worker: data.worker }));
+    yield put(updateWorkerSuccess({ worker: data.data }));
   } catch (error) {
     console.log(error);
   }
@@ -74,9 +74,9 @@ export function* handleCreateWorker({ payload }: WorkerPayloadProps) {
       worker_data: { ...payload.worker },
       company_id: payload.company_id,
     });
-    yield put(createWorkerSuccess({ worker: data.worker }));
+    yield put(createWorkerSuccess({ worker: data.data }));
     if (payload.isSignUp) {
-      yield put(requestLoginSuccess({ user: data.worker, token: data.token }));
+      yield put(requestLoginSuccess({ user: data.data, token: data.token }));
     }
   } catch (error) {
     console.log(error);
