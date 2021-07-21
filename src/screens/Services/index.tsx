@@ -43,6 +43,7 @@ import {
   operationsTypes,
   timeOptions,
   statusOptions,
+  actionsTypes,
 } from "../../utils";
 
 import { useAppDispatch, useAppSelector, useOnClickOutside } from "../../hooks";
@@ -144,9 +145,9 @@ const Services: React.FC = (): ReactElement => {
   const handleDurationChange = (e: OptionType) => setDurationValue(e.value);
 
   // handle which type of sideModal should be displayed
-  const showContent = (): boolean => type === "show";
-  const showUpdate = (): boolean => type === "update";
-  const showCreate = (): boolean => type === "create";
+  const showContent = (): boolean => type === actionsTypes.SHOW;
+  const showUpdate = (): boolean => type === actionsTypes.UPDATE;
+  const showCreate = (): boolean => type === actionsTypes.CREATE;
 
   const handleImagesChange = (imageList: ImageListType) =>
     setImages(imageList as never[]);
@@ -436,13 +437,13 @@ const Services: React.FC = (): ReactElement => {
                   }}
                 />
               ) : (
-                type === "show" && (
+                type === actionsTypes.SHOW && (
                   <S.ParagraphNoneImage>
                     Nenhuma imagem disponível
                   </S.ParagraphNoneImage>
                 )
               )}
-              {type !== "show" && (
+              {type !== actionsTypes.SHOW && (
                 <ImageUpload
                   onChange={handleImagesChange}
                   maxNumber={maxNumber}
@@ -452,7 +453,7 @@ const Services: React.FC = (): ReactElement => {
             </S.ImageFilesWrapper>
             {!showContent() && (
               <Button
-                style={{ marginTop: "20px" }}
+                style={{ marginTop: "15px" }}
                 color={colors.mediumBlue}
                 width="100%"
                 type="submit"
@@ -464,9 +465,9 @@ const Services: React.FC = (): ReactElement => {
                     style={{ position: "absolute", top: "65%", left: "50%" }}
                   />
                 ) : showCreate() ? (
-                  "Criar Cliente"
+                  "Criar Serviço"
                 ) : (
-                  "Atualizar Dados"
+                  "Atualizar Serviço"
                 )}
               </Button>
             )}
