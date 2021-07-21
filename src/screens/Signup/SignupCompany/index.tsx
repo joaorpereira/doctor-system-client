@@ -226,22 +226,6 @@ const SignupCompanyMemoized = ({
             >
               <S.Input type="text" {...register("address.number")} />
             </InputComponent>
-            <InputComponent
-              width="150px"
-              secondary
-              name="geolocation.coordinates.x"
-              label="CordX:"
-            >
-              <S.Input type="text" {...register("geolocation.coordinates.x")} />
-            </InputComponent>
-            <InputComponent
-              width="150px"
-              secondary
-              name="geolocation.coordinates.y"
-              label="CordY:"
-            >
-              <S.Input type="text" {...register("geolocation.coordinates.y")} />
-            </InputComponent>
           </S.FormSection>
         </>
       ) : (

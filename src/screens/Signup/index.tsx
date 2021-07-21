@@ -33,8 +33,14 @@ import { SignupWorker } from "./SignupWorker";
 import { RootState } from "../../store";
 import { getFilteredServices } from "../../store/ducks/servicesSlice";
 import { getFilteredCompanies } from "../../store/ducks/companiesSlice";
+import getCoordinates from "../../utils/helpers/getCoordinates";
 
 const profiles = ["client", "worker", "company"];
+
+type GeoLocation = {
+  type: string;
+  coordinates: number[];
+};
 
 const SignUp = () => {
   const history = useHistory();
@@ -61,6 +67,10 @@ const SignUp = () => {
   const [selectedServices, setSelectedServices] = useState<
     ValueType<OptionType, true>
   >([]);
+  const [coordinates, setCoordinates] = useState<GeoLocation>({
+    type: "Point",
+    coordinates: [0, 0],
+  });
 
   const { loading, success, token } = useAppSelector(
     ({ authReducers }: RootState) => authReducers
@@ -92,6 +102,17 @@ const SignUp = () => {
     if (bankInfoPage) setBankInfoPage(false);
     else history.push("/login");
   };
+
+  useEffect(() => {
+    if (cityValue && stateValue && streetValue) {
+      getCoordinates({
+        city: cityValue,
+        state: stateValue,
+        street: streetValue,
+        setCoordinates,
+      });
+    }
+  }, [streetValue, cityValue, stateValue]);
 
   useEffect(() => {
     if (success) history.push("/");
@@ -180,6 +201,7 @@ const SignUp = () => {
     backgroundImageValue,
     accountTypeValue,
     bankCodeValue,
+    coordinates,
   });
 
   const [onSubmitClient] = useOnSubmitClient({
