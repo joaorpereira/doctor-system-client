@@ -1,4 +1,5 @@
 export { convertHourToMinutes } from "./helpers/date";
+export { default as getCoordinates } from "./helpers/getCoordinates";
 export {
   formataCPF,
   formataCNPJ,
