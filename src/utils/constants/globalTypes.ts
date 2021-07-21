@@ -44,3 +44,9 @@ export const statusOptions = [
   { value: "ATIVO", label: "Ativo" },
   { value: "INATIVO", label: "Inativo" },
 ];
+
+export const actionsTypes = {
+  UPDATE: "update",
+  CREATE: "create",
+  SHOW: "show",
+};

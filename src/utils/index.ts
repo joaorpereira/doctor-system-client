@@ -23,4 +23,5 @@ export {
   accountsTypesOptions,
   timeOptions,
   statusOptions,
+  actionsTypes,
 } from "./constants/globalTypes";
