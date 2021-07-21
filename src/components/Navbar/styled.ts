@@ -29,6 +29,9 @@ export const UserInfo = styled.div`
   justify-content: flex-end;
   color: ${colors.text};
   margin-right: 15px;
+  p {
+    font-size: 14px;
+  }
 `;
 
 export const UserImage = styled.img`
