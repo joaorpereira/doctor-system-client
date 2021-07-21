@@ -25,7 +25,7 @@ type WorkerPayloadProps = {
   type: string;
 };
 
-export function* handleGetWorkers() {
+function* handleGetWorkers() {
   try {
     const { data }: ResponseGenerator = yield call(api.get, "/worker");
     yield put(setWorkersSuccess({ workers: data.data }));
@@ -34,7 +34,7 @@ export function* handleGetWorkers() {
   }
 }
 
-export function* handleGetWorkersByCompany({ payload }: WorkerPayloadProps) {
+function* handleGetWorkersByCompany({ payload }: WorkerPayloadProps) {
   try {
     const { data }: ResponseGenerator = yield call(
       api.get,
@@ -46,7 +46,7 @@ export function* handleGetWorkersByCompany({ payload }: WorkerPayloadProps) {
   }
 }
 
-export function* handleUpdateWorker({ payload }: WorkerPayloadProps) {
+function* handleUpdateWorker({ payload }: WorkerPayloadProps) {
   try {
     const { data }: ResponseGenerator = yield call(
       api.put,
@@ -59,7 +59,7 @@ export function* handleUpdateWorker({ payload }: WorkerPayloadProps) {
   }
 }
 
-export function* handleRemoveWorker({ payload }: WorkerPayloadProps) {
+function* handleRemoveWorker({ payload }: WorkerPayloadProps) {
   try {
     yield call(api.delete, `/worker/${payload.id}`);
     yield put(removeWorkerSuccess({ id: payload.id }));
@@ -68,7 +68,7 @@ export function* handleRemoveWorker({ payload }: WorkerPayloadProps) {
   }
 }
 
-export function* handleCreateWorker({ payload }: WorkerPayloadProps) {
+function* handleCreateWorker({ payload }: WorkerPayloadProps) {
   try {
     const { data } = yield call(api.post, `/worker`, {
       worker_data: { ...payload.worker },
