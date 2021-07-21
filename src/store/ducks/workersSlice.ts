@@ -15,21 +15,25 @@ export type Worker = {
   document: DocumentProps;
   services: string[];
   bank_account: BankAccount;
-  _id?: string;
+  _id: string;
 };
 
 interface WorkersSliceState {
   workers: Worker[];
-  worker?: Record<string, never>;
+  worker?: Worker | Record<string, never>;
   type: string;
-  loading?: boolean;
+  loadingData?: boolean;
+  loadingRequest?: boolean;
+  success?: boolean;
 }
 
 const initialState: WorkersSliceState = {
   workers: [],
   worker: {},
   type: "",
-  loading: false,
+  loadingData: false,
+  loadingRequest: false,
+  success: false,
 };
 
 export const workersSlice = createSlice({
@@ -37,28 +41,28 @@ export const workersSlice = createSlice({
   initialState,
   reducers: {
     getWorkers(state) {
-      return { ...state, loading: true };
+      return { ...state, loadingData: true };
     },
     getWorkersByCompany(state, action: PayloadAction<any>) {
-      return { ...state, loading: true };
+      return { ...state, loadingData: true };
     },
     updateWorker: (state, action: PayloadAction<any>) => {
-      return { ...state, loading: true };
+      return { ...state, loadingRequest: true, success: false };
     },
     createWorker: (state, action: PayloadAction<any>) => {
-      return { ...state, loading: true };
+      return { ...state, loadingRequest: true, success: false };
     },
     removeWorker: (state, action: PayloadAction<any>) => {
-      return { ...state, loading: true };
+      return { ...state, loadingRequest: true, success: false };
     },
     setWorker: (state, action: PayloadAction<any>) => {
       const worker = action.payload.worker;
       const type = action.payload.type;
-      return { ...state, worker: worker, type: type, loading: false };
+      return { ...state, worker: worker, type: type, loadingData: false };
     },
     setWorkersSuccess: (state, action: PayloadAction<any>) => {
       const workers = action.payload.workers;
-      return { ...state, workers, loading: false };
+      return { ...state, workers, loadingData: false };
     },
     updateWorkerSuccess: (state, action: PayloadAction<any>) => {
       const { worker } = action.payload;
@@ -66,18 +70,21 @@ export const workersSlice = createSlice({
         (item) => item._id === worker._id
       );
       state.workers[workerIndex] = worker;
-      state.loading = false;
+      state.loadingRequest = false;
+      state.success = true;
     },
     createWorkerSuccess: (state, action: PayloadAction<any>) => {
       const worker = action.payload.worker;
       state.workers = [...state.workers, worker];
-      state.loading = false;
+      state.loadingRequest = false;
+      state.success = true;
     },
     removeWorkerSuccess: (state, action: PayloadAction<any>) => {
       state.workers = state.workers.filter(
         (item: Worker) => item._id !== action.payload.id
       );
-      state.loading = false;
+      state.loadingRequest = false;
+      state.success = true;
     },
   },
 });
