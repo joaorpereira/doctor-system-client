@@ -32,6 +32,7 @@ import {
   Input,
   Label,
   Box,
+  Spinner,
 } from "../../components";
 
 import { RootState } from "../../store";
@@ -58,14 +59,29 @@ import {
   accountsTypesOptions,
   formatCPForCNPJ,
   formatPhone,
+  actionsTypes,
 } from "../../utils";
 import { RowInfo, OptionType } from "../../utils/types";
-import { getFilteredServices } from "../../store/ducks/servicesSlice";
+import {
+  getFilteredServices,
+  ServicesSliceState,
+} from "../../store/ducks/servicesSlice";
 import {
   useHandleSelectedServicesValues,
   useOnSubmit,
   useHandleUpdateOrShowWorker,
 } from "./hooks";
+import { AuthSliceState } from "../../store/ducks/authSlice";
+
+type WorkerReducerProps = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  workers: any;
+  worker: Worker;
+  type: string;
+  loadingData: boolean;
+  loadingRequest: boolean;
+  success: boolean;
+};
 
 const Workers: React.FC = (): ReactElement => {
   const ref = useRef<HTMLInputElement>();
@@ -87,16 +103,22 @@ const Workers: React.FC = (): ReactElement => {
   >([]);
   const [accountType, setAccountType] = useState("");
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { workers, worker, type }: any = useAppSelector(
+  const {
+    workers,
+    worker,
+    type,
+    loadingRequest,
+    loadingData,
+    success,
+  }: WorkerReducerProps = useAppSelector(
     ({ workersReducers }: RootState) => workersReducers
   );
 
-  const { servicesOptions } = useAppSelector(
+  const { servicesOptions }: ServicesSliceState = useAppSelector(
     ({ servicesReducers }: RootState) => servicesReducers
   );
 
-  const { user } = useAppSelector(
+  const { user }: AuthSliceState = useAppSelector(
     ({ authReducers }: RootState) => authReducers
   );
 
@@ -110,12 +132,12 @@ const Workers: React.FC = (): ReactElement => {
     phone_number,
     gender,
     birth_date,
-  }: Worker = worker;
+  } = worker;
 
   useEffect(() => {
     dispatch(getWorkers());
     dispatch(getFilteredServices({ id: user._id }));
-  }, [dispatch]);
+  }, [dispatch, user]);
 
   useEffect(() => {
     if (showProfile) {
@@ -125,6 +147,10 @@ const Workers: React.FC = (): ReactElement => {
       setDateValue("");
     }
   }, [showProfile]);
+
+  useEffect(() => {
+    if (success) setShowProfile(false);
+  }, [success]);
 
   // set default values for documentType and genderValue
   useEffect(() => {
@@ -151,7 +177,8 @@ const Workers: React.FC = (): ReactElement => {
   // functions
   const handleCloseModal = () => setShowProfile(!showProfile);
   const handleRemoveWorker = (id: string) => dispatch(removeWorker({ id }));
-  const readOnlyAtShowAndUpdate = () => ["show", "update"].includes(type);
+  const readOnlyAtShowAndUpdate = () =>
+    [actionsTypes.SHOW, actionsTypes.UPDATE].includes(type);
 
   const handleTypeChange = (e: OptionType) => setDocumentType(e.value);
   const handleGenderChange = (e: OptionType) => setGenderValue(e.value);
@@ -161,9 +188,9 @@ const Workers: React.FC = (): ReactElement => {
   const handleAccountType = (e: OptionType) => setAccountType(e.value);
 
   // handle which type of sideModal should be displayed
-  const showContent = (): boolean => type === "show";
-  const showUpdate = (): boolean => type === "update";
-  const showCreate = (): boolean => type === "create";
+  const showContent = (): boolean => type === actionsTypes.SHOW;
+  const showUpdate = (): boolean => type === actionsTypes.UPDATE;
+  const showCreate = (): boolean => type === actionsTypes.CREATE;
 
   // custom hooks - close modal when clicked outside
   useOnClickOutside({ ref, handler: () => setShowProfile(false) });
@@ -194,7 +221,6 @@ const Workers: React.FC = (): ReactElement => {
     company_id: user._id,
     services: selectedServices,
     type,
-    setShowProfile,
     documentType,
     genderValue,
     accountType,
@@ -322,7 +348,7 @@ const Workers: React.FC = (): ReactElement => {
         </S.ButtonContainer>
       </S.HeaderRow>
       {workers && workerColumns ? (
-        <Table columns={workerColumns} data={workers} />
+        <Table columns={workerColumns} data={workers} loading={loadingData} />
       ) : null}
       <Card ref={ref} showProfile={showProfile}>
         {worker && servicesOptions && (
@@ -614,7 +640,17 @@ const Workers: React.FC = (): ReactElement => {
                 type="submit"
                 disabled={isSubmitting}
               >
-                {showCreate() ? "Criar Colaborador" : "Atualizar Dados"}
+                {loadingRequest && !success ? (
+                  <Spinner
+                    size="35px"
+                    color="#fff"
+                    style={{ position: "absolute", top: "65%", left: "50%" }}
+                  />
+                ) : showCreate() ? (
+                  "Criar Colaborador"
+                ) : (
+                  "Atualizar Colaborador"
+                )}
               </Button>
             )}
           </form>
