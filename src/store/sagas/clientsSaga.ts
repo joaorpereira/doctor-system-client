@@ -24,29 +24,29 @@ type ClientPayloadProps = {
   type: string;
 };
 
-export function* handleGetClients() {
+function* handleGetClients() {
   try {
     const { data }: ResponseGenerator = yield call(api.get, "/client");
-    yield put(setClientsSuccess({ ...data }));
+    yield put(setClientsSuccess({ clients: data.data }));
   } catch (error) {
     console.log(error);
   }
 }
 
-export function* handleUpdateClient({ payload }: ClientPayloadProps) {
+function* handleUpdateClient({ payload }: ClientPayloadProps) {
   try {
     const { data }: ResponseGenerator = yield call(
       api.put,
       `/client/${payload.id}`,
       { ...payload.client }
     );
-    yield put(updateClientSuccess({ client: data.client }));
+    yield put(updateClientSuccess({ client: data.data }));
   } catch (error) {
     console.log(error);
   }
 }
 
-export function* handleRemoveClient({ payload }: ClientPayloadProps) {
+function* handleRemoveClient({ payload }: ClientPayloadProps) {
   try {
     yield call(api.delete, `/client/${payload.id}`);
     yield put(removeClientSuccess({ id: payload.id }));
@@ -55,15 +55,15 @@ export function* handleRemoveClient({ payload }: ClientPayloadProps) {
   }
 }
 
-export function* handleCreateClient({ payload }: ClientPayloadProps) {
+function* handleCreateClient({ payload }: ClientPayloadProps) {
   try {
     const { data } = yield call(api.post, "/client", {
       client_data: { ...payload.client },
       company_id: payload.company_id,
     });
-    yield put(createClientSuccess({ client: data.client }));
+    yield put(createClientSuccess({ client: data.data }));
     if (payload.isSignUp) {
-      yield put(requestLoginSuccess({ user: data.client, token: data.token }));
+      yield put(requestLoginSuccess({ user: data.data, token: data.token }));
     }
   } catch (error) {
     console.log(error);
