@@ -1,6 +1,7 @@
 import { FieldValues, UseFormReset } from "react-hook-form";
 import { useAppDispatch } from "../../../hooks";
 import { ServicePayload, setService } from "../../../store/ducks/servicesSlice";
+import { actionsTypes } from "../../../utils";
 
 type UpdateShowServiceProps = {
   service?: ServicePayload;
@@ -11,8 +12,6 @@ type UpdateOrShowProps = {
   handleCloseModal: () => void;
   reset: UseFormReset<FieldValues>;
 };
-
-const types = ["show", "update"];
 
 const useHandleUpdateOrShowService = ({
   handleCloseModal,
@@ -25,7 +24,7 @@ const useHandleUpdateOrShowService = ({
   }: UpdateShowServiceProps) => {
     reset();
     handleCloseModal();
-    if (types.includes(type)) {
+    if ([actionsTypes.SHOW, actionsTypes.UPDATE].includes(type)) {
       dispatch(setService({ service, type }));
     } else {
       dispatch(setService({ service: {}, type }));

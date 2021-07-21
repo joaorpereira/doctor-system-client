@@ -1,6 +1,7 @@
 import { FieldValues, UseFormReset } from "react-hook-form";
 import { useAppDispatch } from "../../../hooks";
 import { setWorker, Worker } from "../../../store/ducks/workersSlice";
+import { actionsTypes } from "../../../utils";
 
 type UpdateShowWorkerProps = {
   worker?: Worker;
@@ -29,9 +30,7 @@ const useHandleUpdateOrShowWorker = ({
   }: UpdateShowWorkerProps) => {
     reset();
     handleCloseModal();
-    if (type === "show") {
-      dispatch(setWorker({ worker, type }));
-    } else if (type === "update") {
+    if ([actionsTypes.SHOW, actionsTypes.UPDATE].includes(type)) {
       dispatch(setWorker({ worker, type }));
     } else {
       setDocumentType("");
