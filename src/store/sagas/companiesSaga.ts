@@ -24,7 +24,7 @@ type CompanyPayloadProps = {
 function* handleGetCompanies() {
   try {
     const { data }: ResponseGenerator = yield call(api.get, "/company");
-    yield put(setCompanies({ ...data }));
+    yield put(setCompanies({ companies: data }));
   } catch (error) {
     console.log(error);
   }
@@ -33,21 +33,19 @@ function* handleGetCompanies() {
 function* handleFilterCompanies() {
   try {
     const { data }: ResponseGenerator = yield call(api.get, `/company/filter`);
-    yield put(
-      setFilteredCompaniesSuccess({ companiesOptions: data.companies })
-    );
+    yield put(setFilteredCompaniesSuccess({ companiesOptions: data.data }));
   } catch (error) {
     console.log(error);
   }
 }
 
-export function* handleCreateCompany({ payload }: CompanyPayloadProps) {
+function* handleCreateCompany({ payload }: CompanyPayloadProps) {
   try {
     const company = payload.company;
     const { data } = yield call(api.post, "/company", { ...company });
-    yield put(createCompanySuccess({ company: data.company as Company }));
+    yield put(createCompanySuccess({ company: data.data as Company }));
     if (payload.isSignUp) {
-      yield put(requestLoginSuccess({ user: data.company, token: data.token }));
+      yield put(requestLoginSuccess({ user: data.data, token: data.token }));
     }
   } catch (error) {
     console.log(error);
