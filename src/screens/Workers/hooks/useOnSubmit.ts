@@ -11,13 +11,13 @@ import {
   reverseDocumentNumberFormat,
   reversePhoneNumberFormat,
 } from "../../../utils/helpers/functions";
+import { actionsTypes } from "../../../utils";
 
 type OnSubmitProps = {
   type: string;
   id: string;
   documentType: string;
   genderValue: string;
-  setShowProfile: React.Dispatch<React.SetStateAction<boolean>>;
   company_id?: string;
   services: OptionsType<OptionType>;
   accountType: string;
@@ -26,7 +26,6 @@ type OnSubmitProps = {
 const useOnSubmit = ({
   id,
   type,
-  setShowProfile,
   documentType,
   genderValue,
   company_id,
@@ -40,7 +39,7 @@ const useOnSubmit = ({
     const newDocumentNumber = reverseDocumentNumberFormat(data.document);
     const newServices = services.map((service) => service.value);
 
-    if (type === "update") {
+    if (type === actionsTypes.UPDATE) {
       dispatch(
         updateWorker({
           worker: {
@@ -51,7 +50,7 @@ const useOnSubmit = ({
           id: id,
         })
       );
-    } else if (type === "create") {
+    } else if (type === actionsTypes.CREATE) {
       dispatch(
         createWorker({
           worker: {
@@ -70,7 +69,6 @@ const useOnSubmit = ({
         })
       );
     }
-    setShowProfile(false);
   };
 
   return [onSubmit];

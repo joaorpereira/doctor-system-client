@@ -4,6 +4,7 @@ import {
   updateService,
   createService,
 } from "../../../store/ducks/servicesSlice";
+import { actionsTypes } from "../../../utils";
 
 type OnSubmitProps = {
   type: string;
@@ -33,7 +34,7 @@ const useOnSubmit = ({
       service_recurrence: Number(data.service_recurrence),
     };
 
-    if (type === "update") {
+    if (type === actionsTypes.UPDATE) {
       dispatch(
         updateService({
           id: id,
@@ -41,7 +42,7 @@ const useOnSubmit = ({
           files: images,
         })
       );
-    } else if (type === "create") {
+    } else if (type === actionsTypes.CREATE) {
       dispatch(
         createService({
           service: { ...newForm },
