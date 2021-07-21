@@ -19,7 +19,7 @@ export const Card = styled.div<CardProps>`
   position: absolute;
   top: 0;
   right: -60px;
-  height: calc(100vh - 85px);
+  height: calc(100vh - 100px);
   width: 500px;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   border-top-left-radius: 8px;
