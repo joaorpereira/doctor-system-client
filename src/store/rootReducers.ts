@@ -6,6 +6,7 @@ import clientsReducers from "./ducks/clientsSlice";
 import workersReducers from "./ducks/workersSlice";
 import servicesReducers from "./ducks/servicesSlice";
 import authReducers from "./ducks/authSlice";
+import hoursReducers from "./ducks/hoursSlice";
 
 export const reducers = combineReducers({
   companiesReducers,
@@ -14,4 +15,5 @@ export const reducers = combineReducers({
   workersReducers,
   servicesReducers,
   authReducers,
+  hoursReducers,
 });
