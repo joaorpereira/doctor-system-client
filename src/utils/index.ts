@@ -25,4 +25,5 @@ export {
   timeOptions,
   statusOptions,
   actionsTypes,
+  weekDaysOptions,
 } from "./constants/globalTypes";
