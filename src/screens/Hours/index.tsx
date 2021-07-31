@@ -1,4 +1,10 @@
-import React, { ReactElement, useEffect, useRef, useState } from "react";
+import React, {
+  ReactElement,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
 import {
@@ -13,45 +19,70 @@ import {
   Spinner,
 } from "../../components";
 import { Controller, useForm } from "react-hook-form";
-import ReactSelect, { OptionTypeBase } from "react-select";
+import ReactSelect from "react-select";
 
 import * as S from "./styled";
 import { colors, reactSelectedStyle, SectionTitle } from "../../styles";
 
 import { Calendar, dateFnsLocalizer } from "react-big-calendar";
-import { format, parse, startOfWeek, getDay } from "date-fns";
+import { format, parse, startOfWeek, getDay, addDays } from "date-fns";
 
 import { RootState } from "../../store";
 import { getHoursByCompany } from "../../store/ducks/hoursSlice";
-import { getServices } from "../../store/ducks/servicesSlice";
+import {
+  getFilteredServices,
+  getServices,
+} from "../../store/ducks/servicesSlice";
 
-import { useAppDispatch, useAppSelector } from "../../hooks";
-import { useFormatHourData, useOnSubmit } from "./hooks";
+import { useOnClickOutside, useAppDispatch, useAppSelector } from "../../hooks";
+import {
+  useFormatHourData,
+  useHandleUpdateOrShowService,
+  useOnSubmit,
+} from "./hooks";
 import { ResponseHoursProps } from "./hooks/useFormatHourData";
 
 import ptBR from "date-fns/locale/pt-BR";
-import { actionsTypes } from "../../utils";
+import {
+  actionsTypes,
+  operationsTypes,
+  timeOptions,
+  weekDaysOptions,
+} from "../../utils";
+import { OptionType } from "../../utils/types";
+import { getWorkersByCompany } from "../../store/ducks/workersSlice";
 
 const locales = {
   "pt-BR": ptBR,
 };
 
+const startDayOfWeek = startOfWeek(new Date());
+
 const weekDays = [
-  new Date(2021, 3, 11, 0, 0, 0, 0),
-  new Date(2021, 3, 12, 0, 0, 0, 0),
-  new Date(2021, 3, 13, 0, 0, 0, 0),
-  new Date(2021, 3, 14, 0, 0, 0, 0),
-  new Date(2021, 3, 15, 0, 0, 0, 0),
-  new Date(2021, 3, 16, 0, 0, 0, 0),
-  new Date(2021, 3, 17, 0, 0, 0, 0),
+  startDayOfWeek,
+  addDays(startDayOfWeek, 1),
+  addDays(startDayOfWeek, 2),
+  addDays(startDayOfWeek, 3),
+  addDays(startDayOfWeek, 4),
+  addDays(startDayOfWeek, 5),
+  addDays(startDayOfWeek, 6),
 ];
 
-const HomePage: React.FC = (): ReactElement => {
+const Hours: React.FC = (): ReactElement => {
   const ref = useRef<HTMLInputElement>();
   const dispatch = useAppDispatch();
   const [hourData, setHourData] = useState<ResponseHoursProps[]>([]);
   const [showProfile, setShowProfile] = useState(false);
-
+  const [disponibleServices, setDisponibleServices] = useState<OptionType[]>(
+    []
+  );
+  const [disponibleWorkers, setDisponibleWorkers] = useState<OptionType[]>([]);
+  const [disponibleDays, setDisponibleDays] = useState();
+  const [startDays, setStartDay] = useState<OptionType>();
+  const [endDays, setEndDay] = useState<OptionType>();
+  const [workersOptionsList, setWorkersOptionsList] = useState<OptionType[]>(
+    []
+  );
   const { user } = useAppSelector(
     ({ authReducers }: RootState) => authReducers
   );
@@ -60,20 +91,71 @@ const HomePage: React.FC = (): ReactElement => {
     ({ hoursReducers }: RootState) => hoursReducers
   );
 
+  const { servicesOptions } = useAppSelector(
+    ({ servicesReducers }: RootState) => servicesReducers
+  );
+
+  const { workersOptions } = useAppSelector(
+    ({ workersReducers }: RootState) => workersReducers
+  );
+
   const handleCloseModal = () => setShowProfile(!showProfile);
   const showContent = (): boolean => type === actionsTypes.SHOW;
   const showCreate = (): boolean => type === actionsTypes.CREATE;
+  const handleDisponibleServicesChange = (option: OptionType[]) =>
+    setDisponibleServices(option);
+  const handleStartDayChange = (option: any) => setStartDay(option);
+  const handleEndDayChange = (option: any) => setEndDay(option);
+  const handleDisponibleDaysChange = (option: any) => setDisponibleDays(option);
+  const handleDisponibleWorkersChange = (option: any) =>
+    setDisponibleWorkers(option);
 
   useEffect(() => {
     dispatch(getHoursByCompany({ id: user._id }));
     dispatch(getServices({ id: user._id }));
+    dispatch(getFilteredServices({ id: user._id }));
+    dispatch(getWorkersByCompany({ id: user._id }));
   }, [dispatch, user]);
 
+  // custom-hook
   const [formatHourData] = useFormatHourData({ setHourData, weekDays });
+
+  // custom hooks - close modal when clicked outside
+  useOnClickOutside({ ref, handler: () => setShowProfile(false) });
+
+  // custom hooks - set service data to redux state
+  const [handleUpdateOrShowService] = useHandleUpdateOrShowService({
+    handleCloseModal,
+  });
+
+  // custom hooks - submit form to create or update service
+  const [onSubmit] = useOnSubmit({});
+
+  const handleWorkersOptions = useCallback(
+    <T extends OptionType[]>(services: T) => {
+      const servicesIdArray = services?.map((item: OptionType) => item.value);
+      const list = workersOptions
+        .filter((worker: any) =>
+          worker.services.map((service: string) =>
+            servicesIdArray?.includes(service)
+          )
+        )
+        ?.map(({ label, value }: OptionType) => ({ label, value }));
+      setWorkersOptionsList(list);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
 
   useEffect(() => {
     if (hours) formatHourData(hours);
   }, [hours, formatHourData]);
+
+  useEffect(() => {
+    if (disponibleServices?.length > 0) {
+      handleWorkersOptions(disponibleServices);
+    }
+  }, [workersOptions, disponibleServices, handleWorkersOptions]);
 
   const { register, handleSubmit, control } = useForm({});
 
@@ -85,20 +167,27 @@ const HomePage: React.FC = (): ReactElement => {
     locales,
   });
 
-  // custom hooks - submit form to create or update service
-  const [onSubmit] = useOnSubmit({});
-
   return (
     <S.HoursSection>
       <S.HeaderRow>
         <SectionTitle>Horários de Atendimento</SectionTitle>
+        <Button
+          color={colors.mediumBlue}
+          onClick={() =>
+            handleUpdateOrShowService({
+              type: operationsTypes.CREATE,
+            })
+          }
+        >
+          Adicionar
+        </Button>
       </S.HeaderRow>
       <Calendar
         localizer={localizer}
         views={["week"]}
         defaultView="week"
         toolbar={false}
-        culture="ptBR"
+        culture="pt-BR"
         popup
         selectable
         formats={{
@@ -107,7 +196,7 @@ const HomePage: React.FC = (): ReactElement => {
             localizer.format(date, "cccc", culture as string),
         }}
         defaultDate={weekDays[getDay(new Date())]}
-        // onRangeChange={(range) => rangeFormat(range)}
+        // onRangeChange={(range) => setDisponibleDays(range)}
         events={hourData}
         style={{ height: 650 }}
       />
@@ -115,73 +204,20 @@ const HomePage: React.FC = (): ReactElement => {
         {hours && (
           <form onSubmit={handleSubmit(onSubmit)}>
             <CloseModalIcon handleCloseModal={handleCloseModal} />
+            <CardTitle marginBottom="5px">Dia:</CardTitle>
             <S.Section marginBottom="10px">
-              <Box>
-                <Label htmlFor="title">Título:</Label>
-                <Input width="270px" {...register("title")} />
-              </Box>
-              <Box>
-                <Label htmlFor="price">Preço (R$):</Label>
-                <Input width="120px" {...register("price")} />
-              </Box>
-            </S.Section>
-            <S.Section marginBottom="10px">
-              <Box>
-                <Label htmlFor="service_recurrence">Recorrência (dias):</Label>
-                <Input
-                  width="195px"
-                  type="number"
-                  {...register("service_recurrence")}
-                />
-              </Box>
-              <Box width="195px">
-                <Label htmlFor="service_duration">Duração</Label>
+              <Box width="100%">
+                <Label htmlFor="title">Dia(s) da Semana:</Label>
                 <Controller
-                  name="service_duration"
+                  name="document.services"
                   control={control}
                   render={({ field }) => (
                     <ReactSelect
                       {...field}
-                      styles={{
-                        control: (base) => ({
-                          ...base,
-                          ...reactSelectedStyle,
-                        }),
-                      }}
-                      options={[]}
-                    />
-                  )}
-                />
-              </Box>
-            </S.Section>
-            <S.Section marginBottom="10px">
-              <Box width="195px">
-                <Label htmlFor="status">Status:</Label>
-                <Controller
-                  name="status"
-                  control={control}
-                  render={({ field }) => (
-                    <ReactSelect
-                      {...field}
-                      styles={{
-                        control: (base) => ({
-                          ...base,
-                          ...reactSelectedStyle,
-                        }),
-                      }}
-                      options={[]}
-                    />
-                  )}
-                />
-              </Box>
-              <Box width="195px">
-                <Label htmlFor="company_id">Empresa:</Label>
-                <Controller
-                  name="company_id"
-                  control={control}
-                  render={({ field }) => (
-                    <ReactSelect
-                      {...field}
+                      isMulti
+                      onChange={(option) => handleDisponibleDaysChange(option)}
+                      options={weekDaysOptions}
+                      value={disponibleDays}
                       styles={{
                         control: (base) => ({
                           ...base,
@@ -193,17 +229,113 @@ const HomePage: React.FC = (): ReactElement => {
                 />
               </Box>
             </S.Section>
+            <CardTitle marginBottom="5px">Horário:</CardTitle>
+            <S.Section marginBottom="10px">
+              <Box width="100%">
+                <Label htmlFor="start">Horario Inicial:</Label>
+                <Controller
+                  name="start"
+                  control={control}
+                  render={({ field }) => (
+                    <ReactSelect
+                      {...field}
+                      styles={{
+                        control: (base) => ({
+                          ...base,
+                          ...reactSelectedStyle,
+                        }),
+                      }}
+                      value={startDays}
+                      options={timeOptions}
+                      onChange={(e) => handleStartDayChange(e as OptionType)}
+                    />
+                  )}
+                />
+              </Box>
+              <Box width="100%">
+                <Label htmlFor="end">Horario Final:</Label>
+                <Controller
+                  name="end"
+                  control={control}
+                  render={({ field }) => (
+                    <ReactSelect
+                      {...field}
+                      styles={{
+                        control: (base) => ({
+                          ...base,
+                          ...reactSelectedStyle,
+                        }),
+                      }}
+                      value={endDays}
+                      options={timeOptions}
+                      onChange={(e) => handleEndDayChange(e as OptionType)}
+                    />
+                  )}
+                />
+              </Box>
+            </S.Section>
+            <CardTitle marginBottom="5px">
+              Especialidades Disponíveis:
+            </CardTitle>
+            <S.Section marginBottom="10px">
+              <Box width="100%">
+                <Controller
+                  name="document.services"
+                  control={control}
+                  render={({ field }) => (
+                    <ReactSelect
+                      {...field}
+                      isMulti
+                      isDisabled={showContent()}
+                      onChange={(option) =>
+                        handleDisponibleServicesChange(option as OptionType[])
+                      }
+                      value={disponibleServices}
+                      options={servicesOptions}
+                      styles={{
+                        control: (base) => ({
+                          ...base,
+                          ...reactSelectedStyle,
+                        }),
+                      }}
+                    />
+                  )}
+                />
+              </Box>
+            </S.Section>
+            <CardTitle marginBottom="5px">Colaboradores Disponíveis:</CardTitle>
             <S.Section>
-              <Box>
-                <Label htmlFor="description">Descrição:</Label>
-                <TextArea
-                  width="400px"
-                  height="140px"
-                  {...register("description")}
+              <Box width="100%">
+                <Controller
+                  name="document.services"
+                  control={control}
+                  render={({ field }) => (
+                    <ReactSelect
+                      {...field}
+                      isMulti
+                      isDisabled={showContent()}
+                      onChange={(option) =>
+                        handleDisponibleWorkersChange(option)
+                      }
+                      value={disponibleWorkers}
+                      options={workersOptionsList.map(
+                        ({ label, value }: OptionType) => ({
+                          label,
+                          value,
+                        })
+                      )}
+                      styles={{
+                        control: (base) => ({
+                          ...base,
+                          ...reactSelectedStyle,
+                        }),
+                      }}
+                    />
+                  )}
                 />
               </Box>
             </S.Section>
-            <CardTitle marginBottom="5px">Imagens do Serviço</CardTitle>
+
             {!showContent() && (
               <Button
                 style={{ marginTop: "15px" }}
@@ -231,4 +363,4 @@ const HomePage: React.FC = (): ReactElement => {
   );
 };
 
-export default HomePage;
+export default Hours;

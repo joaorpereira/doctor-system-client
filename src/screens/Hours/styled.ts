@@ -8,6 +8,7 @@ type SectionProps = {
 export const HoursSection = styled.section`
   display: flex;
   flex-direction: column;
+  position: relative;
 `;
 
 export const HeaderRow = styled.header`
