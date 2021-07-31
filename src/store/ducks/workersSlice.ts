@@ -18,6 +18,11 @@ export type Worker = {
   _id: string;
 };
 
+export type Options = {
+  label: string;
+  value: string;
+};
+
 interface WorkersSliceState {
   workers: Worker[];
   worker?: Worker | Record<string, never>;
@@ -25,10 +30,12 @@ interface WorkersSliceState {
   loadingData?: boolean;
   loadingRequest?: boolean;
   success?: boolean;
+  workersOptions: Options[];
 }
 
 const initialState: WorkersSliceState = {
   workers: [],
+  workersOptions: [],
   worker: {},
   type: "",
   loadingData: false,
@@ -62,7 +69,18 @@ export const workersSlice = createSlice({
     },
     setWorkersSuccess: (state, action: PayloadAction<any>) => {
       const workers = action.payload.workers;
+
       return { ...state, workers, loadingData: false };
+    },
+    setWorkersOptionsSuccess: (state, action: PayloadAction<any>) => {
+      const workers = action.payload.workers;
+      const workersOptions = workers.map((worker: any) => ({
+        services: worker.services,
+        label: worker.name,
+        value: worker._id,
+      }));
+
+      return { ...state, workersOptions, loadingData: false };
     },
     updateWorkerSuccess: (state, action: PayloadAction<any>) => {
       const { worker } = action.payload;
@@ -100,6 +118,7 @@ export const {
   createWorkerSuccess,
   updateWorkerSuccess,
   removeWorkerSuccess,
+  setWorkersOptionsSuccess,
 } = workersSlice.actions;
 
 export default workersSlice.reducer;

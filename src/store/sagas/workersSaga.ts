@@ -11,6 +11,7 @@ import {
   updateWorkerSuccess,
   createWorkerSuccess,
   removeWorkerSuccess,
+  setWorkersOptionsSuccess,
 } from "../ducks/workersSlice";
 import { ResponseGenerator } from "../../utils/types";
 import { requestLoginSuccess } from "../ducks/authSlice";
@@ -40,7 +41,7 @@ function* handleGetWorkersByCompany({ payload }: WorkerPayloadProps) {
       api.get,
       `/worker/${payload.id}`
     );
-    yield put(setWorkersSuccess({ workers: data.data }));
+    yield put(setWorkersOptionsSuccess({ workers: data.data }));
   } catch (error) {
     console.log(error);
   }
