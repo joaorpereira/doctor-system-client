@@ -1,10 +1,10 @@
 import { FieldValues, UseFormReset } from "react-hook-form";
 import { useAppDispatch } from "../../../hooks";
-import { ServicePayload, setService } from "../../../store/ducks/servicesSlice";
+import { Service, setService } from "../../../store/ducks/servicesSlice";
 import { actionsTypes } from "../../../utils";
 
 type UpdateShowServiceProps = {
-  service?: ServicePayload;
+  service?: Service;
   type: string;
 };
 
