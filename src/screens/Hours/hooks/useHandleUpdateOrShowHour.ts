@@ -9,7 +9,7 @@ type UpdateShowHourProps = {
 
 type UpdateOrShowProps = {
   handleCloseModal: () => void;
-  resetForm: any;
+  resetForm: () => void;
 };
 
 const useHandleUpdateOrShowHour = ({

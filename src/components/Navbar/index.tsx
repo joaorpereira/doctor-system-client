@@ -1,12 +1,9 @@
 import * as S from "./styled";
 import { MdExpandMore } from "react-icons/md";
-import { RootState } from "../../store";
 import { useAppSelector } from "../../hooks";
 
 const Navbar = () => {
-  const { user } = useAppSelector(
-    ({ authReducers }: RootState) => authReducers
-  );
+  const { user } = useAppSelector(({ authReducers }) => authReducers);
   return (
     <S.Nav>
       <S.Wrapper>

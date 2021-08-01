@@ -35,7 +35,6 @@ import {
   Spinner,
 } from "../../components";
 
-import { RootState } from "../../store";
 import {
   Client,
   getClients,
@@ -62,17 +61,6 @@ import {
   useHandleCpfOrCnpjMask,
 } from "../../hooks";
 import { useOnSubmit, useHandleUpdateOrShowClient } from "./hooks";
-import { AuthSliceState } from "../../store/ducks/authSlice";
-
-type ClientReducerProps = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  clients: any;
-  client: Client;
-  type: string;
-  loadingData: boolean;
-  loadingRequest: boolean;
-  success: boolean;
-};
 
 const Clients: React.FC = (): ReactElement => {
   const ref = useRef<HTMLInputElement>();
@@ -90,20 +78,10 @@ const Clients: React.FC = (): ReactElement => {
   const [documentType, setDocumentType] = useState("");
   const [genderValue, setGenderValue] = useState("");
 
-  const { user }: AuthSliceState = useAppSelector(
-    ({ authReducers }: RootState) => authReducers
-  );
+  const { user } = useAppSelector(({ authReducers }) => authReducers);
 
-  const {
-    clients,
-    client,
-    type,
-    loadingData,
-    loadingRequest,
-    success,
-  }: ClientReducerProps = useAppSelector(
-    ({ clientsReducers }: RootState) => clientsReducers
-  );
+  const { clients, client, type, loadingData, loadingRequest, success } =
+    useAppSelector(({ clientsReducers }) => clientsReducers);
 
   const {
     document,
@@ -116,7 +94,7 @@ const Clients: React.FC = (): ReactElement => {
     gender,
     birth_date,
     _id,
-  } = client;
+  } = client as Client;
 
   useEffect(() => {
     dispatch(getClients());
@@ -312,7 +290,12 @@ const Clients: React.FC = (): ReactElement => {
         </S.ButtonContainer>
       </S.HeaderRow>
       {clients && clientColumns ? (
-        <Table columns={clientColumns} data={clients} loading={loadingData} />
+        <Table
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          columns={clientColumns as any}
+          data={clients}
+          loading={loadingData}
+        />
       ) : null}
       <Card ref={ref} showProfile={showProfile}>
         {client && (

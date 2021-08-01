@@ -1,9 +1,10 @@
 import { useCallback } from "react";
+import { Options } from "../../../store/ducks/workersSlice";
 import { OptionType } from "../../../utils/types";
 
 type Props = {
   setWorkersOptionsList: React.Dispatch<React.SetStateAction<OptionType[]>>;
-  workersOptions: any;
+  workersOptions: Options[];
 };
 
 const useHandleWorkersOptions = ({
@@ -14,7 +15,7 @@ const useHandleWorkersOptions = ({
     <T extends OptionType[]>(services: T) => {
       const servicesIdArray = services?.map((item: OptionType) => item.value);
       const list = workersOptions
-        .filter((worker: any) =>
+        .filter((worker) =>
           worker.services.map((service: string) =>
             servicesIdArray?.includes(service)
           )

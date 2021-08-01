@@ -8,7 +8,7 @@ type Props = {
   setSelectedServices: React.Dispatch<
     React.SetStateAction<OptionsType<OptionType>>
   >;
-  worker: Worker;
+  worker: Worker | Record<string, never>;
   servicesOptions: ServicesOptions[];
 };
 

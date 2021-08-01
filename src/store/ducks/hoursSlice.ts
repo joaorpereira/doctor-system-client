@@ -14,10 +14,10 @@ export type Hour = {
   end_time: string;
 };
 
-interface HoursSliceState {
+export interface HoursSliceState {
   hours: Hour[];
   services: any[];
-  hour?: Hour | Record<string, never>;
+  hour: Hour | Record<string, never>;
   loadingData?: boolean;
   loadingRequest?: boolean;
   success?: boolean;

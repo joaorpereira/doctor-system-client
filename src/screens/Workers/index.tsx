@@ -35,7 +35,6 @@ import {
   Spinner,
 } from "../../components";
 
-import { RootState } from "../../store";
 import {
   useAppDispatch,
   useAppSelector,
@@ -62,26 +61,12 @@ import {
   actionsTypes,
 } from "../../utils";
 import { RowInfo, OptionType } from "../../utils/types";
-import {
-  getFilteredServices,
-  ServicesSliceState,
-} from "../../store/ducks/servicesSlice";
+import { getFilteredServices } from "../../store/ducks/servicesSlice";
 import {
   useHandleSelectedServicesValues,
   useOnSubmit,
   useHandleUpdateOrShowWorker,
 } from "./hooks";
-import { AuthSliceState } from "../../store/ducks/authSlice";
-
-type WorkerReducerProps = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  workers: any;
-  worker: Worker;
-  type: string;
-  loadingData: boolean;
-  loadingRequest: boolean;
-  success: boolean;
-};
 
 const Workers: React.FC = (): ReactElement => {
   const ref = useRef<HTMLInputElement>();
@@ -103,24 +88,14 @@ const Workers: React.FC = (): ReactElement => {
   >([]);
   const [accountType, setAccountType] = useState("");
 
-  const {
-    workers,
-    worker,
-    type,
-    loadingRequest,
-    loadingData,
-    success,
-  }: WorkerReducerProps = useAppSelector(
-    ({ workersReducers }: RootState) => workersReducers
+  const { workers, worker, type, loadingRequest, loadingData, success } =
+    useAppSelector(({ workersReducers }) => workersReducers);
+
+  const { servicesOptions } = useAppSelector(
+    ({ servicesReducers }) => servicesReducers
   );
 
-  const { servicesOptions }: ServicesSliceState = useAppSelector(
-    ({ servicesReducers }: RootState) => servicesReducers
-  );
-
-  const { user }: AuthSliceState = useAppSelector(
-    ({ authReducers }: RootState) => authReducers
-  );
+  const { user } = useAppSelector(({ authReducers }) => authReducers);
 
   const {
     document,
@@ -132,7 +107,7 @@ const Workers: React.FC = (): ReactElement => {
     phone_number,
     gender,
     birth_date,
-  } = worker;
+  } = worker as Worker;
 
   useEffect(() => {
     dispatch(getWorkers());
@@ -217,7 +192,7 @@ const Workers: React.FC = (): ReactElement => {
 
   // custom hooks - submit form to create or update worker
   const [onSubmit] = useOnSubmit({
-    id: worker._id,
+    id: worker?._id,
     company_id: user && user.role === "COMPANY" && user._id,
     services: selectedServices,
     type,
@@ -348,7 +323,12 @@ const Workers: React.FC = (): ReactElement => {
         </S.ButtonContainer>
       </S.HeaderRow>
       {workers && workerColumns ? (
-        <Table columns={workerColumns} data={workers} loading={loadingData} />
+        <Table
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          columns={workerColumns as any}
+          data={workers}
+          loading={loadingData}
+        />
       ) : null}
       <Card ref={ref} showProfile={showProfile}>
         {worker && servicesOptions && (

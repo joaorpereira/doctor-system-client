@@ -37,7 +37,7 @@ const useOnSubmitCompany = ({
 }: Props) => {
   const dispatch = useAppDispatch();
 
-  const onSubmitCompany = (data: any) => {
+  const onSubmitCompany = <T extends Record<string, T>>(data: T) => {
     const newPhoneNumber = reversePhoneNumberFormat(phoneValue);
     const newDocumentNumber = cpfValue.replace(/\D+/g, "");
 
