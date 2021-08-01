@@ -52,6 +52,10 @@ const hoursSlice = createSlice({
       const services = action.payload;
       return { ...state, ...services };
     },
+    setHour(state, action) {
+      const { hour, type } = action.payload;
+      return { ...state, hour, type };
+    },
     updateHour: (state, action: PayloadAction<any>) => {
       return { ...state, loadingRequest: true, success: false };
     },
@@ -89,6 +93,7 @@ export const {
   getHoursByService,
   setHoursByCompany,
   setHoursByService,
+  setHour,
   updateHour,
   createHour,
   removeHour,
