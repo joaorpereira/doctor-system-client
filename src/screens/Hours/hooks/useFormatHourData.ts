@@ -18,6 +18,7 @@ function useFormatHourData({ setHourData, weekDays }: ISetState) {
     const response: ResponseHoursProps[] = hours
       .map((hour) =>
         hour.days.map((day) => ({
+          resource: hour,
           title: `${hour.services?.length || 0} ${
             hour.services?.length === 1 ? "serviço" : "serviços"
           } e ${hour.services?.length || 0} ${
