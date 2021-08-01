@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { BankAccount, Address } from "../../utils/types";
+import { BankAccount, Address, OptionType } from "../../utils/types";
 
 export type Company = {
   address: Address;
@@ -17,18 +17,9 @@ export type Company = {
   recipient_id: string;
 };
 
-export type CompanyOptions = {
-  label: string;
-  value: string;
-};
-
-export type CompanyPayload = {
-  company: Company;
-};
-
 export interface CompaniesSliceState {
-  companies: CompanyPayload[];
-  companiesOptions: CompanyOptions[];
+  companies: Company[];
+  companiesOptions: OptionType[];
   loading?: boolean;
 }
 

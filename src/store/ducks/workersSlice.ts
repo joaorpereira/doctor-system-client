@@ -21,11 +21,12 @@ export type Worker = {
 export type Options = {
   label: string;
   value: string;
+  services: string[];
 };
 
-interface WorkersSliceState {
+export interface WorkersSliceState {
   workers: Worker[];
-  worker?: Worker | Record<string, never>;
+  worker: Worker | Record<string, never>;
   type: string;
   loadingData?: boolean;
   loadingRequest?: boolean;

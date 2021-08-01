@@ -35,8 +35,6 @@ import {
   Spinner,
 } from "../../components";
 
-import { RootState } from "../../store";
-
 import { RowInfo, OptionType } from "../../utils/types";
 import {
   formatDurationHour,
@@ -63,17 +61,6 @@ import { AuthSliceState } from "../../store/ducks/authSlice";
 
 const maxNumber = 6;
 
-type ServiceReducerProps = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  services: any;
-  service: Service;
-  type: string;
-  loading: boolean;
-  loadingFiltered: boolean;
-  success: boolean;
-  loadingData: boolean;
-};
-
 const Services: React.FC = (): ReactElement => {
   const ref = useRef<HTMLInputElement>();
   const dispatch = useAppDispatch();
@@ -86,16 +73,14 @@ const Services: React.FC = (): ReactElement => {
     loadingFiltered,
     success,
     loadingData,
-  }: ServiceReducerProps = useAppSelector(
-    ({ servicesReducers }: RootState) => servicesReducers
-  );
+  } = useAppSelector(({ servicesReducers }) => servicesReducers);
 
   const { companiesOptions }: CompaniesSliceState = useAppSelector(
-    ({ companiesReducers }: RootState) => companiesReducers
+    ({ companiesReducers }) => companiesReducers
   );
 
   const { user }: AuthSliceState = useAppSelector(
-    ({ authReducers }: RootState) => authReducers
+    ({ authReducers }) => authReducers
   );
 
   const {
@@ -105,7 +90,7 @@ const Services: React.FC = (): ReactElement => {
     title,
     description,
     status,
-  } = service;
+  } = service as Service;
 
   const { register, handleSubmit, reset, control } = useForm({});
 
@@ -300,7 +285,8 @@ const Services: React.FC = (): ReactElement => {
       </S.HeaderRow>
       {services && serviceColumns ? (
         <Table
-          columns={serviceColumns}
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          columns={serviceColumns as any}
           data={services}
           loading={loading || loadingFiltered}
         />

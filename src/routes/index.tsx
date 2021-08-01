@@ -1,7 +1,6 @@
 import React, { ReactElement } from "react";
 import { Route, Redirect } from "react-router-dom";
 import { useAppSelector } from "../hooks";
-import { RootState } from "../store";
 
 interface IRoutes {
   component: React.ComponentType<React.FC>;
@@ -17,9 +16,7 @@ const Routes: React.FC<IRoutes> = ({
   isPrivate,
   ...rest
 }): ReactElement => {
-  const { token } = useAppSelector(
-    ({ authReducers }: RootState) => authReducers
-  );
+  const { token } = useAppSelector(({ authReducers }) => authReducers);
 
   if (isPrivate && !token) {
     return <Redirect to={"/login"} />;

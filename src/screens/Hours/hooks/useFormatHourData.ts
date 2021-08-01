@@ -1,9 +1,9 @@
 import { addHours, format } from "date-fns";
-import { Dispatch, SetStateAction, useCallback } from "react";
+import { useCallback } from "react";
 import { Hour } from "../../../store/ducks/hoursSlice";
 
 type ISetState = {
-  setHourData: any;
+  setHourData: React.Dispatch<React.SetStateAction<ResponseHoursProps[]>>;
   weekDays: Date[];
 };
 

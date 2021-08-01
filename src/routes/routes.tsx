@@ -12,7 +12,7 @@ const SignUp = lazy(() => import("../screens/Signup"));
 
 const Routes: React.FC = (): ReactElement => {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={null}>
       <Switch>
         <Route path="/login" exact component={LoginPage} />
         <Route path="/cadastro" exact component={SignUp} />

@@ -19,7 +19,6 @@ import {
 import * as S from "./styled";
 import { colors, reactSelectedStyle, SectionTitle } from "../../styles";
 
-import { RootState } from "../../store";
 import { getHoursByCompany } from "../../store/ducks/hoursSlice";
 import {
   getFilteredServices,
@@ -85,20 +84,18 @@ const Hours: React.FC = (): ReactElement => {
     []
   );
 
-  const { user } = useAppSelector(
-    ({ authReducers }: RootState) => authReducers
-  );
+  const { user } = useAppSelector(({ authReducers }) => authReducers);
 
   const { hours, hour, type, loadingData, success } = useAppSelector(
-    ({ hoursReducers }: RootState) => hoursReducers
+    ({ hoursReducers }) => hoursReducers
   );
 
   const { servicesOptions } = useAppSelector(
-    ({ servicesReducers }: RootState) => servicesReducers
+    ({ servicesReducers }) => servicesReducers
   );
 
   const { workersOptions } = useAppSelector(
-    ({ workersReducers }: RootState) => workersReducers
+    ({ workersReducers }) => workersReducers
   );
 
   const localizer = dateFnsLocalizer({
@@ -116,11 +113,12 @@ const Hours: React.FC = (): ReactElement => {
     setDisponibleServices(option);
   const handleStartDayChange = (option: OptionType) => setStartDay(option);
   const handleEndDayChange = (option: OptionType) => setEndDay(option);
-  const handleDisponibleDaysChange = (option: any) => setDisponibleDays(option);
+  const handleDisponibleDaysChange = (option: OptionType[]) =>
+    setDisponibleDays(option);
   const handleDisponibleWorkersChange = (option: OptionType[]) =>
     setDisponibleWorkers(option);
 
-  const { handleSubmit, control, reset } = useForm({});
+  const { handleSubmit, control } = useForm({});
 
   const resetForm = () => {
     setDisponibleDays([]);
@@ -151,7 +149,7 @@ const Hours: React.FC = (): ReactElement => {
 
   // custom hooks - submit form to create or update service
   const [onSubmit] = useOnSubmit({
-    id: hour._id,
+    id: hour?._id,
     disponibleDays,
     company_id: user._id,
     disponibleWorkers,
@@ -218,6 +216,7 @@ const Hours: React.FC = (): ReactElement => {
         </Button>
       </S.HeaderRow>
       <Calendar
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         onSelectEvent={(e: any) => {
           handleUpdateOrShowHour({
             hour: e.resource,
@@ -255,7 +254,9 @@ const Hours: React.FC = (): ReactElement => {
                     <ReactSelect
                       {...field}
                       isMulti
-                      onChange={(option) => handleDisponibleDaysChange(option)}
+                      onChange={(option) =>
+                        handleDisponibleDaysChange(option as OptionType[])
+                      }
                       options={weekDaysOptions as unknown as OptionType[]}
                       value={disponibleDays}
                       styles={{

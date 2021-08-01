@@ -17,7 +17,7 @@ export type Client = {
   _id?: string;
 };
 
-interface ClientsSliceState {
+export interface ClientsSliceState {
   clients: Client[];
   client?: Record<string, any>;
   type: string;

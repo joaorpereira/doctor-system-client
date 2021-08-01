@@ -3,7 +3,7 @@ import { Hour } from "../../../store/ducks/hoursSlice";
 import { OptionType } from "../../../utils/types";
 
 type Props = {
-  hour: Hour;
+  hour: Hour | Record<string, never>;
   workersOptionsList: OptionType[];
   setDisponibleWorkers: React.Dispatch<React.SetStateAction<OptionType[]>>;
 };

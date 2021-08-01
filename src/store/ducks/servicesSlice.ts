@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { OptionType } from "../../utils/types";
 
 export type File = {
   folder: string;
@@ -22,23 +23,14 @@ export type Service = {
   files: File[];
 };
 
-export type ServicesOptions = {
-  label: string;
-  value: string;
-};
-
-export type ServicePayload = {
-  service: Service;
-};
-
 export interface ServicesSliceState {
-  services: ServicePayload[];
+  services: Service[];
   service: Service | Record<string, any>;
   type: string;
   loading?: boolean;
   loadingFiltered?: boolean;
   loadingData?: boolean;
-  servicesOptions: ServicesOptions[];
+  servicesOptions: OptionType[];
   success?: boolean;
 }
 

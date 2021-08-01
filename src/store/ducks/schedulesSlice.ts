@@ -22,11 +22,17 @@ export type FormatedSchedule = {
   end: Date;
 };
 
-// === SLICES ===
+export interface SchedulesSliceState {
+  schedules: Schedule[];
+}
+
+const initialState: SchedulesSliceState = {
+  schedules: [],
+};
 
 const schedulesSlice = createSlice({
   name: "schedules",
-  initialState: {},
+  initialState: initialState,
   reducers: {
     getSchedules(state, action: PayloadAction<any>) {
       return { ...state };

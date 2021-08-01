@@ -4,7 +4,7 @@ import { weekDaysOptions } from "../../../utils";
 import { OptionType } from "../../../utils/types";
 
 type Props = {
-  hour: Hour;
+  hour: Hour | Record<string, never>;
   setDisponibleDays: React.Dispatch<React.SetStateAction<OptionType[]>>;
 };
 
