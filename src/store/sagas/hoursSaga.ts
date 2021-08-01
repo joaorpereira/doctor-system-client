@@ -11,10 +11,20 @@ import {
   updateHourSuccess,
   createHourSuccess,
   removeHourSuccess,
+  Hour,
 } from "../ducks/hoursSlice";
 import { ResponseGenerator } from "../../utils/types";
 
-function* handleGetHoursByCompany({ payload }: any) {
+type HoursPayloadProps = {
+  payload: {
+    id?: string;
+    services?: string[];
+    data?: Hour | Hour[];
+  };
+  type: string;
+};
+
+function* handleGetHoursByCompany({ payload }: HoursPayloadProps) {
   try {
     const { data }: ResponseGenerator = yield call(
       api.get,
@@ -26,7 +36,7 @@ function* handleGetHoursByCompany({ payload }: any) {
   }
 }
 
-function* handleWorkHoursByService({ payload }: any) {
+function* handleWorkHoursByService({ payload }: HoursPayloadProps) {
   try {
     yield call(api.post, "/work-hours/service", { services: payload.services });
     yield put(setHoursByService({ id: payload.id }));
@@ -35,16 +45,16 @@ function* handleWorkHoursByService({ payload }: any) {
   }
 }
 
-function* handleCreateHour({ payload }: any) {
+function* handleCreateHour({ payload }: HoursPayloadProps) {
   try {
-    const { data } = yield call(api.post, "/work-hours", { ...payload });
+    const { data } = yield call(api.post, "/work-hours", { ...payload.data });
     yield put(createHourSuccess({ hour: data.data }));
   } catch (error) {
     console.log(error);
   }
 }
 
-function* handleUpdateHour({ payload }: any) {
+function* handleUpdateHour({ payload }: HoursPayloadProps) {
   try {
     const { data }: ResponseGenerator = yield call(
       api.put,
@@ -57,7 +67,7 @@ function* handleUpdateHour({ payload }: any) {
   }
 }
 
-function* handleRemoveHour({ payload }: any) {
+function* handleRemoveHour({ payload }: HoursPayloadProps) {
   try {
     yield call(api.delete, `/work-hours/${payload.id}`);
     yield put(removeHourSuccess({ id: payload.id }));
