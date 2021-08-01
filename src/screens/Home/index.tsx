@@ -23,14 +23,14 @@ import { RootState } from "../../store";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { useFormatScheduleData } from "./hooks";
 
-import "date-fns/locale/pt-BR";
+import ptBR from "date-fns/locale/pt-BR";
 import { SectionTitle } from "../../styles";
 import { IRange, IScheduleProps } from "../../store/sagas/schedulesSaga";
+import { calendarOptions } from "../../utils";
 
 const locales = {
-  "pt-BR": require("date-fns/locale/pt-BR"),
+  "pt-BR": ptBR,
 };
-
 type ISelector = {
   schedules?: Schedule[];
 };
@@ -98,20 +98,6 @@ const HomePage: React.FC = (): ReactElement => {
     if (schedules) formatScheduleData(schedules);
   }, [schedules, formatScheduleData]);
 
-  const messages = {
-    allDay: "Dia Inteiro",
-    previous: "<",
-    next: ">",
-    today: "Hoje",
-    month: "Mês",
-    week: "Semana",
-    day: "Dia",
-    agenda: "Agenda",
-    date: "Data",
-    time: "Hora",
-    event: "Evento",
-  };
-
   return (
     <S.ScheduleSection>
       <S.HeaderRow>
@@ -119,8 +105,9 @@ const HomePage: React.FC = (): ReactElement => {
       </S.HeaderRow>
       {scheduleData && (
         <Calendar
-          messages={messages}
+          messages={calendarOptions}
           localizer={localizer}
+          culture="pt-BR"
           onRangeChange={(range) => rangeFormat(range)}
           events={scheduleData}
           startAccessor="start"
