@@ -31,7 +31,6 @@ const getCoordinates = async ({
         .join("+")}&country=${country}&format=geocodejson`
     );
     const coordinates = result.data.features[0].geometry;
-    console.log({ coordinates });
     setCoordinates(coordinates);
     return coordinates;
   } catch (error) {

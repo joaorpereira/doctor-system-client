@@ -101,8 +101,6 @@ function* handleUpdateServices({ payload }: ServicesProps) {
       config
     );
 
-    console.log(data);
-
     yield put(updateServiceSuccess({ service: data.data }));
   } catch (error) {
     console.log(error);
