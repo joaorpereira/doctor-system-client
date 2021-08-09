@@ -13,6 +13,10 @@ type DivProps = {
   top?: string;
 };
 
+type ImageFilesWrapperProps = {
+  flexBasis?: string;
+};
+
 export const ServicesSection = styled.section`
   display: flex;
   flex-direction: column;
@@ -113,11 +117,12 @@ export const Div = styled.div<DivProps>`
   margin-top: ${({ top }) => top && top};
 `;
 
-export const ImageFilesWrapper = styled.div`
+export const ImageFilesWrapper = styled.div<ImageFilesWrapperProps>`
   display: flex;
-  gap: 20px;
+  gap: 10px;
   flex-wrap: wrap;
-  height: 268px;
+  height: 180px;
+  flex-basis: ${({ flexBasis }) => flexBasis && flexBasis};
 `;
 
 export const ParagraphNoneImage = styled.p`

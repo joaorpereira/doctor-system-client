@@ -3,6 +3,8 @@ import { colors } from "../../styles";
 
 type Props = {
   width?: string;
+  flex?: number;
+  flexBasis?: string;
 };
 
 type LabelProps = {
@@ -14,10 +16,11 @@ export const Input = styled.input<Props>`
   outline: none;
   padding: 8px 10px;
   border-radius: 4px;
-  width: ${({ width }) => (width ? width : "195px")};
+  width: ${({ width }) => (width ? width : "100%")};
   transition: border 0.15s ease-out;
   height: 40px;
   background-color: #fff;
+  color: ${colors.text};
   :focus {
     border: 2px solid ${colors.primary};
   }
@@ -31,17 +34,6 @@ export const Input = styled.input<Props>`
 
 export const Label = styled.label<LabelProps>`
   font-size: ${({ secondary }) => (secondary ? "1rem" : "0.8rem")};
-  color: ${({ secondary }) => (secondary ? `${colors.text}` : "#a9a9a9")};
+  color: ${({ secondary }) => (secondary ? "#a9a9a9" : `${colors.text}`)};
   margin-bottom: 5px;
-`;
-
-export const Box = styled.div<Props>`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  width: ${({ width }) => width && width};
-
-  @media only screen and (min-width: 350px) and (max-width: 800px) {
-    width: 100%;
-  }
 `;

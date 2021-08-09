@@ -11,7 +11,7 @@ type CardProps = {
 type FontProps = {
   fontSize?: string;
   textAlign?: string;
-  marginBottom?: string;
+  margin?: string;
 };
 
 export const Card = styled.div<CardProps>`
@@ -26,6 +26,12 @@ export const Card = styled.div<CardProps>`
   padding: 55px 50px;
   transform: translateX(${({ showProfile }) => (showProfile ? "0" : "100%")});
   transition: transform 0.3s ease-in-out;
+
+  @media only screen and (max-width: 1360px) {
+    width: 575px;
+    height: calc(100vh + 20px);
+    top: -100px;
+  }
 `;
 
 export const CardTitle = styled.h3<FontProps>`
@@ -33,9 +39,8 @@ export const CardTitle = styled.h3<FontProps>`
   color: ${colors.text};
   text-transform: uppercase;
   letter-spacing: 1.1px;
-  line-height: 50px;
   text-align: ${({ textAlign }) => (textAlign ? textAlign : "left")};
-  margin-bottom: ${({ marginBottom }) => marginBottom && marginBottom};
+  margin: ${({ margin }) => margin && margin};
 `;
 
 export const StyledMdRemoveRedEye = styled(MdRemoveRedEye)`

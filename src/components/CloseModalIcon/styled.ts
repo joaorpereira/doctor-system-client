@@ -8,7 +8,7 @@ export const CloseIcon = styled.button`
   position: absolute;
   top: 0;
   left: 0;
-  margin-top: 75%;
+  margin-top: 50%;
   margin-left: -1px;
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;

@@ -1,4 +1,5 @@
 import React from "react";
+import { Box } from "../../styles/global";
 import * as S from "./styled";
 
 type Props = {
@@ -11,12 +12,12 @@ type Props = {
 
 const InputComponent = ({ children, label, name, width, secondary }: Props) => {
   return (
-    <S.Box width={width}>
+    <Box width={width}>
       <S.Label secondary={secondary} htmlFor={name}>
         {label}
       </S.Label>
       {children}
-    </S.Box>
+    </Box>
   );
 };
 

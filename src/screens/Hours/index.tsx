@@ -2,7 +2,7 @@ import React, { ReactElement, useEffect, useRef, useState } from "react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Controller, useForm } from "react-hook-form";
 import ReactSelect from "react-select";
-import { Calendar, dateFnsLocalizer, FormatInput } from "react-big-calendar";
+import { Calendar, dateFnsLocalizer } from "react-big-calendar";
 import { format, parse, startOfWeek, getDay, addDays } from "date-fns";
 import ptBR from "date-fns/locale/pt-BR";
 
@@ -12,12 +12,17 @@ import {
   Button,
   CloseModalIcon,
   Label,
-  Box,
   Spinner,
 } from "../../components";
 
 import * as S from "./styled";
-import { colors, reactSelectedStyle, SectionTitle } from "../../styles";
+import {
+  colors,
+  reactSelectedStyle,
+  SectionTitle,
+  Box,
+  GlobalButtonContainer,
+} from "../../styles";
 
 import { getHoursByCompany } from "../../store/ducks/hoursSlice";
 import {
@@ -250,7 +255,7 @@ const Hours: React.FC = (): ReactElement => {
         {hours && (
           <form onSubmit={handleSubmit(onSubmit)}>
             <CloseModalIcon handleCloseModal={handleCloseModal} />
-            <CardTitle marginBottom="5px">Dia da Semana</CardTitle>
+            <CardTitle margin="0px 0px 5px">Dia da Semana</CardTitle>
             <S.Section marginBottom="10px">
               <Box width="100%">
                 <Controller
@@ -276,7 +281,7 @@ const Hours: React.FC = (): ReactElement => {
                 />
               </Box>
             </S.Section>
-            <CardTitle marginBottom="5px">Horário</CardTitle>
+            <CardTitle margin="20px 0px 2px">Horário</CardTitle>
             <S.Section marginBottom="10px">
               <Box width="100%">
                 <Label htmlFor="start">Inicial:</Label>
@@ -321,7 +326,9 @@ const Hours: React.FC = (): ReactElement => {
                 />
               </Box>
             </S.Section>
-            <CardTitle marginBottom="5px">Especialidades Disponíveis</CardTitle>
+            <CardTitle margin="20px 0px 5px">
+              Especialidades Disponíveis
+            </CardTitle>
             <S.Section marginBottom="10px">
               <Box width="100%">
                 <Controller
@@ -348,7 +355,9 @@ const Hours: React.FC = (): ReactElement => {
                 />
               </Box>
             </S.Section>
-            <CardTitle marginBottom="5px">Colaboradores Disponíveis</CardTitle>
+            <CardTitle margin="20px 0px 5px">
+              Colaboradores Disponíveis
+            </CardTitle>
             <S.Section>
               <Box width="100%">
                 <Controller
@@ -380,26 +389,23 @@ const Hours: React.FC = (): ReactElement => {
                 />
               </Box>
             </S.Section>
-            {!showContent() && (
-              <Button
-                style={{ marginTop: "15px" }}
-                color={colors.mediumBlue}
-                width="100%"
-                type="submit"
-              >
-                {loadingData && !success ? (
-                  <Spinner
-                    size="35px"
-                    color="#fff"
-                    style={{ position: "absolute", top: "65%", left: "50%" }}
-                  />
-                ) : showCreate() ? (
-                  "Criar Horário"
-                ) : (
-                  "Atualizar Horário"
-                )}
-              </Button>
-            )}
+            <GlobalButtonContainer>
+              {!showContent() && (
+                <Button color={colors.mediumBlue} width="100%" type="submit">
+                  {loadingData && !success ? (
+                    <Spinner
+                      size="35px"
+                      color="#fff"
+                      style={{ position: "absolute", top: "65%", left: "50%" }}
+                    />
+                  ) : showCreate() ? (
+                    "Criar Horário"
+                  ) : (
+                    "Atualizar Horário"
+                  )}
+                </Button>
+              )}
+            </GlobalButtonContainer>
           </form>
         )}
       </Card>

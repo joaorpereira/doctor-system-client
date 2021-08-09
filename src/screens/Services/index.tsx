@@ -11,13 +11,16 @@ import { Controller, useForm } from "react-hook-form";
 import { ImageListType } from "react-images-uploading";
 
 import * as S from "./styled";
-import { colors } from "../../styles";
 import {
   Active,
+  GlobalButtonContainer,
   Paragraph,
   reactSelectedStyle,
   SectionTitle,
-} from "../../styles/global";
+  Box,
+  colors,
+  Form,
+} from "../../styles";
 import { MdEdit, MdRemoveRedEye, MdDelete, MdShare } from "react-icons/md";
 
 import {
@@ -28,7 +31,6 @@ import {
   CloseModalIcon,
   Input,
   Label,
-  Box,
   TextArea,
   ImageUpload,
   ImageItem,
@@ -296,127 +298,115 @@ const Services: React.FC = (): ReactElement => {
       ) : null}
       <Card ref={ref} showProfile={showProfile}>
         {service && services && (
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <Form onSubmit={handleSubmit(onSubmit)}>
             <CloseModalIcon handleCloseModal={handleCloseModal} />
-            <S.Section marginBottom="10px">
-              <Box>
-                <Label htmlFor="title">Título:</Label>
-                <Input
-                  width="270px"
-                  defaultValue={title ? title : ""}
-                  {...register("title")}
-                />
-              </Box>
-              <Box>
-                <Label htmlFor="price">Preço (R$):</Label>
-                <Input
-                  width="120px"
-                  defaultValue={price ? price.toString() : ""}
-                  {...register("price")}
-                />
-              </Box>
-            </S.Section>
-            <S.Section marginBottom="10px">
-              <Box>
-                <Label htmlFor="service_recurrence">Recorrência (dias):</Label>
-                <Input
-                  width="195px"
-                  defaultValue={
-                    service_recurrence ? Number(service_recurrence) : ""
-                  }
-                  type="number"
-                  {...register("service_recurrence")}
-                />
-              </Box>
-              <Box width="195px">
-                <Label htmlFor="service_duration">Duração</Label>
-                <Controller
-                  name="service_duration"
-                  control={control}
-                  render={({ field }) => (
-                    <ReactSelect
-                      {...field}
-                      styles={{
-                        control: (base) => ({
-                          ...base,
-                          ...reactSelectedStyle,
-                        }),
-                      }}
-                      value={timeOptions.filter(
-                        (option: OptionType) => option.value === durationValue
-                      )}
-                      options={timeOptions}
-                      onChange={(e) => handleDurationChange(e as OptionType)}
-                    />
-                  )}
-                />
-              </Box>
-            </S.Section>
-            <S.Section marginBottom="10px">
-              <Box width="195px">
-                <Label htmlFor="status">Status:</Label>
-                <Controller
-                  name="status"
-                  control={control}
-                  render={({ field }) => (
-                    <ReactSelect
-                      {...field}
-                      styles={{
-                        control: (base) => ({
-                          ...base,
-                          ...reactSelectedStyle,
-                        }),
-                      }}
-                      value={statusOptions.filter(
-                        (option: OptionType) => option.value === statusValue
-                      )}
-                      options={statusOptions}
-                      onChange={(e) => handleStatusChange(e as OptionType)}
-                    />
-                  )}
-                />
-              </Box>
-              <Box width="195px">
-                <Label htmlFor="company_id">Empresa:</Label>
-                <Controller
-                  name="company_id"
-                  control={control}
-                  render={({ field }) => (
-                    <ReactSelect
-                      {...field}
-                      styles={{
-                        control: (base) => ({
-                          ...base,
-                          ...reactSelectedStyle,
-                        }),
-                      }}
-                      value={
-                        user.role === "COMPANY" &&
-                        ({
-                          value: user?._id,
-                          label: user?.name,
-                        } as OptionTypeBase)
-                      }
-                      options={companiesOptions}
-                      onChange={(e) => handleCompanyChange(e as OptionType)}
-                    />
-                  )}
-                />
-              </Box>
-            </S.Section>
-            <S.Section>
-              <Box>
-                <Label htmlFor="description">Descrição:</Label>
-                <TextArea
-                  width="400px"
-                  height="140px"
-                  defaultValue={description ? description : ""}
-                  {...register("description")}
-                />
-              </Box>
-            </S.Section>
-            <CardTitle marginBottom="5px">Imagens do Serviço</CardTitle>
-            <S.ImageFilesWrapper>
+            <Box flexBasis="55%">
+              <Label htmlFor="title">Título:</Label>
+              <Input defaultValue={title ? title : ""} {...register("title")} />
+            </Box>
+            <Box flexBasis="20.35%">
+              <Label htmlFor="price">Preço (R$):</Label>
+              <Input
+                defaultValue={price ? price.toString() : ""}
+                {...register("price")}
+              />
+            </Box>
+            <Box flexBasis="20.35%">
+              <Label htmlFor="service_recurrence">Recorrência (dias):</Label>
+              <Input
+                defaultValue={
+                  service_recurrence ? Number(service_recurrence) : ""
+                }
+                type="number"
+                {...register("service_recurrence")}
+              />
+            </Box>
+            <Box flexBasis="26.4%">
+              <Label htmlFor="service_duration">Duração</Label>
+              <Controller
+                name="service_duration"
+                control={control}
+                render={({ field }) => (
+                  <ReactSelect
+                    {...field}
+                    styles={{
+                      control: (base) => ({
+                        ...base,
+                        ...reactSelectedStyle,
+                      }),
+                    }}
+                    value={timeOptions.filter(
+                      (option: OptionType) => option.value === durationValue
+                    )}
+                    options={timeOptions}
+                    onChange={(e) => handleDurationChange(e as OptionType)}
+                  />
+                )}
+              />
+            </Box>
+            <Box flexBasis="26.4%">
+              <Label htmlFor="status">Status:</Label>
+              <Controller
+                name="status"
+                control={control}
+                render={({ field }) => (
+                  <ReactSelect
+                    {...field}
+                    styles={{
+                      control: (base) => ({
+                        ...base,
+                        ...reactSelectedStyle,
+                      }),
+                    }}
+                    value={statusOptions.filter(
+                      (option: OptionType) => option.value === statusValue
+                    )}
+                    options={statusOptions}
+                    onChange={(e) => handleStatusChange(e as OptionType)}
+                  />
+                )}
+              />
+            </Box>
+            <Box flexBasis="42.9%">
+              <Label htmlFor="company_id">Empresa:</Label>
+              <Controller
+                name="company_id"
+                control={control}
+                render={({ field }) => (
+                  <ReactSelect
+                    {...field}
+                    styles={{
+                      control: (base) => ({
+                        ...base,
+                        ...reactSelectedStyle,
+                      }),
+                    }}
+                    value={
+                      user.role === "COMPANY" &&
+                      ({
+                        value: user?._id,
+                        label: user?.name,
+                      } as OptionTypeBase)
+                    }
+                    options={companiesOptions}
+                    onChange={(e) => handleCompanyChange(e as OptionType)}
+                  />
+                )}
+              />
+            </Box>
+            <Box flexBasis="100%">
+              <Label htmlFor="description">Descrição:</Label>
+              <TextArea
+                width="100%"
+                height="100px"
+                defaultValue={description ? description : ""}
+                {...register("description")}
+              />
+            </Box>
+            <Box flexBasis="100%">
+              <CardTitle margin="5px">Imagens do Serviço</CardTitle>
+            </Box>
+            <S.ImageFilesWrapper flexBasis="100%">
               {service && service?.files?.length > 0 ? (
                 <ImageItem
                   showUpdate={showUpdate}
@@ -440,27 +430,22 @@ const Services: React.FC = (): ReactElement => {
                 />
               )}
             </S.ImageFilesWrapper>
-            {!showContent() && (
-              <Button
-                style={{ marginTop: "15px" }}
-                color={colors.mediumBlue}
-                width="100%"
-                type="submit"
-              >
-                {loadingData && !success ? (
-                  <Spinner
-                    size="35px"
-                    color="#fff"
-                    style={{ position: "absolute", top: "65%", left: "50%" }}
-                  />
-                ) : showCreate() ? (
-                  "Criar Serviço"
-                ) : (
-                  "Atualizar Serviço"
-                )}
-              </Button>
-            )}
-          </form>
+            <GlobalButtonContainer>
+              {!showContent() && (
+                <Button color={colors.mediumBlue} width="100%" type="submit">
+                  {loadingData && !success ? (
+                    <Spinner
+                      size="35px"
+                      color="#fff"
+                      style={{ position: "absolute", top: "65%", left: "50%" }}
+                    />
+                  ) : (
+                    "Enviar"
+                  )}
+                </Button>
+              )}
+            </GlobalButtonContainer>
+          </Form>
         )}
       </Card>
     </S.ServicesSection>

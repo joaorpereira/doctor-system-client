@@ -17,9 +17,11 @@ import {
   Paragraph,
   reactSelectedStyle,
   SectionTitle,
+  Box,
+  Form,
+  GlobalButtonContainer,
 } from "../../styles";
 import { MdEdit, MdRemoveRedEye, MdDelete, MdShare } from "react-icons/md";
-import Avatar from "../../assets/avatar.png";
 
 import {
   CardTitle,
@@ -27,12 +29,12 @@ import {
   Card,
   Table,
   Button,
-  ButtonEdit,
   CloseModalIcon,
   Input,
   Label,
-  Box,
   Spinner,
+  UserInfo,
+  ImageFileUpload,
 } from "../../components";
 
 import {
@@ -87,6 +89,7 @@ const Workers: React.FC = (): ReactElement => {
     ValueType<OptionType, true>
   >([]);
   const [accountType, setAccountType] = useState("");
+  const [showAccountData, setShowaccountData] = useState(false);
 
   const { workers, worker, type, loadingRequest, loadingData, success } =
     useAppSelector(({ workersReducers }) => workersReducers);
@@ -335,21 +338,22 @@ const Workers: React.FC = (): ReactElement => {
       ) : null}
       <Card ref={ref} showProfile={showProfile}>
         {worker && servicesOptions && (
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <Form onSubmit={handleSubmit(onSubmit)}>
             <CloseModalIcon handleCloseModal={handleCloseModal} />
             <S.CardHeader>
-              {!showContent() && <ButtonEdit size={24} />}
-              <img
-                src={picture ? picture : Avatar}
-                alt={worker ? name : "avatar"}
+              <ImageFileUpload
+                picture={picture}
+                user={worker}
+                userName={name}
+                show={showContent}
               />
               {showContent() ? (
-                <div>
-                  <h4>{name}</h4>
-                  <p>{email}</p>
-                  <p>{phone_number}</p>
-                  <p>{format(new Date(birth_date), "dd/MM/yyyy")}</p>
-                </div>
+                <UserInfo
+                  name={name}
+                  email={email}
+                  phone_number={phone_number}
+                  birth_date={birth_date}
+                />
               ) : (
                 <S.Div column>
                   <S.Div gap="10px" bottom="10px">
@@ -423,126 +427,130 @@ const Workers: React.FC = (): ReactElement => {
                 </S.Div>
               )}
             </S.CardHeader>
-            <CardTitle>Alterar Senha</CardTitle>
-            <S.Section>
-              <Box>
-                <Label htmlFor="password">Nova Senha:</Label>
-                <Input
-                  readOnly={showContent()}
-                  type={
-                    showPassword.password && !showContent()
-                      ? "text"
-                      : "password"
-                  }
-                  defaultValue={password}
-                  {...register("password")}
-                />
-                <StyledMdRemoveRedEye
-                  size={20}
-                  onClick={() => handleShowPassword("password")}
-                />
-              </Box>
-              <Box>
-                <Label htmlFor="newPassword">Repita a Senha:</Label>
-                <Input
-                  readOnly={showContent()}
-                  {...register("password2")}
-                  defaultValue={password ? password : ""}
-                  type={
-                    showPassword.password2 && !showContent()
-                      ? "text"
-                      : "password"
-                  }
-                />
-                <StyledMdRemoveRedEye
-                  size={20}
-                  onClick={() => handleShowPassword("password2")}
-                />
-              </Box>
-            </S.Section>
-            <CardTitle>Documento</CardTitle>
-            <S.Section>
-              <Box width="100%">
-                <Label htmlFor="document.type">Tipo:</Label>
-                <Controller
-                  name="document.type"
-                  control={control}
-                  render={({ field }) => (
-                    <ReactSelect
-                      isDisabled={readOnlyAtShowAndUpdate()}
-                      {...field}
-                      styles={{
-                        control: (base) => ({
-                          ...base,
-                          ...reactSelectedStyle,
-                        }),
-                      }}
-                      value={documentOptions.filter(
-                        (option: OptionType) => option.value === documentType
-                      )}
-                      options={documentOptions}
-                      onChange={(e) => handleTypeChange(e as OptionType)}
-                    />
-                  )}
-                />
-              </Box>
-              <Box>
-                <Label htmlFor="document.number">Número:</Label>
-                <Input
-                  readOnly={readOnlyAtShowAndUpdate()}
-                  width="240px"
-                  value={
-                    document?.number
-                      ? formatCPForCNPJ(document?.number)
-                      : cpfValue
-                  }
-                  {...register("document.number")}
-                  onChange={(e) => handleCpfOrCnpjMask(e)}
-                />
-              </Box>
-            </S.Section>
-            <CardTitle>Serviços</CardTitle>
-            <S.Section>
-              <Box width="100%">
-                <Controller
-                  name="document.services"
-                  control={control}
-                  render={({ field }) => (
-                    <ReactSelect
-                      {...field}
-                      isMulti
-                      isDisabled={showContent()}
-                      value={selectedServices}
-                      onChange={(option) => handleServicesChange(option)}
-                      options={servicesOptions}
-                      styles={{
-                        control: (base) => ({
-                          ...base,
-                          ...reactSelectedStyle,
-                        }),
-                      }}
-                    />
-                  )}
-                />
-              </Box>
-            </S.Section>
-            <CardTitle>Conta Bancária</CardTitle>
-            <S.Section wrap marginBottom="28px">
-              <Box>
-                <Label htmlFor="bank_account.acc_user_name">Titular:</Label>
-                <Input
-                  readOnly={readOnlyAtShowAndUpdate()}
-                  {...register("bank_account.acc_user_name")}
-                  defaultValue={
-                    bank_account?.acc_user_name
-                      ? bank_account?.acc_user_name
-                      : cepValue
-                  }
-                />
-              </Box>
-              <Box>
-                <Label htmlFor="bank_account.acc_type">Tipo:</Label>
-                <Box width="195px">
+            {!showAccountData ? (
+              <>
+                <Box flexBasis="100%">
+                  <CardTitle>Alterar Senha</CardTitle>
+                </Box>
+                <Box flexBasis="48.9%">
+                  <Label htmlFor="password">Nova Senha:</Label>
+                  <Input
+                    readOnly={showContent()}
+                    type={
+                      showPassword.password && !showContent()
+                        ? "text"
+                        : "password"
+                    }
+                    defaultValue={password}
+                    {...register("password")}
+                  />
+                  <StyledMdRemoveRedEye
+                    size={20}
+                    onClick={() => handleShowPassword("password")}
+                  />
+                </Box>
+                <Box flexBasis="48.9%">
+                  <Label htmlFor="newPassword">Repita a Senha:</Label>
+                  <Input
+                    readOnly={showContent()}
+                    {...register("password2")}
+                    defaultValue={password ? password : ""}
+                    type={
+                      showPassword.password2 && !showContent()
+                        ? "text"
+                        : "password"
+                    }
+                  />
+                  <StyledMdRemoveRedEye
+                    size={20}
+                    onClick={() => handleShowPassword("password2")}
+                  />
+                </Box>
+                <Box flexBasis="100%">
+                  <CardTitle>Documento</CardTitle>
+                </Box>
+                <Box flexBasis="48.9%">
+                  <Label htmlFor="document.type">Tipo:</Label>
+                  <Controller
+                    name="document.type"
+                    control={control}
+                    render={({ field }) => (
+                      <ReactSelect
+                        isDisabled={readOnlyAtShowAndUpdate()}
+                        {...field}
+                        styles={{
+                          control: (base) => ({
+                            ...base,
+                            ...reactSelectedStyle,
+                          }),
+                        }}
+                        value={documentOptions.filter(
+                          (option: OptionType) => option.value === documentType
+                        )}
+                        options={documentOptions}
+                        onChange={(e) => handleTypeChange(e as OptionType)}
+                      />
+                    )}
+                  />
+                </Box>
+                <Box flexBasis="48.9%">
+                  <Label htmlFor="document.number">Número:</Label>
+                  <Input
+                    readOnly={readOnlyAtShowAndUpdate()}
+                    value={
+                      document?.number
+                        ? formatCPForCNPJ(document?.number)
+                        : cpfValue
+                    }
+                    {...register("document.number")}
+                    onChange={(e) => handleCpfOrCnpjMask(e)}
+                  />
+                </Box>
+                <Box flexBasis="100%">
+                  <CardTitle>Serviços</CardTitle>
+                </Box>
+                <Box flexBasis="100%">
+                  <Controller
+                    name="document.services"
+                    control={control}
+                    render={({ field }) => (
+                      <ReactSelect
+                        {...field}
+                        isMulti
+                        isDisabled={showContent()}
+                        value={selectedServices}
+                        onChange={(option) => handleServicesChange(option)}
+                        options={servicesOptions}
+                        styles={{
+                          control: (base) => ({
+                            ...base,
+                            ...reactSelectedStyle,
+                          }),
+                        }}
+                      />
+                    )}
+                  />
+                </Box>
+              </>
+            ) : (
+              <>
+                <Box flexBasis="100%">
+                  <CardTitle>Conta Bancária</CardTitle>
+                </Box>
+                <Box flexBasis="58.9%">
+                  <Label htmlFor="bank_account.acc_user_name">Titular:</Label>
+                  <Input
+                    readOnly={readOnlyAtShowAndUpdate()}
+                    {...register("bank_account.acc_user_name")}
+                    defaultValue={
+                      bank_account?.acc_user_name
+                        ? bank_account?.acc_user_name
+                        : cepValue
+                    }
+                  />
+                </Box>
+                <Box flexBasis="38.9%">
+                  <Label htmlFor="bank_account.acc_type">Tipo:</Label>
                   <Controller
                     name="bank_account.acc_type"
                     control={control}
@@ -566,77 +574,99 @@ const Workers: React.FC = (): ReactElement => {
                     )}
                   />
                 </Box>
-              </Box>
-              <Box>
-                <Label htmlFor="bank_account.acc_number">
-                  Número da Conta:
-                </Label>
-                <Input
-                  maxLength={11}
-                  width="140px"
-                  readOnly={readOnlyAtShowAndUpdate()}
-                  defaultValue={
-                    bank_account?.acc_number ? bank_account?.acc_number : ""
-                  }
-                  {...register("bank_account.acc_number")}
-                />
-              </Box>
-              <Box>
-                <Label htmlFor="bank_account.bank_code">Código do Banco:</Label>
-                <Input
-                  maxLength={3}
-                  readOnly={readOnlyAtShowAndUpdate()}
-                  width="110px"
-                  defaultValue={
-                    bank_account?.bank_code ? bank_account?.bank_code : ""
-                  }
-                  {...register("bank_account.bank_code")}
-                />
-              </Box>
-              <Box>
-                <Label htmlFor="bank_account.bank_agency">Agência:</Label>
-                <Input
-                  maxLength={4}
-                  readOnly={readOnlyAtShowAndUpdate()}
-                  width="80px"
-                  defaultValue={bank_account?.bank_agency}
-                  {...register("bank_account.bank_agency")}
-                />
-              </Box>
-              <Box>
-                <Label htmlFor="bank_account.verify_digit">Dígito:</Label>
-                <Input
-                  maxLength={1}
-                  readOnly={readOnlyAtShowAndUpdate()}
-                  defaultValue={
-                    bank_account?.verify_digit ? bank_account?.verify_digit : ""
-                  }
-                  width="40px"
-                  {...register("bank_account.verify_digit")}
-                />
-              </Box>
-            </S.Section>
-            {!showContent() && (
-              <Button
-                color={colors.mediumBlue}
-                width="100%"
-                type="submit"
-                disabled={isSubmitting}
-              >
-                {loadingRequest && !success ? (
-                  <Spinner
-                    size="35px"
-                    color="#fff"
-                    style={{ position: "absolute", top: "65%", left: "50%" }}
+                <Box flexBasis="48.9%">
+                  <Label htmlFor="bank_account.acc_number">
+                    Número da Conta:
+                  </Label>
+                  <Input
+                    maxLength={11}
+                    readOnly={readOnlyAtShowAndUpdate()}
+                    defaultValue={
+                      bank_account?.acc_number ? bank_account?.acc_number : ""
+                    }
+                    {...register("bank_account.acc_number")}
                   />
-                ) : showCreate() ? (
-                  "Criar Colaborador"
-                ) : (
-                  "Atualizar Colaborador"
-                )}
-              </Button>
+                </Box>
+                <Box flexBasis="48.9%">
+                  <Label htmlFor="bank_account.bank_code">
+                    Código do Banco:
+                  </Label>
+                  <Input
+                    maxLength={3}
+                    readOnly={readOnlyAtShowAndUpdate()}
+                    defaultValue={
+                      bank_account?.bank_code ? bank_account?.bank_code : ""
+                    }
+                    {...register("bank_account.bank_code")}
+                  />
+                </Box>
+                <Box flexBasis="31.5%">
+                  <Label htmlFor="bank_account.bank_agency">Agência:</Label>
+                  <Input
+                    maxLength={4}
+                    readOnly={readOnlyAtShowAndUpdate()}
+                    defaultValue={bank_account?.bank_agency}
+                    {...register("bank_account.bank_agency")}
+                  />
+                </Box>
+                <Box flexBasis="15%">
+                  <Label htmlFor="bank_account.verify_digit">Dígito:</Label>
+                  <Input
+                    maxLength={1}
+                    readOnly={readOnlyAtShowAndUpdate()}
+                    defaultValue={
+                      bank_account?.verify_digit
+                        ? bank_account?.verify_digit
+                        : ""
+                    }
+                    {...register("bank_account.verify_digit")}
+                  />
+                </Box>
+              </>
             )}
-          </form>
+            <GlobalButtonContainer>
+              {showAccountData && !showContent() && (
+                <div style={{ display: "flex", gap: "20px" }}>
+                  <Button
+                    color={colors.gray}
+                    width="50%"
+                    onClick={() => setShowaccountData(false)}
+                  >
+                    Voltar
+                  </Button>
+                  <Button
+                    color={colors.mediumBlue}
+                    width="50%"
+                    type="submit"
+                    disabled={isSubmitting}
+                  >
+                    {loadingRequest && !success ? (
+                      <Spinner
+                        size="35px"
+                        color="#fff"
+                        style={{
+                          position: "absolute",
+                          top: "65%",
+                          left: "50%",
+                        }}
+                      />
+                    ) : (
+                      "Enviar"
+                    )}
+                  </Button>
+                </div>
+              )}
+              {!showAccountData && (
+                <Button
+                  color={colors.yel}
+                  width="100%"
+                  onClick={() => setShowaccountData(true)}
+                >
+                  Pŕoximo
+                </Button>
+              )}
+            </GlobalButtonContainer>
+          </Form>
         )}
       </Card>
     </S.WorkersSection>

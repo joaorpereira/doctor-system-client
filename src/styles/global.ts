@@ -9,6 +9,11 @@ type ColorProps = {
   color?: string;
 };
 
+type BoxProps = {
+  width?: string;
+  flexBasis?: string;
+};
+
 export default createGlobalStyle`
   html {
     background-color: ${colors.backgroundcolor};
@@ -100,3 +105,30 @@ export const reactSelectedStyleSigupPage = {
   fontWeight: 500,
   color: `${colors.text}`,
 };
+
+export const GlobalButtonContainer = styled.div`
+  position: absolute;
+  bottom: 0;
+  width: 525px;
+  padding: 0px 50px 30px 0px;
+`;
+
+export const Box = styled.div<BoxProps>`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: ${({ width }) => width && width};
+  flex-basis: ${({ flexBasis }) => flexBasis && flexBasis};
+  display: block;
+
+  @media only screen and (min-width: 350px) and (max-width: 800px) {
+    width: 100%;
+  }
+`;
+
+export const Form = styled.form`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  flex-wrap: wrap;
+`;

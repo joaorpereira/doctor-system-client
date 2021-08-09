@@ -1,6 +1,5 @@
 import React from "react";
 import Avatar from "../../assets/avatar.png";
-import { ButtonEdit } from "../ButtonEdit/styled";
 import * as S from "./styled";
 
 type Props = {
@@ -19,7 +18,7 @@ const ImageFileUpload: React.FC<Props> = ({
 }: Props) => {
   return (
     <S.ImageFile>
-      {!show() && <ButtonEdit size={24} />}
+      {!show() && <S.ButtonEdit size={24} />}
       <img src={picture ? picture : Avatar} alt={user ? userName : "avatar"} />
     </S.ImageFile>
   );

@@ -10,15 +10,17 @@ import { format } from "date-fns";
 import ReactSelect from "react-select";
 
 import * as S from "./styled";
-import { colors } from "../../styles";
 import {
   Active,
   Paragraph,
   reactSelectedStyle,
   SectionTitle,
-} from "../../styles/global";
+  Box,
+  colors,
+  Form,
+  GlobalButtonContainer,
+} from "../../styles";
 
-import Avatar from "../../assets/avatar.png";
 import { MdEdit, MdRemoveRedEye, MdDelete, MdShare } from "react-icons/md";
 import {
   Table,
@@ -28,11 +30,11 @@ import {
   StyledMdRemoveRedEye,
   Card,
   Select,
-  ButtonEdit,
   Input,
   Label,
-  Box,
   Spinner,
+  ImageFileUpload,
+  UserInfo,
 } from "../../components";
 
 import {
@@ -302,21 +304,22 @@ const Clients: React.FC = (): ReactElement => {
       ) : null}
       <Card ref={ref} showProfile={showProfile}>
         {client && (
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <Form onSubmit={handleSubmit(onSubmit)}>
             <CloseModalIcon handleCloseModal={handleCloseModal} />
             <S.CardHeader>
-              {!showContent() && <ButtonEdit size={24} />}
-              <img
-                src={picture ? picture : Avatar}
-                alt={client ? name : "avatar"}
+              <ImageFileUpload
+                picture={picture}
+                user={client}
+                userName={name}
+                show={showContent}
               />
               {showContent() ? (
-                <div>
-                  <h4>{name}</h4>
-                  <p>{email}</p>
-                  <p>{phone_number}</p>
-                  <p>{format(new Date(birth_date), "dd/MM/yyyy")}</p>
-                </div>
+                <UserInfo
+                  name={name}
+                  email={email}
+                  phone_number={phone_number}
+                  birth_date={birth_date}
+                />
               ) : (
                 <S.Div column>
                   <S.Div gap="10px" bottom="10px">
@@ -344,7 +347,6 @@ const Clients: React.FC = (): ReactElement => {
                                 (option: OptionType) =>
                                   option.value === genderValue
                               )}
-                              placeHolder=""
                               options={genderOptions}
                               onChange={(e) =>
                                 handleGenderChange(e as OptionType)
@@ -389,158 +391,153 @@ const Clients: React.FC = (): ReactElement => {
                 </S.Div>
               )}
             </S.CardHeader>
-            <CardTitle>Alterar Senha</CardTitle>
-            <S.Section>
-              <Box>
-                <Label htmlFor="password">Nova Senha:</Label>
-                <Input
-                  readOnly={showContent()}
-                  type={showPassword.password ? "text" : "password"}
-                  defaultValue={password}
-                  {...register("password")}
-                />
-                <StyledMdRemoveRedEye
-                  size={20}
-                  onClick={() => handleShowPassword("password")}
-                />
-              </Box>
-              <Box>
-                <Label htmlFor="newPassword">Repita a Senha:</Label>
-                <Input
-                  readOnly={showContent()}
-                  {...register("password2")}
-                  defaultValue={password ? password : ""}
-                  type={showPassword.password2 ? "text" : "password"}
-                />
-                <StyledMdRemoveRedEye
-                  size={20}
-                  onClick={() => handleShowPassword("password2")}
-                />
-              </Box>
-            </S.Section>
-            <CardTitle>Documento</CardTitle>
-            <S.Section>
-              <Box width="100%">
-                <Label htmlFor="document.type">Tipo:</Label>
-                <Controller
-                  name="document.type"
-                  control={control}
-                  render={({ field }) => (
-                    <ReactSelect
-                      isDisabled={readOnlyAtShowAndUpdate()}
-                      {...field}
-                      styles={{
-                        control: (base) => ({
-                          ...base,
-                          ...reactSelectedStyle,
-                        }),
-                      }}
-                      value={documentOptions.filter(
-                        (option: OptionType) => option.value === documentType
-                      )}
-                      options={documentOptions}
-                      onChange={(e) => handleTypeChange(e as OptionType)}
-                    />
-                  )}
-                />
-              </Box>
-              <Box>
-                <Label htmlFor="document.number">Número:</Label>
-                <Input
-                  readOnly={readOnlyAtShowAndUpdate()}
-                  width="240px"
-                  value={
-                    document?.number
-                      ? formatCPForCNPJ(document?.number)
-                      : cpfValue
-                  }
-                  {...register("document.number")}
-                  onChange={(e) => handleCpfOrCnpjMask(e)}
-                />
-              </Box>
-            </S.Section>
-            <CardTitle>Endereço</CardTitle>
-            <S.Section wrap marginBottom="40px">
-              <Box>
-                <Label htmlFor="address.cep">CEP:</Label>
-                <Input
-                  maxLength={9}
-                  readOnly={showContent()}
-                  {...register("address.cep")}
-                  placeholder="99999-999"
-                  onChange={(e) => handleCepMask(e)}
-                  defaultValue={address?.cep ? address?.cep : cepValue}
-                />
-              </Box>
-              <Box>
-                <Label htmlFor="address.country">País:</Label>
-                <Select
-                  defaultValue={address?.country ? address?.country : ""}
-                  {...register("address.country")}
-                >
-                  <option selected value="br">
-                    Brasil
-                  </option>
-                </Select>
-              </Box>
-              <Box>
-                <Label htmlFor="address.state">Estado:</Label>
-                <Input
-                  readOnly={showContent()}
-                  width="140px"
-                  defaultValue={address?.state ? address?.state : ""}
-                  {...register("address.state")}
-                />
-              </Box>
-              <Box>
-                <Label htmlFor="address.city">Cidade:</Label>
-                <Input
-                  readOnly={showContent()}
-                  width="250px"
-                  defaultValue={address?.city ? address?.city : ""}
-                  {...register("address.city")}
-                />
-              </Box>
-              <Box>
-                <Label htmlFor="address.number">Número:</Label>
-                <Input
-                  readOnly={showContent()}
-                  width="90px"
-                  defaultValue={address?.number}
-                  {...register("address.number")}
-                />
-              </Box>
-              <Box>
-                <Label htmlFor="address.street">Rua:</Label>
-                <Input
-                  readOnly={showContent()}
-                  defaultValue={address?.street ? address?.street : ""}
-                  width="300px"
-                  {...register("address.street")}
-                />
-              </Box>
-            </S.Section>
-            {!showContent() && (
-              <Button
-                color={colors.mediumBlue}
-                width="100%"
-                type="submit"
-                disabled={isSubmitting}
-              >
-                {loadingRequest && !success ? (
-                  <Spinner
-                    size="35px"
-                    color="#fff"
-                    style={{ position: "absolute", top: "65%", left: "50%" }}
+            <Box flexBasis="100%">
+              <CardTitle>Alterar Senha</CardTitle>
+            </Box>
+            <Box flexBasis="48.9%">
+              <Label htmlFor="password">Nova Senha:</Label>
+              <Input
+                readOnly={showContent()}
+                type={showPassword.password ? "text" : "password"}
+                defaultValue={password}
+                {...register("password")}
+              />
+              <StyledMdRemoveRedEye
+                size={20}
+                onClick={() => handleShowPassword("password")}
+              />
+            </Box>
+            <Box flexBasis="48.9%">
+              <Label htmlFor="newPassword">Repita a Senha:</Label>
+              <Input
+                readOnly={showContent()}
+                {...register("password2")}
+                defaultValue={password ? password : ""}
+                type={showPassword.password2 ? "text" : "password"}
+              />
+              <StyledMdRemoveRedEye
+                size={20}
+                onClick={() => handleShowPassword("password2")}
+              />
+            </Box>
+            <Box flexBasis="100%">
+              <CardTitle>Documento</CardTitle>
+            </Box>
+            <Box flexBasis="48.9%">
+              <Label htmlFor="document.type">Tipo:</Label>
+              <Controller
+                name="document.type"
+                control={control}
+                render={({ field }) => (
+                  <ReactSelect
+                    isDisabled={readOnlyAtShowAndUpdate()}
+                    {...field}
+                    styles={{
+                      control: (base) => ({
+                        ...base,
+                        ...reactSelectedStyle,
+                      }),
+                    }}
+                    value={documentOptions.filter(
+                      (option: OptionType) => option.value === documentType
+                    )}
+                    options={documentOptions}
+                    onChange={(e) => handleTypeChange(e as OptionType)}
                   />
-                ) : showCreate() ? (
-                  "Criar Colaborador"
-                ) : (
-                  "Atualizar Colaborador"
                 )}
-              </Button>
-            )}
-          </form>
+              />
+            </Box>
+            <Box flexBasis="48.9%">
+              <Label htmlFor="document.number">Número:</Label>
+              <Input
+                readOnly={readOnlyAtShowAndUpdate()}
+                value={
+                  document?.number
+                    ? formatCPForCNPJ(document?.number)
+                    : cpfValue
+                }
+                {...register("document.number")}
+                onChange={(e) => handleCpfOrCnpjMask(e)}
+              />
+            </Box>
+            <Box flexBasis="100%">
+              <CardTitle>Endereço</CardTitle>
+            </Box>
+            <Box flexBasis="31.9%">
+              <Label htmlFor="address.country">País:</Label>
+              <Select
+                defaultValue={address?.country ? address?.country : ""}
+                {...register("address.country")}
+              >
+                <option selected value="br">
+                  Brasil
+                </option>
+              </Select>
+            </Box>
+            <Box flexBasis="31.9%">
+              <Label htmlFor="address.cep">CEP:</Label>
+              <Input
+                maxLength={9}
+                readOnly={showContent()}
+                {...register("address.cep")}
+                placeholder="99999-999"
+                onChange={(e) => handleCepMask(e)}
+                defaultValue={address?.cep ? address?.cep : cepValue}
+              />
+            </Box>
+            <Box flexBasis="31.9%">
+              <Label htmlFor="address.state">Estado:</Label>
+              <Input
+                readOnly={showContent()}
+                defaultValue={address?.state ? address?.state : ""}
+                {...register("address.state")}
+              />
+            </Box>
+            <Box flexBasis="31.9%">
+              <Label htmlFor="address.city">Cidade:</Label>
+              <Input
+                readOnly={showContent()}
+                defaultValue={address?.city ? address?.city : ""}
+                {...register("address.city")}
+              />
+            </Box>
+            <Box flexBasis="50.5%">
+              <Label htmlFor="address.street">Rua:</Label>
+              <Input
+                readOnly={showContent()}
+                defaultValue={address?.street ? address?.street : ""}
+                {...register("address.street")}
+              />
+            </Box>
+            <Box flexBasis="13%">
+              <Label htmlFor="address.number">Nº:</Label>
+              <Input
+                readOnly={showContent()}
+                defaultValue={address?.number}
+                {...register("address.number")}
+              />
+            </Box>
+            <GlobalButtonContainer>
+              {!showContent() && (
+                <Button
+                  color={colors.mediumBlue}
+                  width="100%"
+                  type="submit"
+                  disabled={isSubmitting}
+                >
+                  {loadingRequest && !success ? (
+                    <Spinner
+                      size="35px"
+                      color="#fff"
+                      style={{ position: "absolute", top: "65%", left: "50%" }}
+                    />
+                  ) : (
+                    "Enviar"
+                  )}
+                </Button>
+              )}
+            </GlobalButtonContainer>
+          </Form>
         )}
       </Card>
     </S.ClientsSection>

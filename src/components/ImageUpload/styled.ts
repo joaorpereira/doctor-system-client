@@ -6,16 +6,16 @@ export const Box = styled.div`
   align-items: center;
   justify-content: center;
   position: relative;
-  height: 120px;
-  width: 120px;
+  height: 100px;
+  width: 100px;
   border-radius: 4px;
   outline: none;
 `;
 
 export const Image = styled.img`
   object-fit: cover;
-  height: 120px;
-  width: 120px;
+  height: 100px;
+  width: 100px;
   border-radius: 4px;
 `;
 
@@ -36,8 +36,8 @@ export const RemoveButton = styled.div`
 `;
 
 export const AddButton = styled.div`
-  height: 120px;
-  width: 120px;
+  height: 100px;
+  width: 100px;
   border: none;
   border-radius: 4px;
   outline: none;
