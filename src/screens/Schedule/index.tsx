@@ -27,6 +27,7 @@ import ptBR from "date-fns/locale/pt-BR";
 import { SectionTitle } from "../../styles";
 import { IRange, IScheduleProps } from "../../store/sagas/schedulesSaga";
 import { calendarOptions } from "../../utils";
+import useWindowSize, { Size } from "../../hooks/useWindowSize";
 
 const locales = {
   "pt-BR": ptBR,
@@ -98,6 +99,8 @@ const HomePage: React.FC = (): ReactElement => {
     if (schedules) formatScheduleData(schedules);
   }, [schedules, formatScheduleData]);
 
+  const size: Size = useWindowSize();
+
   return (
     <S.ScheduleSection>
       <S.HeaderRow>
@@ -113,7 +116,22 @@ const HomePage: React.FC = (): ReactElement => {
           startAccessor="start"
           endAccessor="end"
           selectable
-          style={{ height: 400 }}
+          style={{
+            height:
+              size.height < 650
+                ? 400
+                : size.height < 710
+                ? 450
+                : size.height < 770
+                ? 500
+                : size.height < 820
+                ? 550
+                : size.height < 870
+                ? 600
+                : size.height < 920
+                ? 650
+                : 700,
+          }}
         />
       )}
     </S.ScheduleSection>

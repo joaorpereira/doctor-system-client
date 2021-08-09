@@ -49,6 +49,7 @@ import {
 import { OptionType } from "../../utils/types";
 
 import { getWorkersByCompany } from "../../store/ducks/workersSlice";
+import useWindowSize, { Size } from "../../hooks/useWindowSize";
 
 const locales = {
   "pt-BR": ptBR,
@@ -187,6 +188,8 @@ const Hours: React.FC = (): ReactElement => {
     setDisponibleWorkers,
   });
 
+  const size: Size = useWindowSize();
+
   return (
     <S.HoursSection>
       <S.HeaderRow>
@@ -226,7 +229,22 @@ const Hours: React.FC = (): ReactElement => {
         }}
         defaultDate={weekDays[getDay(new Date())]}
         events={hourData}
-        style={{ height: 400 }}
+        style={{
+          height:
+            size.height < 650
+              ? 400
+              : size.height < 710
+              ? 450
+              : size.height < 770
+              ? 500
+              : size.height < 820
+              ? 550
+              : size.height < 870
+              ? 600
+              : size.height < 920
+              ? 650
+              : 700,
+        }}
       />
       <Card ref={ref} showProfile={showProfile}>
         {hours && (
