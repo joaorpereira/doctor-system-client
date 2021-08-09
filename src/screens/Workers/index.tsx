@@ -310,6 +310,7 @@ const Workers: React.FC = (): ReactElement => {
         <SectionTitle>Colaboradores</SectionTitle>
         <S.ButtonContainer>
           <Button
+            width="150px"
             color={colors.mediumBlue}
             onClick={() =>
               handleUpdateOrShowWorker({
@@ -319,7 +320,9 @@ const Workers: React.FC = (): ReactElement => {
           >
             Adicionar
           </Button>
-          <Button color={colors.yel}>Exportar CSV</Button>
+          <Button width="150px" color={colors.yel}>
+            Exportar CSV
+          </Button>
         </S.ButtonContainer>
       </S.HeaderRow>
       {workers && workerColumns ? (

@@ -11,10 +11,9 @@ type ColorProps = {
 
 export default createGlobalStyle`
   html {
-    width: 100vw;
-    height: 100%;
     background-color: ${colors.backgroundcolor};
-    font-size: 16px;
+    font-size: 14px;
+
   }
   * {
     margin: 0;
@@ -24,8 +23,7 @@ export default createGlobalStyle`
   body{
     font-family: 'Lato', sans-serif;
     overflow-x: hidden;
-    overflow-y: scroll;
-    height: 100%;
+
   }
   ul, li{
     list-style: none;
@@ -46,9 +44,13 @@ export default createGlobalStyle`
 
 export const SectionTitle = styled.h1<SectionTitleProps>`
   font-family: "Poppins", sans-serif;
-  font-size: ${({ fontsize }) => (fontsize ? fontsize : "2.4rem")};
+  font-size: ${({ fontsize }) => (fontsize ? fontsize : "2.1rem")};
   font-weight: 900;
   color: ${colors.text};
+
+  @media only screen and (min-width: 1360px) {
+    font-size: ${({ fontsize }) => (fontsize ? fontsize : "2.4rem")};
+  }
 `;
 
 export const Paragraph = styled.p<ColorProps>`

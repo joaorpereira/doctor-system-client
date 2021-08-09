@@ -277,6 +277,7 @@ const Clients: React.FC = (): ReactElement => {
         <SectionTitle>Clientes</SectionTitle>
         <S.ButtonContainer>
           <Button
+            width="150px"
             color={colors.mediumBlue}
             onClick={() =>
               handleUpdateOrShowClient({
@@ -286,7 +287,9 @@ const Clients: React.FC = (): ReactElement => {
           >
             Adicionar
           </Button>
-          <Button color={colors.yel}>Exportar CSV</Button>
+          <Button width="150px" color={colors.yel}>
+            Exportar CSV
+          </Button>
         </S.ButtonContainer>
       </S.HeaderRow>
       {clients && clientColumns ? (

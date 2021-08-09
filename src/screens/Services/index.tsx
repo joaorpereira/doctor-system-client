@@ -271,6 +271,7 @@ const Services: React.FC = (): ReactElement => {
         <SectionTitle>Serviços</SectionTitle>
         <S.ButtonContainer>
           <Button
+            width="150px"
             color={colors.mediumBlue}
             onClick={() =>
               handleUpdateOrShowService({
@@ -280,7 +281,9 @@ const Services: React.FC = (): ReactElement => {
           >
             Adicionar
           </Button>
-          <Button color={colors.yel}>Exportar CSV</Button>
+          <Button width="150px" color={colors.yel}>
+            Exportar CSV
+          </Button>
         </S.ButtonContainer>
       </S.HeaderRow>
       {services && serviceColumns ? (

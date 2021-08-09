@@ -7,27 +7,26 @@ export const Aside = styled.aside`
   height: 100%;
   background-color: ${colors.primary};
   grid-area: sidebar;
-
   display: flex;
   flex-direction: column;
-
   padding: 40px 0px;
-  > div {
-    width: 180px;
-    height: 60px;
-    border-radius: 16px;
-    background-color: #fff;
-    margin-left: 25px;
 
+  > img {
+    width: 85px;
+    height: 85px;
+    border-radius: 4px;
+    background-color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
+    align-self: center;
+    margin-left: -100px;
   }
 `;
 
 export const List = styled.ul`
   width: 100%;
-  margin: 40px 0px;
+  margin: 25px 0px 0px;
   padding: 0;
 `;
 
@@ -39,7 +38,7 @@ export const ListItem = styled.li`
   color: #fff;
   font-weight: 700;
   line-height: 3.75rem;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   padding-left: 25px;
   transition: background 0.3s ease-out;
 

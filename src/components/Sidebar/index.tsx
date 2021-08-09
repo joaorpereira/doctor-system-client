@@ -13,16 +13,16 @@ const routes = [
   {
     path: "/agendamentos",
     label: "Agendamentos",
-    icon: <MdEventAvailable size={26} />,
+    icon: <MdEventAvailable size={22} />,
   },
-  { path: "/clientes", label: "Clientes", icon: <MdPeople size={26} /> },
+  { path: "/clientes", label: "Clientes", icon: <MdPeople size={22} /> },
   {
     path: "/colaboradores",
     label: "Colaboradores",
-    icon: <img src={workers} alt={workers} style={{ width: "26px" }} />,
+    icon: <img src={workers} alt={workers} style={{ width: "21px" }} />,
   },
-  { path: "/servicos", label: "Serviços", icon: <MdLibraryBooks size={26} /> },
-  { path: "/horarios", label: "Horários", icon: <MdUpdate size={26} /> },
+  { path: "/servicos", label: "Serviços", icon: <MdLibraryBooks size={21} /> },
+  { path: "/horarios", label: "Horários", icon: <MdUpdate size={22} /> },
 ];
 
 const selectedStyle = {
@@ -41,7 +41,7 @@ type ISidebarProps = {
 const Sidebar = ({ handleRoute, currentPath }: ISidebarProps): ReactElement => {
   return (
     <S.Aside>
-      <div>Logo</div>
+      <img src={workers} alt="Logo" />
       <S.List>
         {routes.map((route) => (
           <S.ListItem

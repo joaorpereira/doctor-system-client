@@ -2,7 +2,7 @@ import React, { ReactElement, useEffect, useRef, useState } from "react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Controller, useForm } from "react-hook-form";
 import ReactSelect from "react-select";
-import { Calendar, dateFnsLocalizer } from "react-big-calendar";
+import { Calendar, dateFnsLocalizer, FormatInput } from "react-big-calendar";
 import { format, parse, startOfWeek, getDay, addDays } from "date-fns";
 import ptBR from "date-fns/locale/pt-BR";
 
@@ -192,6 +192,7 @@ const Hours: React.FC = (): ReactElement => {
       <S.HeaderRow>
         <SectionTitle>Horários de Atendimento</SectionTitle>
         <Button
+          width="150px"
           color={colors.mediumBlue}
           onClick={() =>
             handleUpdateOrShowHour({
@@ -225,7 +226,7 @@ const Hours: React.FC = (): ReactElement => {
         }}
         defaultDate={weekDays[getDay(new Date())]}
         events={hourData}
-        style={{ height: 650 }}
+        style={{ height: 400 }}
       />
       <Card ref={ref} showProfile={showProfile}>
         {hours && (

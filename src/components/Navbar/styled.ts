@@ -2,12 +2,12 @@ import styled from "styled-components";
 import { colors } from "../../styles";
 
 export const Nav = styled.nav`
-  width: calc(100% + 70px);
+  width: calc(100% + 100px);
   height: 80px;
   grid-area: header;
   background-color: ${colors.backgroundcolor};
   border-top-left-radius: 80px;
-  transform: translateX(-70px);
+  transform: translateX(-110px);
 
   display: flex;
   align-items: center;
@@ -28,16 +28,16 @@ export const UserInfo = styled.div`
   align-items: flex-end;
   justify-content: flex-end;
   color: ${colors.text};
-  margin-right: 15px;
+  margin-right: 10px;
   p {
-    font-size: 14px;
+    font-size: 0.8rem;
   }
 `;
 
 export const UserImage = styled.img`
   background-color: #000;
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   margin-right: 5px;
 `;

@@ -17,8 +17,11 @@ export const HeaderRow = styled.header`
   height: 100px;
   justify-content: space-between;
   align-items: center;
-  padding-right: 10px;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
+
+  @media screen and (min-width: 1360) {
+    margin-bottom: 30px;
+  }
 `;
 
 export const Section = styled.section<SectionProps>`

@@ -3,13 +3,23 @@ import { colors } from "../../styles";
 
 export const Container = styled.div`
   width: 100%;
-  padding-right: 10px;
+  height: 390px;
+  overflow-y: scroll;
+  position: relative;
+
+  ::-webkit-scrollbar {
+    display: none;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
   table {
     box-shadow: rgba(0, 0, 0, 0.04) 0px 3px 5px;
     background-color: #fff;
     border-collapse: collapse;
     border-style: hidden;
     width: 100%;
+
     tr {
       :last-child {
         td {
@@ -23,6 +33,19 @@ export const Container = styled.div`
       border-bottom: 1px solid ${colors.primary};
       padding: 10px 20px;
     }
+    td {
+      font-size: 0.95rem;
+    }
+    th:last-child {
+      text-align: center;
+    }
+    th:nth-child(6) {
+      text-align: center;
+    }
+  }
+
+  @media screen and (min-width: 1360px) {
+    height: 650px;
   }
 `;
 
@@ -35,9 +58,11 @@ export const Head = styled.thead`
   width: 100%;
   border: 1px solid ${colors.primary};
   background-color: ${colors.primary};
-  text-align: left;
   height: 50px;
   color: #fff;
   text-transform: uppercase;
   font-weight: 900;
+  text-align: left;
+  position: sticky;
+  top: 0;
 `;

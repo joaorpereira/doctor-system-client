@@ -113,7 +113,7 @@ const HomePage: React.FC = (): ReactElement => {
           startAccessor="start"
           endAccessor="end"
           selectable
-          style={{ height: 650 }}
+          style={{ height: 400 }}
         />
       )}
     </S.ScheduleSection>

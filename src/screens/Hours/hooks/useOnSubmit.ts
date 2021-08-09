@@ -36,11 +36,8 @@ const useOnSubmit = ({
       end_time: endTime?.value,
     };
 
-    if (type === actionsTypes.CREATE) {
-      dispatch(createHour({ data }));
-    } else if (type === actionsTypes.UPDATE) {
-      dispatch(updateHour({ id, data }));
-    }
+    if (type === actionsTypes.CREATE) dispatch(createHour({ data }));
+    else if (type === actionsTypes.UPDATE) dispatch(updateHour({ id, data }));
   };
 
   return [onSubmit];
