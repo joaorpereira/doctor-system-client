@@ -21,8 +21,8 @@ function useFormatHourData({ setHourData, weekDays }: ISetState) {
           resource: hour,
           title: `${hour.services?.length || 0} ${
             hour.services?.length === 1 ? "serviço" : "serviços"
-          } e ${hour.services?.length || 0} ${
-            hour.services?.length === 1 ? "colaborador" : "colaboradores"
+          } e ${hour.workers?.length || 0} ${
+            hour.workers?.length === 1 ? "colaborador" : "colaboradores"
           }`,
           start: addHours(
             new Date(
