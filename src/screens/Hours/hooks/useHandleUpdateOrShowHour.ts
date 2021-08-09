@@ -17,10 +17,11 @@ const useHandleUpdateOrShowHour = ({
   resetForm,
 }: UpdateOrShowProps) => {
   const dispatch = useAppDispatch();
+
   const handleUpdateOrShowHour = ({ hour, type }: UpdateShowHourProps) => {
-    resetForm();
+    if ([actionsTypes.CREATE].includes(type)) resetForm();
     handleCloseModal();
-    if ([actionsTypes.UPDATE].includes(type)) {
+    if ([actionsTypes.UPDATE, actionsTypes.SHOW].includes(type)) {
       dispatch(setHour({ hour, type }));
     } else {
       dispatch(setHour({ hour: {}, type }));

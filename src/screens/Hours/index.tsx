@@ -29,7 +29,6 @@ import { useOnClickOutside, useAppDispatch, useAppSelector } from "../../hooks";
 import {
   useFormatHourData,
   useOnSubmit,
-  useHandleWorkersOptions,
   useHandleUpdateOrShowHour,
   useSetDefaultServicesOptions,
   useSetDefaultWorkersOptions,
@@ -80,9 +79,6 @@ const Hours: React.FC = (): ReactElement => {
   const [endTime, setEndDay] = useState<OptionType | null>(null);
   const [disponibleDays, setDisponibleDays] = useState<OptionType[]>([]);
   const [disponibleWorkers, setDisponibleWorkers] = useState<OptionType[]>([]);
-  const [workersOptionsList, setWorkersOptionsList] = useState<OptionType[]>(
-    []
-  );
 
   const { user } = useAppSelector(({ authReducers }) => authReducers);
 
@@ -156,22 +152,13 @@ const Hours: React.FC = (): ReactElement => {
     disponibleServices,
     startTime,
     endTime,
+    type,
   });
 
   // custom hooks
-  const [handleWorkersOptions] = useHandleWorkersOptions({
-    setWorkersOptionsList,
-    workersOptions,
-  });
-
   useEffect(() => {
     if (hours) formatHourData(hours);
   }, [hours, formatHourData]);
-
-  useEffect(() => {
-    if (disponibleServices?.length > 0)
-      handleWorkersOptions(disponibleServices);
-  }, [workersOptions, disponibleServices, handleWorkersOptions]);
 
   useSetDefaultDays({
     hour,
@@ -196,7 +183,7 @@ const Hours: React.FC = (): ReactElement => {
 
   useSetDefaultWorkersOptions({
     hour,
-    workersOptionsList,
+    workersOptions,
     setDisponibleWorkers,
   });
 
@@ -357,7 +344,7 @@ const Hours: React.FC = (): ReactElement => {
                         handleDisponibleWorkersChange(option as OptionType[])
                       }
                       value={disponibleWorkers}
-                      options={workersOptionsList.map(
+                      options={workersOptions.map(
                         ({ label, value }: OptionType) => ({
                           label,
                           value,

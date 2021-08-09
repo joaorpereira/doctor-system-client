@@ -11,7 +11,7 @@ type OnSubmitProps = {
   disponibleServices: OptionType[];
   startTime: OptionType | null;
   endTime: OptionType | null;
-  type?: string;
+  type: string;
   id?: string;
 };
 
@@ -36,9 +36,9 @@ const useOnSubmit = ({
       end_time: endTime?.value,
     };
 
-    if (type === actionsTypes.UPDATE) {
+    if (type === actionsTypes.CREATE) {
       dispatch(createHour({ data }));
-    } else if (type === actionsTypes.CREATE) {
+    } else if (type === actionsTypes.UPDATE) {
       dispatch(updateHour({ id, data }));
     }
   };
