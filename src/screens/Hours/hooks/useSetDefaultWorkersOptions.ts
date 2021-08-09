@@ -4,28 +4,25 @@ import { OptionType } from "../../../utils/types";
 
 type Props = {
   hour: Hour | Record<string, never>;
-  workersOptionsList: OptionType[];
+  workersOptions: OptionType[];
   setDisponibleWorkers: React.Dispatch<React.SetStateAction<OptionType[]>>;
 };
 
 const useSetDefaultWorkersOptions = ({
   hour,
-  workersOptionsList,
+  workersOptions,
   setDisponibleWorkers,
 }: Props) => {
   useEffect(() => {
     if (hour?.workers?.length > 0) {
-      const list = workersOptionsList.map(({ label, value }) => ({
-        label,
-        value,
-      }));
-      const defaultValue = list.filter((item) =>
+      const defaultValue = workersOptions.filter((item) =>
         hour?.workers.includes(item.value)
       ) as unknown as OptionType[];
+
       setDisponibleWorkers(defaultValue);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hour, workersOptionsList]);
+  }, [hour, workersOptions]);
 };
 
 export default useSetDefaultWorkersOptions;
