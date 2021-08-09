@@ -1,19 +1,18 @@
-import { SelectHTMLAttributes } from "react";
 import styled from "styled-components";
 import { colors } from "../../styles";
 
-interface Select extends SelectHTMLAttributes<HTMLSelectElement> {
+interface SelectProps {
   width?: string;
 }
 
-export const Select = styled.select<Select>`
+export const Select = styled.select<SelectProps>`
   border: 1px solid ${colors.primary};
   outline: none;
-  padding: 8px 3px;
-  border-radius: 8px;
-  width: ${({ width }) => (width ? width : "195px")};
+  height: 40px;
+  border-radius: 4px;
+  width: ${({ width }) => (width ? width : "100%")};
+  color: ${colors.text};
   transition: border 0.15s ease-out;
-  height: 35px;
   background-color: #fff;
   :focus {
     border: 2px solid ${colors.primary};
