@@ -7,6 +7,7 @@ export { default as ImageUpload } from "./ImageUpload";
 export { default as ImageItem } from "./ImageItem";
 export { default as CloseModalIcon } from "./CloseModalIcon";
 export { default as Button } from "./Button";
+export { default as Logout } from "./Logout";
 export { default as UserInfo } from "./UserInfo";
 export { default as ImageFileUpload } from "./ImageFileUpload";
 export { Card, CardTitle, StyledMdRemoveRedEye } from "./Card/styled";
