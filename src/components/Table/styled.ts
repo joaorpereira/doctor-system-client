@@ -36,11 +36,18 @@ export const Container = styled.div`
     td {
       font-size: 0.95rem;
     }
+
     th:last-child {
-      text-align: center;
+      padding-left: 55px;
+      @media screen and (min-width: 1360px) {
+        padding-left: 58px;
+      }
     }
     th:nth-child(6) {
-      text-align: center;
+      padding-left: 29px;
+      @media screen and (min-width: 1360px) {
+        padding-left: 26px;
+      }
     }
   }
 

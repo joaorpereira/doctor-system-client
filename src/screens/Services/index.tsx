@@ -176,10 +176,14 @@ const Services: React.FC = (): ReactElement => {
         show: true,
       },
       {
-        Header: "Recorrência (dias)",
+        Header: "Recorrência",
         accessor: "service_recurrence",
         sortType: "basic",
         show: true,
+        Cell: ({ row }: RowInfo) => {
+          const duration = row.original.service_recurrence;
+          return <>{duration !== 1 ? `${duration} dias` : `${duration} dia`}</>;
+        },
       },
       {
         Header: "Duração",
