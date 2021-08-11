@@ -134,7 +134,6 @@ const Services: React.FC = (): ReactElement => {
   // handle which type of sideModal should be displayed
   const showContent = (): boolean => type === actionsTypes.SHOW;
   const showUpdate = (): boolean => type === actionsTypes.UPDATE;
-  const showCreate = (): boolean => type === actionsTypes.CREATE;
 
   const handleImagesChange = (imageList: ImageListType) =>
     setImages(imageList as never[]);
