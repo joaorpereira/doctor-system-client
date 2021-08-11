@@ -16,6 +16,7 @@ export type Worker = {
   services: string[];
   bank_account: BankAccount;
   _id: string;
+  role?: string;
 };
 
 export type Options = {

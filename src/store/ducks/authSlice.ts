@@ -2,11 +2,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Worker } from "./workersSlice";
+import { Client } from "./clientsSlice";
+import { Company } from "./companiesSlice";
 
 export interface AuthSliceState {
   page: string;
   loading: boolean;
-  user: Record<string, any>;
+  user: Worker | Client | Company | Record<string, any>;
   success: boolean;
   token: null;
 }

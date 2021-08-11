@@ -15,6 +15,7 @@ export type Client = {
   gender: string;
   birth_date: string;
   _id?: string;
+  role?: string;
 };
 
 export interface ClientsSliceState {
