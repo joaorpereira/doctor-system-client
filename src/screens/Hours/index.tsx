@@ -20,7 +20,6 @@ import {
   colors,
   reactSelectedStyle,
   SectionTitle,
-  Box,
   GlobalButtonContainer,
   Row,
   Column,

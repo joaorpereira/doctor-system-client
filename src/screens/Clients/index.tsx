@@ -37,6 +37,7 @@ import {
   Spinner,
   ImageFileUpload,
   UserInfo,
+  ModalShare,
 } from "../../components";
 
 import {
@@ -179,6 +180,14 @@ const Clients: React.FC = (): ReactElement => {
     company_id: user && user.role === "COMPANY" && user._id,
   });
 
+  const [openShareModal, setOpenShareModal] = useState(false);
+  const [rowData, setRowData] = useState<Client | Record<string, unknown>>({});
+
+  const handleShare = (row: Client) => {
+    setRowData(row);
+    setOpenShareModal(true);
+  };
+
   const clientColumns = useMemo(() => {
     return [
       {
@@ -241,7 +250,7 @@ const Clients: React.FC = (): ReactElement => {
         Cell: ({ row }: RowInfo) => (
           <S.ActionsRow>
             <button>
-              <MdShare size={20} />
+              <MdShare size={20} onClick={() => handleShare(row.original)} />
             </button>
             <button>
               <MdEdit
@@ -557,6 +566,15 @@ const Clients: React.FC = (): ReactElement => {
           </Form>
         )}
       </Card>
+      {openShareModal && (
+        <ModalShare
+          open={openShareModal}
+          data={rowData}
+          setOpenShareModal={setOpenShareModal}
+          loading={false}
+          onSubmit={() => console.log("aqui")}
+        />
+      )}
     </S.ClientsSection>
   );
 };

@@ -14,3 +14,4 @@ export { Card, CardTitle, StyledMdRemoveRedEye } from "./Card/styled";
 export { default as Select } from "./Select";
 export { TextArea } from "./TextArea/styled";
 export { Input, Label } from "./Input/styled";
+export { default as ModalShare } from "./ModalShare";

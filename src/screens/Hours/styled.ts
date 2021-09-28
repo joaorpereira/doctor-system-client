@@ -1,10 +1,5 @@
 import styled from "styled-components";
 
-type SectionProps = {
-  wrap?: boolean;
-  marginBottom?: string;
-};
-
 export const HoursSection = styled.section`
   display: flex;
   flex-direction: column;
