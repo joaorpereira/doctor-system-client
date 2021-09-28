@@ -147,6 +147,7 @@ export const Row = styled.div<RowProps>`
 const margins: Record<string, string> = {
   rigth: "0px 5px 0px 0px",
   left: "0px 0px 0px 5px",
+  leftRigth: "0px 5px 0px 5px",
 };
 
 export const Column = styled.div<RowProps>`

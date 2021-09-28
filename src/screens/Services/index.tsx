@@ -20,6 +20,8 @@ import {
   Box,
   colors,
   Form,
+  Row,
+  Column,
 } from "../../styles";
 import { MdEdit, MdRemoveRedEye, MdDelete, MdShare } from "react-icons/md";
 
@@ -303,100 +305,109 @@ const Services: React.FC = (): ReactElement => {
         {service && services && (
           <Form onSubmit={handleSubmit(onSubmit)}>
             <CloseModalIcon handleCloseModal={handleCloseModal} />
-            <Box flexBasis="55%">
-              <Label htmlFor="title">Título:</Label>
-              <Input defaultValue={title ? title : ""} {...register("title")} />
-            </Box>
-            <Box flexBasis="20.35%">
-              <Label htmlFor="price">Preço (R$):</Label>
-              <Input
-                defaultValue={price ? price.toString() : ""}
-                {...register("price")}
-              />
-            </Box>
-            <Box flexBasis="20.35%">
-              <Label htmlFor="service_recurrence">Recorrência (dias):</Label>
-              <Input
-                defaultValue={
-                  service_recurrence ? Number(service_recurrence) : ""
-                }
-                type="number"
-                {...register("service_recurrence")}
-              />
-            </Box>
-            <Box flexBasis="26.4%">
-              <Label htmlFor="service_duration">Duração</Label>
-              <Controller
-                name="service_duration"
-                control={control}
-                render={({ field }) => (
-                  <ReactSelect
-                    {...field}
-                    styles={{
-                      control: (base) => ({
-                        ...base,
-                        ...reactSelectedStyle,
-                      }),
-                    }}
-                    value={timeOptions.filter(
-                      (option: OptionType) => option.value === durationValue
-                    )}
-                    options={timeOptions}
-                    onChange={(e) => handleDurationChange(e as OptionType)}
-                  />
-                )}
-              />
-            </Box>
-            <Box flexBasis="26.4%">
-              <Label htmlFor="status">Status:</Label>
-              <Controller
-                name="status"
-                control={control}
-                render={({ field }) => (
-                  <ReactSelect
-                    {...field}
-                    styles={{
-                      control: (base) => ({
-                        ...base,
-                        ...reactSelectedStyle,
-                      }),
-                    }}
-                    value={statusOptions.filter(
-                      (option: OptionType) => option.value === statusValue
-                    )}
-                    options={statusOptions}
-                    onChange={(e) => handleStatusChange(e as OptionType)}
-                  />
-                )}
-              />
-            </Box>
-            <Box flexBasis="42.9%">
-              <Label htmlFor="company_id">Empresa:</Label>
-              <Controller
-                name="company_id"
-                control={control}
-                render={({ field }) => (
-                  <ReactSelect
-                    {...field}
-                    styles={{
-                      control: (base) => ({
-                        ...base,
-                        ...reactSelectedStyle,
-                      }),
-                    }}
-                    value={
-                      user.role === "COMPANY" &&
-                      ({
-                        value: user?._id,
-                        label: user?.name,
-                      } as OptionTypeBase)
-                    }
-                    options={companiesOptions}
-                    onChange={(e) => handleCompanyChange(e as OptionType)}
-                  />
-                )}
-              />
-            </Box>
+            <Row>
+              <Column margin="rigth" width="100%">
+                <Label htmlFor="title">Título:</Label>
+                <Input
+                  defaultValue={title ? title : ""}
+                  {...register("title")}
+                />
+              </Column>
+              <Column margin="left" width="30%">
+                <Label htmlFor="price">Preço (R$):</Label>
+                <Input
+                  defaultValue={price ? price.toString() : ""}
+                  {...register("price")}
+                />
+              </Column>
+            </Row>
+            <Row>
+              <Column margin="rigth" width="33%">
+                <Label htmlFor="service_recurrence">Recorrência (dias):</Label>
+                <Input
+                  defaultValue={
+                    service_recurrence ? Number(service_recurrence) : ""
+                  }
+                  type="number"
+                  {...register("service_recurrence")}
+                />
+              </Column>
+              <Column margin="leftRigth" width="33%">
+                <Label htmlFor="service_duration">Duração</Label>
+                <Controller
+                  name="service_duration"
+                  control={control}
+                  render={({ field }) => (
+                    <ReactSelect
+                      {...field}
+                      styles={{
+                        control: (base) => ({
+                          ...base,
+                          ...reactSelectedStyle,
+                        }),
+                      }}
+                      value={timeOptions.filter(
+                        (option: OptionType) => option.value === durationValue
+                      )}
+                      options={timeOptions}
+                      onChange={(e) => handleDurationChange(e as OptionType)}
+                    />
+                  )}
+                />
+              </Column>
+              <Column margin="left" width="34%">
+                <Label htmlFor="status">Status:</Label>
+                <Controller
+                  name="status"
+                  control={control}
+                  render={({ field }) => (
+                    <ReactSelect
+                      {...field}
+                      styles={{
+                        control: (base) => ({
+                          ...base,
+                          ...reactSelectedStyle,
+                        }),
+                      }}
+                      value={statusOptions.filter(
+                        (option: OptionType) => option.value === statusValue
+                      )}
+                      options={statusOptions}
+                      onChange={(e) => handleStatusChange(e as OptionType)}
+                    />
+                  )}
+                />
+              </Column>
+            </Row>
+            <Row>
+              <Column width="100%">
+                <Label htmlFor="company_id">Empresa:</Label>
+                <Controller
+                  name="company_id"
+                  control={control}
+                  render={({ field }) => (
+                    <ReactSelect
+                      {...field}
+                      styles={{
+                        control: (base) => ({
+                          ...base,
+                          ...reactSelectedStyle,
+                        }),
+                      }}
+                      value={
+                        user.role === "COMPANY" &&
+                        ({
+                          value: user?._id,
+                          label: user?.name,
+                        } as OptionTypeBase)
+                      }
+                      options={companiesOptions}
+                      onChange={(e) => handleCompanyChange(e as OptionType)}
+                    />
+                  )}
+                />
+              </Column>
+            </Row>
             <Box flexBasis="100%">
               <Label htmlFor="description">Descrição:</Label>
               <TextArea
