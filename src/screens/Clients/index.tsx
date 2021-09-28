@@ -325,15 +325,15 @@ const Clients: React.FC = (): ReactElement => {
               ) : (
                 <S.UserInfoWrapper>
                   <Row>
-                    <Column margin="rigth">
+                    <Column margin="rigth" width="100%">
                       <Input
                         defaultValue={showUpdate() ? name : ""}
                         placeholder="Nome"
                         {...register("name")}
                       />
                     </Column>
-                    <Column margin="left" width="40%">
-                      {showCreate() && (
+                    {showCreate() && (
+                      <Column margin="left" width="40%">
                         <Controller
                           name="gender"
                           control={control}
@@ -357,8 +357,8 @@ const Clients: React.FC = (): ReactElement => {
                             />
                           )}
                         />
-                      )}
-                    </Column>
+                      </Column>
+                    )}
                   </Row>
                   <Row>
                     <Input
