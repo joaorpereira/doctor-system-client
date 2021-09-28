@@ -22,6 +22,8 @@ import {
   SectionTitle,
   Box,
   GlobalButtonContainer,
+  Row,
+  Column,
 } from "../../styles";
 
 import { getHoursByCompany } from "../../store/ducks/hoursSlice";
@@ -256,8 +258,8 @@ const Hours: React.FC = (): ReactElement => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <CloseModalIcon handleCloseModal={handleCloseModal} />
             <CardTitle margin="0px 0px 5px">Dia da Semana</CardTitle>
-            <S.Section marginBottom="10px">
-              <Box width="100%">
+            <Row>
+              <Column width="100%">
                 <Controller
                   name="document.services"
                   control={control}
@@ -279,11 +281,11 @@ const Hours: React.FC = (): ReactElement => {
                     />
                   )}
                 />
-              </Box>
-            </S.Section>
+              </Column>
+            </Row>
             <CardTitle margin="20px 0px 2px">Horário</CardTitle>
-            <S.Section marginBottom="10px">
-              <Box width="100%">
+            <Row>
+              <Column margin="rigth" width="100%">
                 <Label htmlFor="start">Inicial:</Label>
                 <Controller
                   name="start"
@@ -303,8 +305,8 @@ const Hours: React.FC = (): ReactElement => {
                     />
                   )}
                 />
-              </Box>
-              <Box width="100%">
+              </Column>
+              <Column margin="left" width="100%">
                 <Label htmlFor="end">Final:</Label>
                 <Controller
                   name="end"
@@ -324,13 +326,13 @@ const Hours: React.FC = (): ReactElement => {
                     />
                   )}
                 />
-              </Box>
-            </S.Section>
+              </Column>
+            </Row>
             <CardTitle margin="20px 0px 5px">
               Especialidades Disponíveis
             </CardTitle>
-            <S.Section marginBottom="10px">
-              <Box width="100%">
+            <Row>
+              <Column width="100%">
                 <Controller
                   name="document.services"
                   control={control}
@@ -353,13 +355,13 @@ const Hours: React.FC = (): ReactElement => {
                     />
                   )}
                 />
-              </Box>
-            </S.Section>
+              </Column>
+            </Row>
             <CardTitle margin="20px 0px 5px">
               Colaboradores Disponíveis
             </CardTitle>
-            <S.Section>
-              <Box width="100%">
+            <Row>
+              <Column width="100%">
                 <Controller
                   name="document.services"
                   control={control}
@@ -387,8 +389,8 @@ const Hours: React.FC = (): ReactElement => {
                     />
                   )}
                 />
-              </Box>
-            </S.Section>
+              </Column>
+            </Row>
             <GlobalButtonContainer>
               {!showContent() && (
                 <Button color={colors.mediumBlue} width="100%" type="submit">

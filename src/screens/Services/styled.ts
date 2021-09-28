@@ -6,13 +6,6 @@ type SectionProps = {
   marginBottom?: string;
 };
 
-type DivProps = {
-  gap?: string;
-  column?: boolean;
-  bottom?: string;
-  top?: string;
-};
-
 type ImageFilesWrapperProps = {
   flexBasis?: string;
 };
@@ -107,14 +100,6 @@ export const Section = styled.section<SectionProps>`
   width: 100%;
   gap: 10px;
   flex-wrap: ${({ wrap }) => wrap && "wrap"};
-`;
-
-export const Div = styled.div<DivProps>`
-  display: flex;
-  gap: ${({ gap }) => gap && gap};
-  flex-direction: ${({ column }) => column && "column"};
-  margin-bottom: ${({ bottom }) => bottom && bottom};
-  margin-top: ${({ top }) => top && top};
 `;
 
 export const ImageFilesWrapper = styled.div<ImageFilesWrapperProps>`

@@ -6,13 +6,6 @@ type SectionProps = {
   marginBottom?: string;
 };
 
-type DivProps = {
-  gap?: string;
-  column?: boolean;
-  bottom?: string;
-  top?: string;
-};
-
 export const WorkersSection = styled.section`
   display: flex;
   flex-direction: column;

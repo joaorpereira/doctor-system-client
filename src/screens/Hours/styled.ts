@@ -23,12 +23,3 @@ export const HeaderRow = styled.header`
     margin-bottom: 30px;
   }
 `;
-
-export const Section = styled.section<SectionProps>`
-  margin-bottom: ${({ marginBottom }) =>
-    marginBottom ? marginBottom : "10px"};
-  display: flex;
-  width: 100%;
-  gap: 10px;
-  flex-wrap: ${({ wrap }) => wrap && "wrap"};
-`;
