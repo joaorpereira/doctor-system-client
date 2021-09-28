@@ -19,6 +19,8 @@ import {
   colors,
   Form,
   GlobalButtonContainer,
+  Row,
+  Column,
 } from "../../styles";
 
 import { MdEdit, MdRemoveRedEye, MdDelete, MdShare } from "react-icons/md";
@@ -321,16 +323,17 @@ const Clients: React.FC = (): ReactElement => {
                   birth_date={birth_date}
                 />
               ) : (
-                <S.Div column>
-                  <S.Div gap="10px" bottom="10px">
-                    <Input
-                      width={showCreate() ? "77%" : "100%"}
-                      defaultValue={showUpdate() ? name : ""}
-                      placeholder="Nome"
-                      {...register("name")}
-                    />
-                    {showCreate() && (
-                      <Box width="30%">
+                <S.UserInfoWrapper>
+                  <Row>
+                    <Column margin="rigth">
+                      <Input
+                        defaultValue={showUpdate() ? name : ""}
+                        placeholder="Nome"
+                        {...register("name")}
+                      />
+                    </Column>
+                    <Column margin="left" width="40%">
+                      {showCreate() && (
                         <Controller
                           name="gender"
                           control={control}
@@ -354,169 +357,183 @@ const Clients: React.FC = (): ReactElement => {
                             />
                           )}
                         />
-                      </Box>
-                    )}
-                  </S.Div>
-                  <Input
-                    width="100%"
-                    defaultValue={showUpdate() ? email : ""}
-                    placeholder="Email"
-                    {...register("email")}
-                  />
-                  <S.Div gap="10px" top="10px">
+                      )}
+                    </Column>
+                  </Row>
+                  <Row>
                     <Input
-                      width="51%"
-                      maxLength={12}
-                      placeholder="+55 99999-9999"
-                      {...register("phone_number")}
-                      onChange={(e) => handlePhoneMask(e)}
-                      defaultValue={
-                        showUpdate() ? formatPhone(phone_number) : phoneValue
-                      }
+                      width="100%"
+                      defaultValue={showUpdate() ? email : ""}
+                      placeholder="Email"
+                      {...register("email")}
                     />
-                    <Input
-                      width="49%"
-                      maxLength={10}
-                      readOnly={showUpdate()}
-                      placeholder="Data Nascimento"
-                      {...register("birth_date")}
-                      onChange={(e) => handleDateMask(e)}
-                      defaultValue={
-                        showUpdate()
-                          ? format(new Date(birth_date), "dd/MM/yyyy")
-                          : dateValue
-                      }
-                    />
-                  </S.Div>
-                </S.Div>
+                  </Row>
+                  <Row>
+                    <Column margin="rigth">
+                      <Input
+                        maxLength={12}
+                        placeholder="+55 99999-9999"
+                        {...register("phone_number")}
+                        onChange={(e) => handlePhoneMask(e)}
+                        defaultValue={
+                          showUpdate() ? formatPhone(phone_number) : phoneValue
+                        }
+                      />
+                    </Column>
+                    <Column margin="left">
+                      <Input
+                        maxLength={10}
+                        readOnly={showUpdate()}
+                        placeholder="Data Nascimento"
+                        {...register("birth_date")}
+                        onChange={(e) => handleDateMask(e)}
+                        defaultValue={
+                          showUpdate()
+                            ? format(new Date(birth_date), "dd/MM/yyyy")
+                            : dateValue
+                        }
+                      />
+                    </Column>
+                  </Row>
+                </S.UserInfoWrapper>
               )}
             </S.CardHeader>
             <Box flexBasis="100%">
               <CardTitle>Alterar Senha</CardTitle>
             </Box>
-            <Box flexBasis="48.9%">
-              <Label htmlFor="password">Nova Senha:</Label>
-              <Input
-                readOnly={showContent()}
-                type={showPassword.password ? "text" : "password"}
-                defaultValue={password}
-                {...register("password")}
-              />
-              <StyledMdRemoveRedEye
-                size={20}
-                onClick={() => handleShowPassword("password")}
-              />
-            </Box>
-            <Box flexBasis="48.9%">
-              <Label htmlFor="newPassword">Repita a Senha:</Label>
-              <Input
-                readOnly={showContent()}
-                {...register("password2")}
-                defaultValue={password ? password : ""}
-                type={showPassword.password2 ? "text" : "password"}
-              />
-              <StyledMdRemoveRedEye
-                size={20}
-                onClick={() => handleShowPassword("password2")}
-              />
-            </Box>
+            <Row>
+              <Column margin="rigth">
+                <Label htmlFor="password">Nova Senha:</Label>
+                <Input
+                  readOnly={showContent()}
+                  type={showPassword.password ? "text" : "password"}
+                  defaultValue={password}
+                  {...register("password")}
+                />
+                <StyledMdRemoveRedEye
+                  size={20}
+                  onClick={() => handleShowPassword("password")}
+                />
+              </Column>
+              <Column margin="left">
+                <Label htmlFor="newPassword">Repita a Senha:</Label>
+                <Input
+                  readOnly={showContent()}
+                  {...register("password2")}
+                  defaultValue={password ? password : ""}
+                  type={showPassword.password2 ? "text" : "password"}
+                />
+                <StyledMdRemoveRedEye
+                  size={20}
+                  onClick={() => handleShowPassword("password2")}
+                />
+              </Column>
+            </Row>
             <Box flexBasis="100%">
               <CardTitle>Documento</CardTitle>
             </Box>
-            <Box flexBasis="48.9%">
-              <Label htmlFor="document.type">Tipo:</Label>
-              <Controller
-                name="document.type"
-                control={control}
-                render={({ field }) => (
-                  <ReactSelect
-                    isDisabled={readOnlyAtShowAndUpdate()}
-                    {...field}
-                    styles={{
-                      control: (base) => ({
-                        ...base,
-                        ...reactSelectedStyle,
-                      }),
-                    }}
-                    value={documentOptions.filter(
-                      (option: OptionType) => option.value === documentType
-                    )}
-                    options={documentOptions}
-                    onChange={(e) => handleTypeChange(e as OptionType)}
-                  />
-                )}
-              />
-            </Box>
-            <Box flexBasis="48.9%">
-              <Label htmlFor="document.number">Número:</Label>
-              <Input
-                readOnly={readOnlyAtShowAndUpdate()}
-                value={
-                  document?.number
-                    ? formatCPForCNPJ(document?.number)
-                    : cpfValue
-                }
-                {...register("document.number")}
-                onChange={(e) => handleCpfOrCnpjMask(e)}
-              />
-            </Box>
+            <Row>
+              <Column margin="rigth" width="100%">
+                <Label htmlFor="document.type">Tipo:</Label>
+                <Controller
+                  name="document.type"
+                  control={control}
+                  render={({ field }) => (
+                    <ReactSelect
+                      isDisabled={readOnlyAtShowAndUpdate()}
+                      {...field}
+                      styles={{
+                        control: (base) => ({
+                          ...base,
+                          ...reactSelectedStyle,
+                        }),
+                      }}
+                      value={documentOptions.filter(
+                        (option: OptionType) => option.value === documentType
+                      )}
+                      options={documentOptions}
+                      onChange={(e) => handleTypeChange(e as OptionType)}
+                    />
+                  )}
+                />
+              </Column>
+              <Column margin="left" width="100%">
+                <Label htmlFor="document.number">Número:</Label>
+                <Input
+                  readOnly={readOnlyAtShowAndUpdate()}
+                  value={
+                    document?.number
+                      ? formatCPForCNPJ(document?.number)
+                      : cpfValue
+                  }
+                  {...register("document.number")}
+                  onChange={(e) => handleCpfOrCnpjMask(e)}
+                />
+              </Column>
+            </Row>
             <Box flexBasis="100%">
               <CardTitle>Endereço</CardTitle>
             </Box>
-            <Box flexBasis="31.9%">
-              <Label htmlFor="address.country">País:</Label>
-              <Select
-                defaultValue={address?.country ? address?.country : ""}
-                {...register("address.country")}
-              >
-                <option selected value="br">
-                  Brasil
-                </option>
-              </Select>
-            </Box>
-            <Box flexBasis="31.9%">
-              <Label htmlFor="address.cep">CEP:</Label>
-              <Input
-                maxLength={9}
-                readOnly={showContent()}
-                {...register("address.cep")}
-                placeholder="99999-999"
-                onChange={(e) => handleCepMask(e)}
-                defaultValue={address?.cep ? address?.cep : cepValue}
-              />
-            </Box>
-            <Box flexBasis="31.9%">
-              <Label htmlFor="address.state">Estado:</Label>
-              <Input
-                readOnly={showContent()}
-                defaultValue={address?.state ? address?.state : ""}
-                {...register("address.state")}
-              />
-            </Box>
-            <Box flexBasis="31.9%">
-              <Label htmlFor="address.city">Cidade:</Label>
-              <Input
-                readOnly={showContent()}
-                defaultValue={address?.city ? address?.city : ""}
-                {...register("address.city")}
-              />
-            </Box>
-            <Box flexBasis="50.5%">
-              <Label htmlFor="address.street">Rua:</Label>
-              <Input
-                readOnly={showContent()}
-                defaultValue={address?.street ? address?.street : ""}
-                {...register("address.street")}
-              />
-            </Box>
-            <Box flexBasis="13%">
-              <Label htmlFor="address.number">Nº:</Label>
-              <Input
-                readOnly={showContent()}
-                defaultValue={address?.number}
-                {...register("address.number")}
-              />
-            </Box>
+            <Row>
+              <Column margin="rigth" width="100%">
+                <Label htmlFor="address.country">País:</Label>
+                <Select
+                  defaultValue={address?.country ? address?.country : ""}
+                  {...register("address.country")}
+                >
+                  <option selected value="br">
+                    Brasil
+                  </option>
+                </Select>
+              </Column>
+              <Column margin="left" width="100%">
+                <Label htmlFor="address.cep">CEP:</Label>
+                <Input
+                  maxLength={9}
+                  readOnly={showContent()}
+                  {...register("address.cep")}
+                  placeholder="99999-999"
+                  onChange={(e) => handleCepMask(e)}
+                  defaultValue={address?.cep ? address?.cep : cepValue}
+                />
+              </Column>
+            </Row>
+            <Row>
+              <Column margin="rigth">
+                <Label htmlFor="address.state">Estado:</Label>
+                <Input
+                  readOnly={showContent()}
+                  defaultValue={address?.state ? address?.state : ""}
+                  {...register("address.state")}
+                />
+              </Column>
+              <Column margin="left">
+                <Label htmlFor="address.city">Cidade:</Label>
+                <Input
+                  readOnly={showContent()}
+                  defaultValue={address?.city ? address?.city : ""}
+                  {...register("address.city")}
+                />
+              </Column>
+            </Row>
+            <Row>
+              <Column margin="rigth" width="100%">
+                <Label htmlFor="address.street">Rua:</Label>
+                <Input
+                  readOnly={showContent()}
+                  defaultValue={address?.street ? address?.street : ""}
+                  {...register("address.street")}
+                />
+              </Column>
+              <Column margin="left" width="20%">
+                <Label htmlFor="address.number">Nº:</Label>
+                <Input
+                  readOnly={showContent()}
+                  defaultValue={address?.number}
+                  {...register("address.number")}
+                />
+              </Column>
+            </Row>
             <GlobalButtonContainer>
               {!showContent() && (
                 <Button

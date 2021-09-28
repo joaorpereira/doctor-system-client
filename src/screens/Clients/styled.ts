@@ -6,13 +6,6 @@ type SectionProps = {
   marginBottom?: string;
 };
 
-type DivProps = {
-  gap?: string;
-  column?: boolean;
-  bottom?: string;
-  top?: string;
-};
-
 export const ClientsSection = styled.section`
   display: flex;
   flex-direction: column;
@@ -81,10 +74,7 @@ export const Section = styled.section<SectionProps>`
   flex-wrap: ${({ wrap }) => wrap && "wrap"};
 `;
 
-export const Div = styled.div<DivProps>`
+export const UserInfoWrapper = styled.div`
   display: flex;
-  gap: ${({ gap }) => gap && gap};
-  flex-direction: ${({ column }) => column && "column"};
-  margin-bottom: ${({ bottom }) => bottom && bottom};
-  margin-top: ${({ top }) => top && top};
+  flex-direction: column;
 `;

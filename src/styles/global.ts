@@ -14,6 +14,11 @@ type BoxProps = {
   flexBasis?: string;
 };
 
+type RowProps = {
+  margin?: string;
+  width?: string;
+};
+
 export default createGlobalStyle`
   html {
     background-color: ${colors.backgroundcolor};
@@ -109,8 +114,8 @@ export const reactSelectedStyleSigupPage = {
 export const GlobalButtonContainer = styled.div`
   position: absolute;
   bottom: 0;
-  width: 525px;
-  padding: 0px 50px 30px 0px;
+  width: 400px;
+  padding: 0px 0px 30px 0px;
 `;
 
 export const Box = styled.div<BoxProps>`
@@ -131,4 +136,23 @@ export const Form = styled.form`
   flex-direction: row;
   gap: 10px;
   flex-wrap: wrap;
+`;
+
+export const Row = styled.div<RowProps>`
+  display: flex;
+  width: 100%;
+  margin: ${({ margin }) => (margin ? margin : "0px 0px 10px 0px")};
+`;
+
+const margins: Record<string, string> = {
+  rigth: "0px 5px 0px 0px",
+  left: "0px 0px 0px 5px",
+};
+
+export const Column = styled.div<RowProps>`
+  display: flex;
+  flex-direction: column;
+  margin: ${({ margin }) => (margin ? margins[margin] : "")};
+  width: ${({ width }) => width};
+  position: relative;
 `;
