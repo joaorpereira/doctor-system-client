@@ -6,9 +6,8 @@ export const CloseIcon = styled.button`
   width: 35px;
   background-color: ${colors.primary};
   position: absolute;
-  top: 0;
+  top: calc(50% - 15px);
   left: 0;
-  margin-top: 50%;
   margin-left: -1px;
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;

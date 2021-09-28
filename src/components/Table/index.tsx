@@ -54,7 +54,7 @@ function Table<T extends Record<string, unknown>>(
             size="65px"
             style={{
               position: "absolute",
-              top: "50vh",
+              top: "42vh",
               left: "50%",
             }}
           />
