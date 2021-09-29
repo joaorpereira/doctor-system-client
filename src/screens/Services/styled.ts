@@ -47,7 +47,7 @@ export const ActionsRow = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  max-width: 120px;
+  max-width: 80px;
   button {
     border: none;
     background-color: transparent;

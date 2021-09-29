@@ -23,7 +23,7 @@ import {
   Row,
   Column,
 } from "../../styles";
-import { MdEdit, MdRemoveRedEye, MdDelete, MdShare } from "react-icons/md";
+import { MdEdit, MdRemoveRedEye, MdDelete } from "react-icons/md";
 
 import {
   CardTitle,
@@ -237,9 +237,6 @@ const Services: React.FC = (): ReactElement => {
         show: true,
         Cell: ({ row }: RowInfo) => (
           <S.ActionsRow>
-            <button>
-              <MdShare size={20} />
-            </button>
             <button>
               <MdEdit
                 size={20}

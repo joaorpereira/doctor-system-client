@@ -17,7 +17,7 @@ export const Wrapper = styled.div`
 `;
 
 export const Private = styled.main`
-  width: calc(100% + 100px);
+  width: calc(100% + 110px);
   height: calc(100vh - 80px);
   background-color: ${colors.backgroundcolor};
   grid-area: content;

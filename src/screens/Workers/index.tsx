@@ -37,6 +37,7 @@ import {
   Spinner,
   UserInfo,
   ImageFileUpload,
+  ModalShare,
 } from "../../components";
 
 import {
@@ -47,6 +48,7 @@ import {
   useHandleDateMask,
   useHandlePhoneMask,
   useOnClickOutside,
+  useHandleModalShare,
 } from "../../hooks";
 
 import {
@@ -213,6 +215,9 @@ const Workers: React.FC = (): ReactElement => {
     setSelectedServices,
   });
 
+  const { handleShare, rowData, openShareModal, setOpenShareModal } =
+    useHandleModalShare();
+
   const workerColumns = useMemo(() => {
     return [
       {
@@ -233,6 +238,12 @@ const Workers: React.FC = (): ReactElement => {
         accessor: "phone_number",
         sortType: "basic",
         show: true,
+        Cell: ({ row }: RowInfo) => (
+          <>
+            {row?.original?.phone_number &&
+              formatPhone(row.original.phone_number)}
+          </>
+        ),
       },
       {
         Header: "Sexo",
@@ -274,7 +285,7 @@ const Workers: React.FC = (): ReactElement => {
         show: true,
         Cell: ({ row }: RowInfo) => (
           <S.ActionsRow>
-            <button>
+            <button onClick={() => handleShare(row.original)}>
               <MdShare size={20} />
             </button>
             <button>
@@ -691,6 +702,15 @@ const Workers: React.FC = (): ReactElement => {
           </Form>
         )}
       </Card>
+      {openShareModal && (
+        <ModalShare
+          open={openShareModal}
+          data={rowData}
+          setOpenShareModal={setOpenShareModal}
+          loading={false}
+          onSubmit={() => console.log("aqui")}
+        />
+      )}
     </S.WorkersSection>
   );
 };

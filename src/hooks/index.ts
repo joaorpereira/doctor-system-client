@@ -7,3 +7,4 @@ export { default as useHandlePhoneMask } from "./useHandlePhoneMask";
 export { default as useHandleShowPassword } from "./useHandleShowPassword";
 export { default as useOnClickOutside } from "./useOnClickOutside";
 export { default as useWindowSize } from "./useWindowSize";
+export { default as useHandleModalShare } from "./useHandleModalShare";

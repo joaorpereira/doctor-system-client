@@ -3,6 +3,8 @@ import { colors } from "../../styles";
 
 type ModalProps = {
   opacity?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ref: any;
 };
 
 export const Modal = styled.div<ModalProps>`
@@ -13,8 +15,8 @@ export const Modal = styled.div<ModalProps>`
   transform: translate(-50%, -50%);
   height: 450px;
   width: 525px;
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-  border-top-left-radius: 8px;
+  box-shadow: rgba(100, 100, 111, 0.5) 0px 7px 29px 0px;
+  border-radius: 8px;
   padding: 55px 50px;
   opacity: (${({ opacity }) => (opacity ? "1" : "0")});
   transition: opacity 0.3s ease-in-out;

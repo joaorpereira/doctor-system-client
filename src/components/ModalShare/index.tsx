@@ -1,15 +1,21 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { Button, Spinner, Label, Input, TextArea } from "../../components";
+import { useOnClickOutside } from "../../hooks";
 import { Client } from "../../store/ducks/clientsSlice";
 import { colors, Column, Form, Row } from "../../styles";
+import { formatPhone } from "../../utils";
 import * as S from "./styled";
 
 type ModalShareProps = {
   open: boolean;
   loading: boolean;
   onSubmit: () => void;
-  data: Client | any;
+  data:
+    | Client
+    | {
+        phone_number?: string;
+      };
   setOpenShareModal: (value: React.SetStateAction<boolean>) => void;
 };
 
@@ -26,8 +32,11 @@ const ModalShare: React.FC<ModalShareProps> = ({
     formState: { isSubmitting },
   } = useForm({});
 
+  const ref = useRef();
+  useOnClickOutside({ ref, handler: () => setOpenShareModal(false) });
+
   return (
-    <S.Modal opacity={open ? "1" : "0"}>
+    <S.Modal ref={ref} opacity={open ? "1" : "0"}>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <S.Title>Enviar SMS:</S.Title>
         <S.IconClose onClick={() => setOpenShareModal(false)}>x</S.IconClose>
@@ -35,7 +44,10 @@ const ModalShare: React.FC<ModalShareProps> = ({
           <Column width="100%">
             <Label htmlFor="data.phone_number">Celular:</Label>
             <Input
-              defaultValue={data?.phone_number ? data?.phone_number : ""}
+              readOnly
+              defaultValue={
+                data?.phone_number ? formatPhone(data?.phone_number) : ""
+              }
               {...register("data.phone_number")}
             />
           </Column>
@@ -47,22 +59,36 @@ const ModalShare: React.FC<ModalShareProps> = ({
           </Column>
         </Row>
         <S.ButtonContainer>
-          <Button
-            color={colors.mediumBlue}
-            width="100%"
-            type="submit"
-            disabled={isSubmitting}
-          >
-            {loading ? (
-              <Spinner
-                size="35px"
-                color="#fff"
-                style={{ position: "absolute", top: "65%", left: "50%" }}
-              />
-            ) : (
-              "Enviar"
-            )}
-          </Button>
+          <Row>
+            <Column width="100%" margin="rigth">
+              <Button
+                color={colors.gray}
+                width="100%"
+                onClick={() => setOpenShareModal(false)}
+                disabled={isSubmitting}
+              >
+                Cancelar
+              </Button>
+            </Column>
+            <Column width="100%" margin="left">
+              <Button
+                color={colors.mediumBlue}
+                width="100%"
+                type="submit"
+                disabled={isSubmitting}
+              >
+                {loading ? (
+                  <Spinner
+                    size="35px"
+                    color="#fff"
+                    style={{ position: "absolute", top: "65%", left: "50%" }}
+                  />
+                ) : (
+                  "Enviar"
+                )}
+              </Button>
+            </Column>
+          </Row>
         </S.ButtonContainer>
       </Form>
     </S.Modal>
