@@ -35,11 +35,12 @@ export const UserInfo = styled.div`
 `;
 
 export const UserImage = styled.img`
-  background-color: #000;
-  width: 32px;
-  height: 32px;
+  width: 35px;
+  height: 35px;
   border-radius: 50%;
   margin-right: 5px;
+  object-fit: cover;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
 `;
 
 export const UserBtn = styled.button`

@@ -9,7 +9,7 @@ import { Company } from "./companiesSlice";
 export interface AuthSliceState {
   page: string;
   loading: boolean;
-  user: Worker | Client | Company | Record<string, any>;
+  user: Worker | Client | Company | Record<string, any> | any;
   success: boolean;
   token: null;
 }

@@ -287,314 +287,301 @@ const Clients: React.FC = (): ReactElement => {
   }, []);
 
   return (
-    <div
-      style={{
-        backgroundColor: "#000000",
-        position: "absolute",
-        top: 0,
-        left: 0,
-        height: "100vh",
-        width: "100%",
-      }}
-    >
-      <S.ClientsSection>
-        <S.HeaderRow>
-          <SectionTitle>Clientes</SectionTitle>
-          <S.ButtonContainer>
-            <Button
-              width="150px"
-              color={colors.mediumBlue}
-              onClick={() =>
-                handleUpdateOrShowClient({
-                  type: operationsTypes.CREATE,
-                })
-              }
-            >
-              Adicionar
-            </Button>
-            <Button width="150px" color={colors.yel}>
-              Exportar CSV
-            </Button>
-          </S.ButtonContainer>
-        </S.HeaderRow>
-        {clients && clientColumns ? (
-          <Table
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            columns={clientColumns as any}
-            data={clients}
-            loading={loadingData}
-          />
-        ) : null}
-        <Card ref={ref} showProfile={showProfile}>
-          {client && (
-            <Form onSubmit={handleSubmit(onSubmit)}>
-              <CloseModalIcon handleCloseModal={handleCloseModal} />
-              <S.CardHeader>
-                <ImageFileUpload
-                  picture={picture}
-                  user={client}
-                  userName={name}
-                  show={showContent}
+    <S.ClientsSection>
+      <S.HeaderRow>
+        <SectionTitle>Clientes</SectionTitle>
+        <S.ButtonContainer>
+          <Button
+            width="150px"
+            color={colors.mediumBlue}
+            onClick={() =>
+              handleUpdateOrShowClient({
+                type: operationsTypes.CREATE,
+              })
+            }
+          >
+            Adicionar
+          </Button>
+          <Button width="150px" color={colors.yel}>
+            Exportar CSV
+          </Button>
+        </S.ButtonContainer>
+      </S.HeaderRow>
+      {clients && clientColumns ? (
+        <Table
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          columns={clientColumns as any}
+          data={clients}
+          loading={loadingData}
+        />
+      ) : null}
+      <Card ref={ref} showProfile={showProfile}>
+        {client && (
+          <Form onSubmit={handleSubmit(onSubmit)}>
+            <CloseModalIcon handleCloseModal={handleCloseModal} />
+            <S.CardHeader>
+              <ImageFileUpload
+                picture={picture}
+                user={client}
+                userName={name}
+                show={showContent}
+              />
+              {showContent() ? (
+                <UserInfo
+                  name={name}
+                  email={email}
+                  phone_number={phone_number}
+                  birth_date={birth_date}
                 />
-                {showContent() ? (
-                  <UserInfo
-                    name={name}
-                    email={email}
-                    phone_number={phone_number}
-                    birth_date={birth_date}
-                  />
-                ) : (
-                  <S.UserInfoWrapper>
-                    <Row>
-                      <Column margin="rigth" width="100%">
-                        <Input
-                          defaultValue={showUpdate() ? name : ""}
-                          placeholder="Nome"
-                          {...register("name")}
-                        />
-                      </Column>
-                      {showCreate() && (
-                        <Column margin="left" width="40%">
-                          <Controller
-                            name="gender"
-                            control={control}
-                            render={({ field }) => (
-                              <ReactSelect
-                                {...field}
-                                styles={{
-                                  control: (base) => ({
-                                    ...base,
-                                    ...reactSelectedStyle,
-                                  }),
-                                }}
-                                value={genderOptions.filter(
-                                  (option: OptionType) =>
-                                    option.value === genderValue
-                                )}
-                                options={genderOptions}
-                                onChange={(e) =>
-                                  handleGenderChange(e as OptionType)
-                                }
-                              />
-                            )}
-                          />
-                        </Column>
-                      )}
-                    </Row>
-                    <Row>
+              ) : (
+                <S.UserInfoWrapper>
+                  <Row>
+                    <Column margin="rigth" width="100%">
                       <Input
-                        width="100%"
-                        defaultValue={showUpdate() ? email : ""}
-                        placeholder="Email"
-                        {...register("email")}
+                        defaultValue={showUpdate() ? name : ""}
+                        placeholder="Nome"
+                        {...register("name")}
                       />
-                    </Row>
-                    <Row>
-                      <Column margin="rigth">
-                        <Input
-                          maxLength={12}
-                          placeholder="+55 99999-9999"
-                          {...register("phone_number")}
-                          onChange={(e) => handlePhoneMask(e)}
-                          defaultValue={
-                            showUpdate()
-                              ? formatPhone(phone_number)
-                              : phoneValue
-                          }
+                    </Column>
+                    {showCreate() && (
+                      <Column margin="left" width="40%">
+                        <Controller
+                          name="gender"
+                          control={control}
+                          render={({ field }) => (
+                            <ReactSelect
+                              {...field}
+                              styles={{
+                                control: (base) => ({
+                                  ...base,
+                                  ...reactSelectedStyle,
+                                }),
+                              }}
+                              value={genderOptions.filter(
+                                (option: OptionType) =>
+                                  option.value === genderValue
+                              )}
+                              options={genderOptions}
+                              onChange={(e) =>
+                                handleGenderChange(e as OptionType)
+                              }
+                            />
+                          )}
                         />
                       </Column>
-                      <Column margin="left">
-                        <Input
-                          maxLength={10}
-                          readOnly={showUpdate()}
-                          placeholder="Data Nascimento"
-                          {...register("birth_date")}
-                          onChange={(e) => handleDateMask(e)}
-                          defaultValue={
-                            showUpdate()
-                              ? format(new Date(birth_date), "dd/MM/yyyy")
-                              : dateValue
-                          }
-                        />
-                      </Column>
-                    </Row>
-                  </S.UserInfoWrapper>
-                )}
-              </S.CardHeader>
-              <Box flexBasis="100%">
-                <CardTitle>Alterar Senha</CardTitle>
-              </Box>
-              <Row>
-                <Column margin="rigth">
-                  <Label htmlFor="password">Nova Senha:</Label>
-                  <Input
-                    readOnly={showContent()}
-                    type={showPassword.password ? "text" : "password"}
-                    defaultValue={password}
-                    {...register("password")}
-                  />
-                  <StyledMdRemoveRedEye
-                    size={20}
-                    onClick={() => handleShowPassword("password")}
-                  />
-                </Column>
-                <Column margin="left">
-                  <Label htmlFor="newPassword">Repita a Senha:</Label>
-                  <Input
-                    readOnly={showContent()}
-                    {...register("password2")}
-                    defaultValue={password ? password : ""}
-                    type={showPassword.password2 ? "text" : "password"}
-                  />
-                  <StyledMdRemoveRedEye
-                    size={20}
-                    onClick={() => handleShowPassword("password2")}
-                  />
-                </Column>
-              </Row>
-              <Box flexBasis="100%">
-                <CardTitle>Documento</CardTitle>
-              </Box>
-              <Row>
-                <Column margin="rigth" width="100%">
-                  <Label htmlFor="document.type">Tipo:</Label>
-                  <Controller
-                    name="document.type"
-                    control={control}
-                    render={({ field }) => (
-                      <ReactSelect
-                        isDisabled={readOnlyAtShowAndUpdate()}
-                        {...field}
-                        styles={{
-                          control: (base) => ({
-                            ...base,
-                            ...reactSelectedStyle,
-                          }),
-                        }}
-                        value={documentOptions.filter(
-                          (option: OptionType) => option.value === documentType
-                        )}
-                        options={documentOptions}
-                        onChange={(e) => handleTypeChange(e as OptionType)}
-                      />
                     )}
-                  />
-                </Column>
-                <Column margin="left" width="100%">
-                  <Label htmlFor="document.number">Número:</Label>
-                  <Input
-                    readOnly={readOnlyAtShowAndUpdate()}
-                    value={
-                      document?.number
-                        ? formatCPForCNPJ(document?.number)
-                        : cpfValue
-                    }
-                    {...register("document.number")}
-                    onChange={(e) => handleCpfOrCnpjMask(e)}
-                  />
-                </Column>
-              </Row>
-              <Box flexBasis="100%">
-                <CardTitle>Endereço</CardTitle>
-              </Box>
-              <Row>
-                <Column margin="rigth" width="100%">
-                  <Label htmlFor="address.country">País:</Label>
-                  <Select
-                    defaultValue={address?.country ? address?.country : ""}
-                    {...register("address.country")}
-                  >
-                    <option selected value="br">
-                      Brasil
-                    </option>
-                  </Select>
-                </Column>
-                <Column margin="left" width="100%">
-                  <Label htmlFor="address.cep">CEP:</Label>
-                  <Input
-                    maxLength={9}
-                    readOnly={showContent()}
-                    {...register("address.cep")}
-                    placeholder="99999-999"
-                    onChange={(e) => handleCepMask(e)}
-                    defaultValue={address?.cep ? address?.cep : cepValue}
-                  />
-                </Column>
-              </Row>
-              <Row>
-                <Column margin="rigth">
-                  <Label htmlFor="address.state">Estado:</Label>
-                  <Input
-                    readOnly={showContent()}
-                    defaultValue={address?.state ? address?.state : ""}
-                    {...register("address.state")}
-                  />
-                </Column>
-                <Column margin="left">
-                  <Label htmlFor="address.city">Cidade:</Label>
-                  <Input
-                    readOnly={showContent()}
-                    defaultValue={address?.city ? address?.city : ""}
-                    {...register("address.city")}
-                  />
-                </Column>
-              </Row>
-              <Row>
-                <Column margin="rigth" width="100%">
-                  <Label htmlFor="address.street">Rua:</Label>
-                  <Input
-                    readOnly={showContent()}
-                    defaultValue={address?.street ? address?.street : ""}
-                    {...register("address.street")}
-                  />
-                </Column>
-                <Column margin="left" width="20%">
-                  <Label htmlFor="address.number">Nº:</Label>
-                  <Input
-                    readOnly={showContent()}
-                    defaultValue={address?.number}
-                    {...register("address.number")}
-                  />
-                </Column>
-              </Row>
-              <GlobalButtonContainer>
-                {!showContent() && (
-                  <Button
-                    color={colors.mediumBlue}
-                    width="100%"
-                    type="submit"
-                    disabled={isSubmitting}
-                  >
-                    {loadingRequest && !success ? (
-                      <Spinner
-                        size="35px"
-                        color="#fff"
-                        style={{
-                          position: "absolute",
-                          top: "65%",
-                          left: "50%",
-                        }}
+                  </Row>
+                  <Row>
+                    <Input
+                      width="100%"
+                      defaultValue={showUpdate() ? email : ""}
+                      placeholder="Email"
+                      {...register("email")}
+                    />
+                  </Row>
+                  <Row>
+                    <Column margin="rigth">
+                      <Input
+                        maxLength={12}
+                        placeholder="+55 99999-9999"
+                        {...register("phone_number")}
+                        onChange={(e) => handlePhoneMask(e)}
+                        defaultValue={
+                          showUpdate() ? formatPhone(phone_number) : phoneValue
+                        }
                       />
-                    ) : (
-                      "Enviar"
-                    )}
-                  </Button>
-                )}
-              </GlobalButtonContainer>
-            </Form>
-          )}
-        </Card>
-        {openShareModal && (
-          <ModalShare
-            open={openShareModal}
-            data={rowData}
-            setOpenShareModal={setOpenShareModal}
-            loading={false}
-            onSubmit={() => console.log("aqui")}
-          />
+                    </Column>
+                    <Column margin="left">
+                      <Input
+                        maxLength={10}
+                        readOnly={showUpdate()}
+                        placeholder="Data Nascimento"
+                        {...register("birth_date")}
+                        onChange={(e) => handleDateMask(e)}
+                        defaultValue={
+                          showUpdate()
+                            ? format(new Date(birth_date), "dd/MM/yyyy")
+                            : dateValue
+                        }
+                      />
+                    </Column>
+                  </Row>
+                </S.UserInfoWrapper>
+              )}
+            </S.CardHeader>
+            <Box flexBasis="100%">
+              <CardTitle>Alterar Senha</CardTitle>
+            </Box>
+            <Row>
+              <Column margin="rigth">
+                <Label htmlFor="password">Nova Senha:</Label>
+                <Input
+                  readOnly={showContent()}
+                  type={showPassword.password ? "text" : "password"}
+                  defaultValue={password}
+                  {...register("password")}
+                />
+                <StyledMdRemoveRedEye
+                  size={20}
+                  onClick={() => handleShowPassword("password")}
+                />
+              </Column>
+              <Column margin="left">
+                <Label htmlFor="newPassword">Repita a Senha:</Label>
+                <Input
+                  readOnly={showContent()}
+                  {...register("password2")}
+                  defaultValue={password ? password : ""}
+                  type={showPassword.password2 ? "text" : "password"}
+                />
+                <StyledMdRemoveRedEye
+                  size={20}
+                  onClick={() => handleShowPassword("password2")}
+                />
+              </Column>
+            </Row>
+            <Box flexBasis="100%">
+              <CardTitle>Documento</CardTitle>
+            </Box>
+            <Row>
+              <Column margin="rigth" width="100%">
+                <Label htmlFor="document.type">Tipo:</Label>
+                <Controller
+                  name="document.type"
+                  control={control}
+                  render={({ field }) => (
+                    <ReactSelect
+                      isDisabled={readOnlyAtShowAndUpdate()}
+                      {...field}
+                      styles={{
+                        control: (base) => ({
+                          ...base,
+                          ...reactSelectedStyle,
+                        }),
+                      }}
+                      value={documentOptions.filter(
+                        (option: OptionType) => option.value === documentType
+                      )}
+                      options={documentOptions}
+                      onChange={(e) => handleTypeChange(e as OptionType)}
+                    />
+                  )}
+                />
+              </Column>
+              <Column margin="left" width="100%">
+                <Label htmlFor="document.number">Número:</Label>
+                <Input
+                  readOnly={readOnlyAtShowAndUpdate()}
+                  value={
+                    document?.number
+                      ? formatCPForCNPJ(document?.number)
+                      : cpfValue
+                  }
+                  {...register("document.number")}
+                  onChange={(e) => handleCpfOrCnpjMask(e)}
+                />
+              </Column>
+            </Row>
+            <Box flexBasis="100%">
+              <CardTitle>Endereço</CardTitle>
+            </Box>
+            <Row>
+              <Column margin="rigth" width="100%">
+                <Label htmlFor="address.country">País:</Label>
+                <Select
+                  defaultValue={address?.country ? address?.country : ""}
+                  {...register("address.country")}
+                >
+                  <option selected value="br">
+                    Brasil
+                  </option>
+                </Select>
+              </Column>
+              <Column margin="left" width="100%">
+                <Label htmlFor="address.cep">CEP:</Label>
+                <Input
+                  maxLength={9}
+                  readOnly={showContent()}
+                  {...register("address.cep")}
+                  placeholder="99999-999"
+                  onChange={(e) => handleCepMask(e)}
+                  defaultValue={address?.cep ? address?.cep : cepValue}
+                />
+              </Column>
+            </Row>
+            <Row>
+              <Column margin="rigth">
+                <Label htmlFor="address.state">Estado:</Label>
+                <Input
+                  readOnly={showContent()}
+                  defaultValue={address?.state ? address?.state : ""}
+                  {...register("address.state")}
+                />
+              </Column>
+              <Column margin="left">
+                <Label htmlFor="address.city">Cidade:</Label>
+                <Input
+                  readOnly={showContent()}
+                  defaultValue={address?.city ? address?.city : ""}
+                  {...register("address.city")}
+                />
+              </Column>
+            </Row>
+            <Row>
+              <Column margin="rigth" width="100%">
+                <Label htmlFor="address.street">Rua:</Label>
+                <Input
+                  readOnly={showContent()}
+                  defaultValue={address?.street ? address?.street : ""}
+                  {...register("address.street")}
+                />
+              </Column>
+              <Column margin="left" width="20%">
+                <Label htmlFor="address.number">Nº:</Label>
+                <Input
+                  readOnly={showContent()}
+                  defaultValue={address?.number}
+                  {...register("address.number")}
+                />
+              </Column>
+            </Row>
+            <GlobalButtonContainer>
+              {!showContent() && (
+                <Button
+                  color={colors.mediumBlue}
+                  width="100%"
+                  type="submit"
+                  disabled={isSubmitting}
+                >
+                  {loadingRequest && !success ? (
+                    <Spinner
+                      size="35px"
+                      color="#fff"
+                      style={{
+                        position: "absolute",
+                        top: "65%",
+                        left: "50%",
+                      }}
+                    />
+                  ) : (
+                    "Enviar"
+                  )}
+                </Button>
+              )}
+            </GlobalButtonContainer>
+          </Form>
         )}
-      </S.ClientsSection>
-    </div>
+      </Card>
+      {openShareModal && (
+        <ModalShare
+          open={openShareModal}
+          data={rowData}
+          setOpenShareModal={setOpenShareModal}
+          loading={false}
+          onSubmit={() => console.log("aqui")}
+        />
+      )}
+    </S.ClientsSection>
   );
 };
 

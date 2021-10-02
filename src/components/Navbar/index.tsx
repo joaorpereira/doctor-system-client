@@ -8,6 +8,8 @@ type Props = {
   user: Record<string, any>;
 };
 
+const BUCKET_URL = process.env.REACT_APP_BUCKET_URL;
+
 const Navbar: React.FC<Props> = ({ handleShowLogoutModal, user }: Props) => {
   return (
     <S.Nav>
@@ -15,11 +17,14 @@ const Navbar: React.FC<Props> = ({ handleShowLogoutModal, user }: Props) => {
         <S.UserInfo>
           <h4>{user.name}</h4>
           <p>
-            {user.role === "COMPANY" ? user.bank_account.acc_user_name : null}
+            {user.role === "COMPANY" &&
+            user.bank_account.acc_user_name !== user.name
+              ? user.bank_account.acc_user_name
+              : ""}
           </p>
         </S.UserInfo>
         <S.UserBtn onClick={handleShowLogoutModal}>
-          <S.UserImage src={user.picture} alt={user.name} />
+          <S.UserImage src={`${BUCKET_URL}${user.picture}`} alt={user.name} />
           <MdExpandMore />
         </S.UserBtn>
       </S.Wrapper>

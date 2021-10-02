@@ -8,6 +8,8 @@ import {
 } from "react-icons/md";
 
 import workers from "../../assets/workers.png";
+import { useAppSelector } from "../../hooks";
+import { RootState } from "../../store";
 
 const routes = [
   {
@@ -37,11 +39,25 @@ type ISidebarProps = {
   handleRoute: (route: string) => void;
   currentPath: string;
 };
+const BUCKET_URL = process.env.REACT_APP_BUCKET_URL;
 
 const Sidebar = ({ handleRoute, currentPath }: ISidebarProps): ReactElement => {
+  const { user } = useAppSelector(
+    ({ authReducers }: RootState) => authReducers
+  );
+
   return (
     <S.Aside>
-      <img src={workers} alt="Logo" />
+      {user?.picture ? (
+        <img src={`${BUCKET_URL}${user.background}`} alt={user.name} />
+      ) : (
+        <S.Logo>
+          <h1>{user.name}</h1>
+        </S.Logo>
+      )}
+      <S.UserNameWrapper>
+        <h4>{user.name}</h4>
+      </S.UserNameWrapper>
       <S.List>
         {routes.map((route) => (
           <S.ListItem

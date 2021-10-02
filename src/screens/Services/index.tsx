@@ -176,6 +176,9 @@ const Services: React.FC = (): ReactElement => {
         accessor: "price",
         sortType: "basic",
         show: true,
+        Cell: ({ row }: RowInfo) => (
+          <>{row.original && row.original?.price?.toFixed(2)}</>
+        ),
       },
       {
         Header: "Recorrência",
