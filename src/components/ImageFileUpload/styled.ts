@@ -19,13 +19,49 @@ export const ImageFile = styled.div`
 
 export const ButtonEdit = styled(MdEdit)`
   position: absolute;
-  top: 10%;
-  left: 18%;
+  z-index: 99;
+  top: 5.5%;
+  left: 5.5%;
   cursor: pointer;
   color: white;
-  background-color: ${colors.primary};
-  padding: 3px;
-  border-radius: 4px;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
-    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+`;
+
+export const Input = styled.input`
+  color: transparent;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: 0.3s background;
+
+  ::-webkit-file-upload-button {
+    visibility: hidden;
+  }
+
+  ::before {
+    content: "";
+    color: black;
+    display: inline-block;
+    border-radius: 3px;
+    padding: 15px;
+    outline: none;
+    white-space: nowrap;
+    cursor: pointer;
+    border-radius: 4px;
+    background-color: ${colors.primary};
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+      rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+    transition: 0.3s background;
+  }
+
+  :hover::before {
+    background: #62bbcd;
+  }
+
+  :active {
+    outline: 0;
+  }
+
+  :active::before {
+    background: #62bbcd;
+  }
 `;

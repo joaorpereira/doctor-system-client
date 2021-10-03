@@ -7,7 +7,8 @@ type Props = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   user: Record<string, any>;
   userName: string;
-  show: () => boolean;
+  show: boolean;
+  setImage?: any;
 };
 
 const ImageFileUpload: React.FC<Props> = ({
@@ -15,10 +16,20 @@ const ImageFileUpload: React.FC<Props> = ({
   user,
   userName,
   show,
+  setImage,
 }: Props) => {
   return (
     <S.ImageFile>
-      {!show() && <S.ButtonEdit size={24} />}
+      {show && (
+        <label htmlFor="fileEdit">
+          <S.ButtonEdit size={20} />
+          <S.Input
+            id="fileEdit"
+            type="file"
+            onChange={(e) => setImage(e.target.files ? e.target.files[0] : "")}
+          />
+        </label>
+      )}
       <img src={picture ? picture : Avatar} alt={user ? userName : "avatar"} />
     </S.ImageFile>
   );
