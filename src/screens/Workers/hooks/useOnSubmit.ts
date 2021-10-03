@@ -21,6 +21,10 @@ type OnSubmitProps = {
   company_id?: string;
   services: OptionsType<OptionType>;
   accountType: string;
+  image: string;
+  setImage: React.Dispatch<
+    React.SetStateAction<Record<string, unknown> | null>
+  >;
 };
 
 const useOnSubmit = ({
@@ -31,6 +35,8 @@ const useOnSubmit = ({
   company_id,
   services,
   accountType,
+  image,
+  setImage,
 }: OnSubmitProps) => {
   const dispatch = useAppDispatch();
   const onSubmit = (data: Worker) => {
@@ -46,10 +52,12 @@ const useOnSubmit = ({
             ...data,
             phone_number: newPhoneNumber,
             services: newServices,
+            picture: image,
           },
           id: id,
         })
       );
+      setImage(null);
     } else if (type === actionsTypes.CREATE) {
       dispatch(
         createWorker({

@@ -210,6 +210,8 @@ const Workers: React.FC = (): ReactElement => {
     documentType,
     genderValue,
     accountType,
+    image: picture,
+    setImage,
   });
 
   // custom hooks - set default values for worker services options
@@ -226,7 +228,7 @@ const Workers: React.FC = (): ReactElement => {
   const { handleUpdatePicture } = useUpdatePicture();
 
   useEffect(() => {
-    if (_id && image) {
+    if (type === actionsTypes.UPDATE && _id && image) {
       handleUpdatePicture({
         id: _id,
         role: "Workers",
@@ -234,7 +236,12 @@ const Workers: React.FC = (): ReactElement => {
         handleUpdate: updateWorkerProfilePicture,
       });
     }
-  }, [image, handleUpdatePicture, _id]);
+  }, [type, image, handleUpdatePicture, _id]);
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleProfileImage = (file: any) => {
+    setImage(file);
+  };
 
   const workerColumns = useMemo(() => {
     return [
@@ -377,7 +384,7 @@ const Workers: React.FC = (): ReactElement => {
                 user={worker}
                 userName={name}
                 show={["update"].includes(type)}
-                setImage={setImage}
+                handleImage={handleProfileImage}
               />
               {showContent() ? (
                 <UserInfo
