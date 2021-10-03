@@ -12,7 +12,7 @@ type Props = {
 const Logout: React.FC<Props> = ({
   handleConfiguration,
   handleLogout,
-  showModal,
+  showModal = false,
   setShowModal,
 }: Props) => {
   const ref = useRef();

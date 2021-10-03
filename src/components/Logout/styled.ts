@@ -27,12 +27,10 @@ export const Wrapper = styled.div<WrapperProps>`
 `;
 
 export const Link = styled.li`
-  padding: 8px 20px;
   display: flex;
   align-items: center;
   cursor: pointer;
   transition: background-color 0.2s;
-
   :hover {
     background-color: ${colors.primary};
     color: #fff;
@@ -45,6 +43,9 @@ export const Btn = styled.button`
   background-color: transparent;
   color: ${colors.text};
   font-weight: 600;
+  width: 100%;
+  text-align: start;
+  padding: 8px 20px;
 
   ${Link}:hover & {
     color: #fff;
