@@ -30,13 +30,9 @@ const Login = () => {
   const [page, setPage] = useState("");
   const history = useHistory();
 
-  const { loading, success, token } = useAppSelector(
+  const { loading, token } = useAppSelector(
     ({ authReducers }: RootState) => authReducers
   );
-
-  useEffect(() => {
-    if (success) history.push("/");
-  }, [success, history]);
 
   useEffect(() => {
     if (token) history.push("/");
@@ -94,17 +90,25 @@ const Login = () => {
               <form onSubmit={handleSubmit(onSubmit)}>
                 <S.Box>
                   <S.Label htmlFor="email">Email:</S.Label>
-                  <S.Input type="text" {...register("email")} />
+                  <S.Input
+                    type="text"
+                    autoComplete="off"
+                    {...register("email")}
+                  />
                 </S.Box>
                 <S.Box>
                   <S.Label htmlFor="password">Senha:</S.Label>
-                  <S.Input type="password" {...register("password")} />
+                  <S.Input
+                    autoComplete="off"
+                    type="password"
+                    {...register("password")}
+                  />
                   <S.SpanLink to="/recuperar-senha">
                     Esqueceu sua senha, <u>clique aqui</u>
                   </S.SpanLink>
                 </S.Box>
                 <S.Button disabled={isSubmitting} type="submit">
-                  {!loading && !success ? (
+                  {!loading ? (
                     <p>Login</p>
                   ) : (
                     <Spinner

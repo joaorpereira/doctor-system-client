@@ -33,8 +33,8 @@ const Template: React.FC = (): ReactElement => {
   }, []);
 
   const handleLogout = () => {
-    console.log("aqui");
-    dispatch(requestLogout(history));
+    dispatch(requestLogout());
+    history.push("/login");
   };
 
   const handleConfiguration = useCallback(() => setConfigurationPage(true), []);

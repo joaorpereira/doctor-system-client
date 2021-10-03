@@ -1,4 +1,10 @@
-import React, { ReactElement, useCallback, useEffect, useState } from "react";
+import React, {
+  ReactElement,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
 import * as S from "./styled";
@@ -56,44 +62,45 @@ const HomePage: React.FC = (): ReactElement => {
 
   const [formatScheduleData] = useFormatScheduleData({ setScheduleData });
 
-  const rangeFormat = useCallback(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (range: any) => {
-      let newRange = {} as IRange;
-      if (Array.isArray(range)) {
-        newRange = {
-          start: format(range[0], "yyyy-MM-dd"),
-          end: format(range[range.length - 1], "yyyy-MM-dd"),
-        };
-      } else {
-        newRange = {
-          start: format(range?.start, "yyyy-MM-dd"),
-          end: format(range?.end, "yyyy-MM-dd"),
-        };
-      }
-
-      const data: IScheduleProps = {
-        company_id: user._id,
-        range: {
-          start: newRange.start,
-          end: newRange.end,
-        },
+  const rangeFormat = (range: any) => {
+    let newRange = {} as IRange;
+    if (Array.isArray(range)) {
+      newRange = {
+        start: format(range[0], "yyyy-MM-dd"),
+        end: format(range[range.length - 1], "yyyy-MM-dd"),
       };
-      dispatch(getSchedules(data));
-    },
-    [dispatch, user]
-  );
+    } else {
+      newRange = {
+        start: format(range?.start, "yyyy-MM-dd"),
+        end: format(range?.end, "yyyy-MM-dd"),
+      };
+    }
 
-  useEffect(() => {
-    const data: IScheduleProps = {
-      company_id: user._id,
+    const newSchedule: IScheduleProps = {
+      company_id: user?._id,
+      range: {
+        start: newRange.start,
+        end: newRange.end,
+      },
+    };
+    dispatch(getSchedules(newSchedule));
+  };
+
+  const data: IScheduleProps = useMemo(() => {
+    return {
+      company_id: user?._id,
       range: {
         start: format(startOfMonth(new Date()), "yyyy-MM-dd"),
         end: format(endOfMonth(new Date()), "yyyy-MM-dd"),
       },
     };
-    dispatch(getSchedules(data));
-  }, [dispatch, user]);
+  }, [user]);
+
+  useEffect(() => {
+    if (data) {
+      dispatch(getSchedules(data));
+    }
+  }, [data, dispatch]);
 
   useEffect(() => {
     if (schedules) formatScheduleData(schedules);
@@ -106,7 +113,7 @@ const HomePage: React.FC = (): ReactElement => {
       <S.HeaderRow>
         <SectionTitle>Agendamentos</SectionTitle>
       </S.HeaderRow>
-      {scheduleData && (
+      {user && scheduleData && (
         <Calendar
           messages={calendarOptions}
           localizer={localizer}

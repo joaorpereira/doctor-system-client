@@ -5,6 +5,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Worker } from "./workersSlice";
 import { Client } from "./clientsSlice";
 import { Company } from "./companiesSlice";
+import { key } from "../../utils";
 
 export interface AuthSliceState {
   page: string;
@@ -32,8 +33,9 @@ const authSlice = createSlice({
     requestLogin(state, action: PayloadAction<any>) {
       return { ...state, loading: true };
     },
-    requestLogout(state, action: PayloadAction<any>) {
-      return { ...state, loading: true };
+    requestLogout() {
+      localStorage.removeItem(key);
+      return initialState;
     },
     requestLoginSuccess(state, action: PayloadAction<any>) {
       const user = action.payload.user;
@@ -46,9 +48,6 @@ const authSlice = createSlice({
         token: token,
       };
     },
-    requestLogoutSuccess(state) {
-      return { ...state, loading: true, user: {}, success: true, token: null };
-    },
   },
 });
 
@@ -57,7 +56,6 @@ export const {
   requestLogin,
   requestLogout,
   requestLoginSuccess,
-  requestLogoutSuccess,
 } = authSlice.actions;
 
 export default authSlice.reducer;

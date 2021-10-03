@@ -1,11 +1,6 @@
 import api from "../../services/api";
 import { all, call, put, takeLatest } from "redux-saga/effects";
-import {
-  requestLogin,
-  requestLogout,
-  requestLoginSuccess,
-  requestLogoutSuccess,
-} from "../ducks/authSlice";
+import { requestLogin, requestLoginSuccess } from "../ducks/authSlice";
 import { key } from "../../utils";
 import { ResponseGenerator } from "../../utils/types";
 
@@ -32,19 +27,4 @@ function* handleLogin({ payload }: PropsPayload) {
   }
 }
 
-function* handleLogout({ payload }: any) {
-  try {
-    const { history } = payload;
-    localStorage.removeItem(key);
-    history.push("/login");
-    yield put(requestLogoutSuccess());
-  } catch (error) {
-    localStorage.removeItem(key);
-    console.log(error);
-  }
-}
-
-export default all([
-  takeLatest(requestLogin.type, handleLogin),
-  takeLatest(requestLogout.type, handleLogout),
-]);
+export default all([takeLatest(requestLogin.type, handleLogin)]);
