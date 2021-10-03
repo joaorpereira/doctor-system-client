@@ -8,15 +8,18 @@ type Props = {
   user: Record<string, any>;
   userName: string;
   show: boolean;
-  setImage?: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  handleImage: (e: any) => void;
 };
+
+const BUCKET_URL = process.env.REACT_APP_BUCKET_URL;
 
 const ImageFileUpload: React.FC<Props> = ({
   picture,
   user,
   userName,
   show,
-  setImage,
+  handleImage,
 }: Props) => {
   return (
     <S.ImageFile>
@@ -26,11 +29,17 @@ const ImageFileUpload: React.FC<Props> = ({
           <S.Input
             id="fileEdit"
             type="file"
-            onChange={(e) => setImage(e.target.files ? e.target.files[0] : "")}
+            onChange={(e) =>
+              handleImage(e.target.files ? e.target.files[0] : "")
+            }
           />
         </label>
       )}
-      <img src={picture ? picture : Avatar} alt={user ? userName : "avatar"} />
+      <img
+        loading="lazy"
+        src={picture ? `${BUCKET_URL}${picture}` : Avatar}
+        alt={user ? userName : "avatar"}
+      />
     </S.ImageFile>
   );
 };
