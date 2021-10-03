@@ -59,7 +59,6 @@ const useOnSubmit = ({
             birth_date: newBirthDate,
             document: { number: newDocumentNumber, type: documentType },
             gender: genderValue,
-            picture: image,
           },
           company_id: company_id,
         })

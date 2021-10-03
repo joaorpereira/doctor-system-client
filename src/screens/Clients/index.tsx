@@ -54,6 +54,7 @@ import {
   documentOptions,
   formatCPForCNPJ,
   formatPhone,
+  actionsTypes,
 } from "../../utils";
 
 import {
@@ -142,15 +143,16 @@ const Clients: React.FC = (): ReactElement => {
   // functions
   const handleCloseModal = () => setShowProfile(!showProfile);
   const handleRemoveClient = (id: string) => dispatch(removeClient({ id }));
-  const readOnlyAtShowAndUpdate = () => ["show", "update"].includes(type);
+  const readOnlyAtShowAndUpdate = () =>
+    [actionsTypes.SHOW, actionsTypes.UPDATE].includes(type);
 
   const handleTypeChange = (e: OptionType) => setDocumentType(e.value);
   const handleGenderChange = (e: OptionType) => setGenderValue(e.value);
 
   // handle which type of sideModal should be displayed
-  const showContent = (): boolean => type === "show";
-  const showUpdate = (): boolean => type === "update";
-  const showCreate = (): boolean => type === "create";
+  const showContent = (): boolean => type === actionsTypes.SHOW;
+  const showUpdate = (): boolean => type === actionsTypes.UPDATE;
+  const showCreate = (): boolean => type === actionsTypes.CREATE;
 
   // custom hooks - close modal when clicked outside
   useOnClickOutside({ ref, handler: () => setShowProfile(false) });
@@ -182,7 +184,8 @@ const Clients: React.FC = (): ReactElement => {
     documentType,
     genderValue,
     company_id: user && user.role === "COMPANY" && user._id,
-    image,
+    image: picture,
+    setImage,
   });
 
   const { handleShare, rowData, openShareModal, setOpenShareModal } =
@@ -192,7 +195,7 @@ const Clients: React.FC = (): ReactElement => {
   const { handleUpdatePicture } = useUpdatePicture();
 
   useEffect(() => {
-    if (_id && image) {
+    if (type === actionsTypes.UPDATE && _id && image) {
       handleUpdatePicture({
         id: _id,
         role: "Clients",
@@ -200,7 +203,12 @@ const Clients: React.FC = (): ReactElement => {
         handleUpdate: updateClientProfilePicture,
       });
     }
-  }, [image, handleUpdatePicture, _id]);
+  }, [image, handleUpdatePicture, _id, type]);
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleProfileImage = (file: any) => {
+    setImage(file);
+  };
 
   const clientColumns = useMemo(() => {
     return [
@@ -343,7 +351,7 @@ const Clients: React.FC = (): ReactElement => {
                 user={client}
                 userName={name}
                 show={["update"].includes(type)}
-                setImage={setImage}
+                handleImage={handleProfileImage}
               />
               {showContent() ? (
                 <UserInfo
