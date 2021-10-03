@@ -58,7 +58,7 @@ export const clientsSlice = createSlice({
       return { ...state, client: client, type: type };
     },
     updateClientProfilePicture(state, action: PayloadAction<any>) {
-      return { ...state };
+      return { ...state, loadingRequest: true };
     },
     setClientsSuccess(state, action: PayloadAction<any>) {
       const clients = action.payload.clients;
@@ -86,8 +86,8 @@ export const clientsSlice = createSlice({
     updateClientProfilePictureSuccess(state, action: PayloadAction<any>) {
       const { picture } = action.payload;
       const newClient = { ...state.client };
-      newClient["picture"] = picture;
-      return { ...state, client: newClient, loadingData: false };
+      newClient["picture"] = picture.folder;
+      return { ...state, client: newClient, loadingRequest: false };
     },
   },
 });

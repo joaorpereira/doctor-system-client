@@ -104,7 +104,7 @@ function* handleUpdateClientProfilePicture({
       config
     );
 
-    yield put(updateClientProfilePictureSuccess({ picture: data }));
+    yield put(updateClientProfilePictureSuccess({ picture: data.data }));
   } catch (error) {
     console.log(error);
   }
