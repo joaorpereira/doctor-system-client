@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 
 type UpdatePictureProps = {
   image: Record<string, unknown> | null;
-  handleUpdate: ActionCreatorWithPayload<any, string>;
+  handleUpdate: ActionCreatorWithPayload<unknown, string>;
   role: string;
   id: string;
 };

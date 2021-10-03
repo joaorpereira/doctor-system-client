@@ -1,10 +1,4 @@
-import React, {
-  ReactElement,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import React, { ReactElement, useEffect, useMemo, useState } from "react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
 import * as S from "./styled";
@@ -62,6 +56,7 @@ const HomePage: React.FC = (): ReactElement => {
 
   const [formatScheduleData] = useFormatScheduleData({ setScheduleData });
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const rangeFormat = (range: any) => {
     let newRange = {} as IRange;
     if (Array.isArray(range)) {
