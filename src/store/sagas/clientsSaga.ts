@@ -13,7 +13,10 @@ import {
   removeClientSuccess,
   updateClientProfilePictureSuccess,
 } from "../ducks/clientsSlice";
-import { ResponseGenerator } from "../../utils/types";
+import {
+  ResponseGenerator,
+  UpdateProfilePicturePayloadProps,
+} from "../../utils/types";
 import { requestLoginSuccess } from "../ducks/authSlice";
 
 type ClientPayloadProps = {
@@ -22,15 +25,6 @@ type ClientPayloadProps = {
     client?: Client;
     company_id?: string;
     isSignUp?: boolean;
-  };
-  type: string;
-};
-
-type UpdateProfilePicturePayloadProps = {
-  payload: {
-    id: string;
-    role: string;
-    files: never[];
   };
   type: string;
 };

@@ -7,13 +7,18 @@ import {
   updateWorker,
   createWorker,
   removeWorker,
+  updateWorkerProfilePicture,
   setWorkersSuccess,
   updateWorkerSuccess,
   createWorkerSuccess,
   removeWorkerSuccess,
   setWorkersOptionsSuccess,
+  updateWorkerProfilePictureSuccess,
 } from "../ducks/workersSlice";
-import { ResponseGenerator } from "../../utils/types";
+import {
+  ResponseGenerator,
+  UpdateProfilePicturePayloadProps,
+} from "../../utils/types";
 import { requestLoginSuccess } from "../ducks/authSlice";
 
 type WorkerPayloadProps = {
@@ -84,10 +89,46 @@ function* handleCreateWorker({ payload }: WorkerPayloadProps) {
   }
 }
 
+function* handleUpdateWorkerProfilePicture({
+  payload,
+}: UpdateProfilePicturePayloadProps) {
+  try {
+    const config = {
+      headers: {
+        "content-type": "multipart/form-data",
+      },
+    };
+
+    if (!payload.id || !payload.role) {
+      throw new Error("ID, Role e File são campos obrigatórios");
+    }
+
+    const formData = new FormData();
+    formData.append("data", JSON.stringify(payload));
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    payload?.files?.map((image: any, index: number) =>
+      formData.append(`file_${index}`, image)
+    );
+
+    const { data }: ResponseGenerator = yield call(
+      api.post,
+      "/file/upload",
+      formData,
+      config
+    );
+
+    yield put(updateWorkerProfilePictureSuccess({ picture: data }));
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export default all([
   takeLatest(getWorkers.type, handleGetWorkers),
   takeLatest(getWorkersByCompany.type, handleGetWorkersByCompany),
   takeLatest(updateWorker.type, handleUpdateWorker),
   takeLatest(removeWorker.type, handleRemoveWorker),
   takeLatest(createWorker.type, handleCreateWorker),
+  takeLatest(updateWorkerProfilePicture.type, handleUpdateWorkerProfilePicture),
 ]);

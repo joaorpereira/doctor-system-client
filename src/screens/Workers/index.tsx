@@ -49,11 +49,13 @@ import {
   useHandlePhoneMask,
   useOnClickOutside,
   useHandleModalShare,
+  useUpdatePicture,
 } from "../../hooks";
 
 import {
   getWorkers,
   removeWorker,
+  updateWorkerProfilePicture,
   Worker,
 } from "../../store/ducks/workersSlice";
 
@@ -94,6 +96,7 @@ const Workers: React.FC = (): ReactElement => {
   >([]);
   const [accountType, setAccountType] = useState("");
   const [showAccountData, setShowaccountData] = useState(false);
+  const [image, setImage] = useState<Record<string, unknown>>({});
 
   const { workers, worker, type, loadingRequest, loadingData, success } =
     useAppSelector(({ workersReducers }) => workersReducers);
@@ -105,6 +108,7 @@ const Workers: React.FC = (): ReactElement => {
   const { user } = useAppSelector(({ authReducers }) => authReducers);
 
   const {
+    _id,
     document,
     bank_account,
     name,
@@ -217,6 +221,20 @@ const Workers: React.FC = (): ReactElement => {
 
   const { handleShare, rowData, openShareModal, setOpenShareModal } =
     useHandleModalShare();
+
+  // custom hooks - upload image
+  const { handleUpdatePicture } = useUpdatePicture();
+
+  useEffect(() => {
+    if (_id && image) {
+      handleUpdatePicture({
+        id: _id,
+        role: "Workers",
+        image,
+        handleUpdate: updateWorkerProfilePicture,
+      });
+    }
+  }, [image, handleUpdatePicture, _id]);
 
   const workerColumns = useMemo(() => {
     return [
@@ -358,7 +376,7 @@ const Workers: React.FC = (): ReactElement => {
                 picture={picture}
                 user={worker}
                 userName={name}
-                show={showContent}
+                show={["update"].includes(type)}
               />
               {showContent() ? (
                 <UserInfo

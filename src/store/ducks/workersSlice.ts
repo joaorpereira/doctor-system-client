@@ -69,6 +69,9 @@ export const workersSlice = createSlice({
       const type = action.payload.type;
       return { ...state, worker: worker, type: type, loadingData: false };
     },
+    updateWorkerProfilePicture(state, action: PayloadAction<any>) {
+      return { ...state };
+    },
     setWorkersSuccess: (state, action: PayloadAction<any>) => {
       const workers = action.payload.workers;
 
@@ -106,6 +109,12 @@ export const workersSlice = createSlice({
       state.loadingRequest = false;
       state.success = true;
     },
+    updateWorkerProfilePictureSuccess(state, action: PayloadAction<any>) {
+      const { picture } = action.payload;
+      const newWorker = { ...state.worker };
+      newWorker["picture"] = picture;
+      return { ...state, client: newWorker, loadingData: false };
+    },
   },
 });
 
@@ -116,11 +125,13 @@ export const {
   updateWorker,
   removeWorker,
   createWorker,
+  updateWorkerProfilePicture,
   setWorkersSuccess,
   createWorkerSuccess,
   updateWorkerSuccess,
   removeWorkerSuccess,
   setWorkersOptionsSuccess,
+  updateWorkerProfilePictureSuccess,
 } = workersSlice.actions;
 
 export default workersSlice.reducer;

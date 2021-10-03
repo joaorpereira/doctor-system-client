@@ -61,3 +61,12 @@ export interface ResponseGenerator {
   status?: number;
   statusText?: string;
 }
+
+export type UpdateProfilePicturePayloadProps = {
+  payload: {
+    id: string;
+    role: string;
+    files: never[];
+  };
+  type: string;
+};
