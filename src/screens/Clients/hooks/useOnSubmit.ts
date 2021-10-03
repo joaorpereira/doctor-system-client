@@ -16,7 +16,10 @@ type OnSubmitProps = {
   documentType: string;
   genderValue: string;
   company_id?: string;
-  image: Record<string, unknown> | null;
+  image: string;
+  setImage: React.Dispatch<
+    React.SetStateAction<Record<string, unknown> | null>
+  >;
 };
 
 const useOnSubmit = ({
@@ -26,6 +29,7 @@ const useOnSubmit = ({
   genderValue,
   company_id,
   image,
+  setImage,
 }: OnSubmitProps) => {
   const dispatch = useAppDispatch();
   const onSubmit = (data: Client) => {
@@ -45,6 +49,7 @@ const useOnSubmit = ({
           id: id,
         })
       );
+      setImage(null);
     } else if (type === "create") {
       dispatch(
         createClient({
