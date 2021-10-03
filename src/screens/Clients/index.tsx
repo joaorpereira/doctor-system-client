@@ -85,7 +85,7 @@ const Clients: React.FC = (): ReactElement => {
   const [dateValue, setDateValue] = useState("");
   const [documentType, setDocumentType] = useState("");
   const [genderValue, setGenderValue] = useState("");
-  const [image, setImage] = useState<Record<string, unknown>>({});
+  const [image, setImage] = useState<Record<string, unknown> | null>(null);
 
   const { user } = useAppSelector(({ authReducers }) => authReducers);
 

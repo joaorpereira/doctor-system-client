@@ -3,7 +3,7 @@ import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 
 type UpdatePictureProps = {
-  image: Record<string, unknown>;
+  image: Record<string, unknown> | null;
   handleUpdate: ActionCreatorWithPayload<any, string>;
   role: string;
   id: string;

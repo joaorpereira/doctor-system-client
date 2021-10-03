@@ -96,7 +96,7 @@ const Workers: React.FC = (): ReactElement => {
   >([]);
   const [accountType, setAccountType] = useState("");
   const [showAccountData, setShowaccountData] = useState(false);
-  const [image, setImage] = useState<Record<string, unknown>>({});
+  const [image, setImage] = useState<Record<string, unknown> | null>(null);
 
   const { workers, worker, type, loadingRequest, loadingData, success } =
     useAppSelector(({ workersReducers }) => workersReducers);
@@ -377,6 +377,7 @@ const Workers: React.FC = (): ReactElement => {
                 user={worker}
                 userName={name}
                 show={["update"].includes(type)}
+                setImage={setImage}
               />
               {showContent() ? (
                 <UserInfo

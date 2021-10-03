@@ -16,7 +16,7 @@ type OnSubmitProps = {
   documentType: string;
   genderValue: string;
   company_id?: string;
-  image: Record<string, unknown>;
+  image: Record<string, unknown> | null;
 };
 
 const useOnSubmit = ({
