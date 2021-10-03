@@ -46,7 +46,7 @@ const authSlice = createSlice({
         token: token,
       };
     },
-    requestLogoutSuccess(state, action) {
+    requestLogoutSuccess(state) {
       return { ...state, loading: true, user: {}, success: true, token: null };
     },
   },

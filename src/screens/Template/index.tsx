@@ -5,16 +5,18 @@ import React, {
   useCallback,
 } from "react";
 import { useDispatch } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 import { Sidebar, Navbar, Logout } from "../../components";
 import { useAppSelector } from "../../hooks";
 
 import Routes from "../../routes/routes";
+import { requestLogout } from "../../store/ducks/authSlice";
 import * as S from "./styled";
 
 const Template: React.FC = (): ReactElement => {
   const location = useLocation();
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const { user } = useAppSelector(({ authReducers }) => authReducers);
 
@@ -23,16 +25,17 @@ const Template: React.FC = (): ReactElement => {
   const [showModal, setShowModal] = useState(false);
 
   useLayoutEffect(() => {
-    if (location) setCurrentPath(location.pathname);
+    if (location) setCurrentPath(location?.pathname);
   }, [location]);
 
   const handleRoute = useCallback((route: string) => {
     setCurrentPath(route);
   }, []);
 
-  const handleLogout = useCallback(() => {
-    dispatch(handleLogout());
-  }, [dispatch]);
+  const handleLogout = () => {
+    console.log("aqui");
+    dispatch(requestLogout(history));
+  };
 
   const handleConfiguration = useCallback(() => setConfigurationPage(true), []);
   const handleShowLogoutModal = () => setShowModal(!showModal);

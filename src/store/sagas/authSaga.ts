@@ -32,10 +32,12 @@ function* handleLogin({ payload }: PropsPayload) {
   }
 }
 
-function* handleLogout() {
+function* handleLogout({ payload }: any) {
   try {
+    const { history } = payload;
     localStorage.removeItem(key);
-    yield put(requestLogoutSuccess({}));
+    history.push("/login");
+    yield put(requestLogoutSuccess());
   } catch (error) {
     localStorage.removeItem(key);
     console.log(error);

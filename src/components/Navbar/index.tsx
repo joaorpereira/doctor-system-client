@@ -24,7 +24,11 @@ const Navbar: React.FC<Props> = ({ handleShowLogoutModal, user }: Props) => {
           </p>
         </S.UserInfo>
         <S.UserBtn onClick={handleShowLogoutModal}>
-          <S.UserImage src={`${BUCKET_URL}${user.picture}`} alt={user.name} />
+          <S.UserImage
+            loading="lazy"
+            src={`${BUCKET_URL}${user.picture}`}
+            alt={user.name}
+          />
           <MdExpandMore />
         </S.UserBtn>
       </S.Wrapper>
