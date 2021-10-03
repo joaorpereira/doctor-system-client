@@ -6,7 +6,7 @@ import React, {
   useState,
 } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { format } from "date-fns";
+import { differenceInYears, format } from "date-fns";
 import ReactSelect from "react-select";
 
 import * as S from "./styled";
@@ -244,6 +244,18 @@ const Clients: React.FC = (): ReactElement => {
         show: true,
         Cell: ({ row }: RowInfo) => (
           <Paragraph>{row.original.gender.toLowerCase()}</Paragraph>
+        ),
+      },
+      {
+        Header: "Idade",
+        accessor: "birth_date",
+        sortType: "basic",
+        show: true,
+        Cell: ({ row }: RowInfo) => (
+          <p>
+            {differenceInYears(new Date(), new Date(row.original.birth_date))}{" "}
+            anos
+          </p>
         ),
       },
       {
