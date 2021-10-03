@@ -44,6 +44,7 @@ import {
   Client,
   getClients,
   removeClient,
+  updateClientProfilePicture,
 } from "../../store/ducks/clientsSlice";
 
 import { RowInfo, OptionType } from "../../utils/types";
@@ -65,6 +66,7 @@ import {
   useHandleShowPassword,
   useHandleCpfOrCnpjMask,
   useHandleModalShare,
+  useUpdatePicture,
 } from "../../hooks";
 import { useOnSubmit, useHandleUpdateOrShowClient } from "./hooks";
 
@@ -83,6 +85,7 @@ const Clients: React.FC = (): ReactElement => {
   const [dateValue, setDateValue] = useState("");
   const [documentType, setDocumentType] = useState("");
   const [genderValue, setGenderValue] = useState("");
+  const [image, setImage] = useState<Record<string, unknown>>({});
 
   const { user } = useAppSelector(({ authReducers }) => authReducers);
 
@@ -179,10 +182,25 @@ const Clients: React.FC = (): ReactElement => {
     documentType,
     genderValue,
     company_id: user && user.role === "COMPANY" && user._id,
+    image,
   });
 
   const { handleShare, rowData, openShareModal, setOpenShareModal } =
     useHandleModalShare();
+
+  // custom hooks - upload image
+  const { handleUpdatePicture } = useUpdatePicture();
+
+  useEffect(() => {
+    if (_id && image) {
+      handleUpdatePicture({
+        id: _id,
+        role: "Clients",
+        image,
+        handleUpdate: updateClientProfilePicture,
+      });
+    }
+  }, [image, handleUpdatePicture, _id]);
 
   const clientColumns = useMemo(() => {
     return [
@@ -324,7 +342,8 @@ const Clients: React.FC = (): ReactElement => {
                 picture={picture}
                 user={client}
                 userName={name}
-                show={showContent}
+                show={["update"].includes(type)}
+                setImage={setImage}
               />
               {showContent() ? (
                 <UserInfo

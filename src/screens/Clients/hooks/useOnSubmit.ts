@@ -16,6 +16,7 @@ type OnSubmitProps = {
   documentType: string;
   genderValue: string;
   company_id?: string;
+  image: Record<string, unknown>;
 };
 
 const useOnSubmit = ({
@@ -24,6 +25,7 @@ const useOnSubmit = ({
   documentType,
   genderValue,
   company_id,
+  image,
 }: OnSubmitProps) => {
   const dispatch = useAppDispatch();
   const onSubmit = (data: Client) => {
@@ -38,6 +40,7 @@ const useOnSubmit = ({
             ...data,
             phone_number: newPhoneNumber,
             birth_date: newBirthDate,
+            picture: image,
           },
           id: id,
         })
@@ -51,6 +54,7 @@ const useOnSubmit = ({
             birth_date: newBirthDate,
             document: { number: newDocumentNumber, type: documentType },
             gender: genderValue,
+            picture: image,
           },
           company_id: company_id,
         })

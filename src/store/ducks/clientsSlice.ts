@@ -57,6 +57,9 @@ export const clientsSlice = createSlice({
       const type = action.payload.type;
       return { ...state, client: client, type: type };
     },
+    updateClientProfilePicture(state, action: PayloadAction<any>) {
+      return { ...state };
+    },
     setClientsSuccess(state, action: PayloadAction<any>) {
       const clients = action.payload.clients;
       return { ...state, clients, loadingData: false };
@@ -80,6 +83,12 @@ export const clientsSlice = createSlice({
       );
       state.loadingRequest = false;
     },
+    updateClientProfilePictureSuccess(state, action: PayloadAction<any>) {
+      const { picture } = action.payload;
+      const newClient = { ...state.client };
+      newClient["picture"] = picture;
+      return { ...state, client: newClient, loadingData: false };
+    },
   },
 });
 
@@ -89,10 +98,12 @@ export const {
   updateClient,
   removeClient,
   createClient,
+  updateClientProfilePicture,
   setClientsSuccess,
   createClientSuccess,
   updateClientSuccess,
   removeClientSuccess,
+  updateClientProfilePictureSuccess,
 } = clientsSlice.actions;
 
 export default clientsSlice.reducer;
