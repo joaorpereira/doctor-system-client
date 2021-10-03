@@ -8,3 +8,4 @@ export { default as useHandleShowPassword } from "./useHandleShowPassword";
 export { default as useOnClickOutside } from "./useOnClickOutside";
 export { default as useWindowSize } from "./useWindowSize";
 export { default as useHandleModalShare } from "./useHandleModalShare";
+export { default as useUpdatePicture } from "./useUpdatePicture";
