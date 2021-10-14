@@ -24,19 +24,21 @@ export interface HoursSliceState {
   type: string;
 }
 
+const initialHourState: Hour = {
+  services: [],
+  workers: [],
+  days: [],
+  created_at: "",
+  _id: "",
+  company_id: "",
+  start_time: "",
+  end_time: "",
+};
+
 const initialState: HoursSliceState = {
   hours: [],
   services: [],
-  hour: {
-    services: [],
-    workers: [],
-    days: [],
-    created_at: "",
-    _id: "",
-    company_id: "",
-    start_time: "",
-    end_time: "",
-  },
+  hour: initialHourState,
   loadingRequest: false,
   loadingData: false,
   success: false,

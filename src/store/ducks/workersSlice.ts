@@ -27,7 +27,7 @@ export type Options = {
 
 export interface WorkersSliceState {
   workers: Worker[];
-  worker: Worker | Record<string, never>;
+  worker: Worker;
   type: string;
   loadingData?: boolean;
   loadingRequest?: boolean;
@@ -35,10 +35,36 @@ export interface WorkersSliceState {
   workersOptions: Options[];
 }
 
+const initialHourState: Worker = {
+  name: "",
+  email: "",
+  password: "",
+  picture: "",
+  phone_number: "",
+  gender: "",
+  birth_date: "",
+  document: {
+    type: "",
+    number: "",
+  },
+  services: [],
+  bank_account: {
+    acc_user_name: "",
+    acc_number: "",
+    acc_type: "",
+    bank_code: "",
+    bank_agency: "",
+    verify_digit: "",
+    cpf_or_cnpj: "",
+  },
+  _id: "",
+  role: "",
+};
+
 const initialState: WorkersSliceState = {
   workers: [],
   workersOptions: [],
-  worker: {},
+  worker: initialHourState,
   type: "",
   loadingData: false,
   loadingRequest: false,

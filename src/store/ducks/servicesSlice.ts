@@ -25,7 +25,7 @@ export type Service = {
 
 export interface ServicesSliceState {
   services: Service[];
-  service: Service | Record<string, any>;
+  service: Service;
   type: string;
   loading?: boolean;
   loadingFiltered?: boolean;
@@ -34,9 +34,22 @@ export interface ServicesSliceState {
   success?: boolean;
 }
 
+const initialServiceState: Service = {
+  status: "",
+  created_at: new Date(),
+  _id: "",
+  company_id: "",
+  title: "",
+  price: 0,
+  service_duration: "",
+  service_recurrence: 0,
+  description: "",
+  files: [] as File[],
+};
+
 const initialState: ServicesSliceState = {
   services: [],
-  service: {},
+  service: initialServiceState,
   servicesOptions: [],
   type: "",
   loading: false,
@@ -92,7 +105,7 @@ const servicesSlice = createSlice({
         (item: any) => item._id === service._id
       );
       state.services[serviceIndex] = service;
-      state.service = {};
+      state.service = initialServiceState;
       state.loadingData = false;
       state.success = true;
     },

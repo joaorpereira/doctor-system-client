@@ -20,16 +20,40 @@ export type Client = {
 
 export interface ClientsSliceState {
   clients: Client[];
-  client?: Record<string, any>;
+  client: Client;
   type: string;
   loadingData?: boolean;
   loadingRequest?: boolean;
   success?: boolean;
 }
 
+const initialClientState: Client = {
+  document: {
+    type: "",
+    number: "",
+  },
+  address: {
+    country: "",
+    state: "",
+    city: "",
+    cep: "",
+    number: "",
+    street: "",
+  },
+  name: "",
+  email: "",
+  password: "",
+  picture: "",
+  phone_number: "",
+  gender: "",
+  birth_date: "",
+  _id: "",
+  role: "",
+};
+
 const initialState: ClientsSliceState = {
   clients: [],
-  client: {},
+  client: initialClientState,
   type: "",
   loadingData: false,
   loadingRequest: false,
