@@ -1,6 +1,6 @@
 import { addHours, format } from "date-fns";
 import { useCallback } from "react";
-import { Hour } from "../../../store/ducks/hoursSlice";
+import { Hour } from "../../store/ducks/hoursSlice";
 
 type ISetState = {
   setHourData: React.Dispatch<React.SetStateAction<ResponseHoursProps[]>>;

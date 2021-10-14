@@ -1,10 +1,7 @@
 import { addMinutes } from "date-fns";
 import { Dispatch, SetStateAction, useCallback } from "react";
-import {
-  FormatedSchedule,
-  Schedule,
-} from "../../../store/ducks/schedulesSlice";
-import { convertHourToMinutes } from "../../../utils";
+import { FormatedSchedule, Schedule } from "../../store/ducks/schedulesSlice";
+import { convertHourToMinutes } from "../../utils";
 
 type ISetState = {
   setScheduleData: Dispatch<SetStateAction<FormatedSchedule[]>>;

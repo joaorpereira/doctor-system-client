@@ -20,8 +20,11 @@ import {
 } from "../../store/ducks/schedulesSlice";
 import { RootState } from "../../store";
 
-import { useAppDispatch, useAppSelector } from "../../hooks";
-import { useFormatScheduleData } from "./hooks";
+import {
+  useAppDispatch,
+  useAppSelector,
+  useFormatScheduleData,
+} from "../../hooks";
 
 import ptBR from "date-fns/locale/pt-BR";
 import { SectionTitle } from "../../styles";

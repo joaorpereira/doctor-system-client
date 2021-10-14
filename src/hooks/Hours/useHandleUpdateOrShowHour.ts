@@ -1,6 +1,6 @@
-import { useAppDispatch } from "../../../hooks";
-import { Hour, setHour } from "../../../store/ducks/hoursSlice";
-import { actionsTypes } from "../../../utils";
+import { useAppDispatch } from "..";
+import { Hour, setHour } from "../../store/ducks/hoursSlice";
+import { actionsTypes } from "../../utils";
 
 type UpdateShowHourProps = {
   hour?: Hour;

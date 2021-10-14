@@ -1,6 +1,6 @@
 import { FieldValues, UseFormReset } from "react-hook-form";
-import { useAppDispatch } from "../../../hooks";
-import { Client, setClient } from "../../../store/ducks/clientsSlice";
+import { useAppDispatch } from "..";
+import { Client, setClient } from "../../store/ducks/clientsSlice";
 
 type UpdateShowClientProps = {
   client?: Client;

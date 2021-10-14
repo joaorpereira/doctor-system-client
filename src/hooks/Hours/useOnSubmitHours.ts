@@ -1,8 +1,8 @@
 import { OptionTypeBase } from "react-select";
-import { useAppDispatch } from "../../../hooks";
-import { createHour, updateHour } from "../../../store/ducks/hoursSlice";
-import { actionsTypes } from "../../../utils";
-import { OptionType } from "../../../utils/types";
+import { useAppDispatch } from "..";
+import { createHour, updateHour } from "../../store/ducks/hoursSlice";
+import { actionsTypes } from "../../utils";
+import { OptionType } from "../../utils/types";
 
 type OnSubmitProps = {
   disponibleDays: OptionTypeBase | readonly OptionTypeBase[] | null | undefined;
@@ -15,7 +15,7 @@ type OnSubmitProps = {
   id?: string;
 };
 
-const useOnSubmit = ({
+const useOnSubmitHours = ({
   disponibleDays,
   company_id,
   disponibleWorkers,
@@ -43,4 +43,4 @@ const useOnSubmit = ({
   return [onSubmit];
 };
 
-export default useOnSubmit;
+export default useOnSubmitHours;

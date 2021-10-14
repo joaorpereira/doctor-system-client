@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import { Hour } from "../../../store/ducks/hoursSlice";
-import { weekDaysOptions } from "../../../utils";
-import { OptionType } from "../../../utils/types";
+import { Hour } from "../../store/ducks/hoursSlice";
+import { weekDaysOptions } from "../../utils";
+import { OptionType } from "../../utils/types";
 
 type Props = {
   hour: Hour | Record<string, never>;

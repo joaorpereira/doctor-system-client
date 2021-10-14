@@ -12,18 +12,15 @@ import { OptionType } from "../../utils/types";
 import { ValueType } from "react-select";
 
 import {
-  useOnSubmitClient,
-  useOnSubmitWorker,
-  useOnSubmitCompany,
-} from "./hooks";
-
-import {
   useAppDispatch,
   useAppSelector,
   useHandleCepMask,
   useHandleDateMask,
   useHandlePhoneMask,
   useHandleCpfOrCnpjMask,
+  useSignupClient,
+  useSignupWorker,
+  useSignupCompany,
 } from "../../hooks";
 
 import { SignupClient } from "./SignupClient";
@@ -176,7 +173,7 @@ const SignUp = () => {
   const [handleCepMask] = useHandleCepMask({ setCepValue });
   const [handleDateMask] = useHandleDateMask({ setDateValue });
 
-  const [onSubmitWorker] = useOnSubmitWorker({
+  const [onSubmitWorker] = useSignupWorker({
     genderValue,
     cpfValue,
     phoneValue,
@@ -189,7 +186,7 @@ const SignUp = () => {
     cpfOrCnpjBankCode,
   });
 
-  const [onSubmitCompany] = useOnSubmitCompany({
+  const [onSubmitCompany] = useSignupCompany({
     cpfValue,
     cepValue,
     phoneValue,
@@ -204,7 +201,7 @@ const SignUp = () => {
     coordinates,
   });
 
-  const [onSubmitClient] = useOnSubmitClient({
+  const [onSubmitClient] = useSignupClient({
     genderValue,
     cpfValue,
     cepValue,

@@ -1,11 +1,11 @@
 import { OptionsType } from "react-select";
-import { useAppDispatch } from "../../../hooks";
-import { createWorker } from "../../../store/ducks/workersSlice";
-import { OptionType } from "../../../utils/types";
+import { useAppDispatch } from "..";
+import { createWorker } from "../../store/ducks/workersSlice";
+import { OptionType } from "../../utils/types";
 import {
   reverseBirthDateFormat,
   reversePhoneNumberFormat,
-} from "../../../utils/helpers/functions";
+} from "../../utils/helpers/functions";
 
 interface Props {
   genderValue: string;
@@ -20,7 +20,7 @@ interface Props {
   selectedServices: OptionsType<OptionType>;
 }
 
-const useOnSubmitWorker = ({
+const useSignupWorker = ({
   genderValue,
   cpfValue,
   phoneValue,
@@ -78,4 +78,4 @@ const useOnSubmitWorker = ({
   return [onSubmit];
 };
 
-export default useOnSubmitWorker;
+export default useSignupWorker;

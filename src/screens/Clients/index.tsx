@@ -68,8 +68,9 @@ import {
   useHandleCpfOrCnpjMask,
   useHandleModalShare,
   useUpdatePicture,
+  useOnSubmitClient,
+  useHandleUpdateOrShowClient,
 } from "../../hooks";
-import { useOnSubmit, useHandleUpdateOrShowClient } from "./hooks";
 
 const Clients: React.FC = (): ReactElement => {
   const ref = useRef<HTMLInputElement>();
@@ -178,7 +179,7 @@ const Clients: React.FC = (): ReactElement => {
   });
 
   // custom hooks - submit form to create or update client
-  const [onSubmit] = useOnSubmit({
+  const [onSubmit] = useOnSubmitClient({
     id: _id,
     type,
     documentType,

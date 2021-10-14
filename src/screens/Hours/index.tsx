@@ -38,18 +38,19 @@ import {
   getServices,
 } from "../../store/ducks/servicesSlice";
 
-import { useOnClickOutside, useAppDispatch, useAppSelector } from "../../hooks";
 import {
+  useOnClickOutside,
+  useAppDispatch,
+  useAppSelector,
   useFormatHourData,
-  useOnSubmit,
+  useOnSubmitHours,
   useHandleUpdateOrShowHour,
   useSetDefaultServicesOptions,
   useSetDefaultWorkersOptions,
   useSetDefaultEndTime,
   useSetDefaultStartTime,
   useSetDefaultDays,
-} from "./hooks";
-import { ResponseHoursProps } from "./hooks/useFormatHourData";
+} from "../../hooks";
 
 import {
   actionsTypes,
@@ -63,6 +64,7 @@ import { OptionType } from "../../utils/types";
 
 import { getWorkersByCompany } from "../../store/ducks/workersSlice";
 import useWindowSize, { Size } from "../../hooks/useWindowSize";
+import { ResponseHoursProps } from "../../hooks/Hours/useFormatHourData";
 
 const locales = {
   "pt-BR": ptBR,
@@ -85,6 +87,7 @@ export interface Event {
   title?: string;
   start?: Date;
   end?: Date;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   resource?: any;
 }
 
@@ -194,7 +197,7 @@ const Hours: React.FC = (): ReactElement => {
   });
 
   // custom hooks - submit form to create or update service
-  const [onSubmit] = useOnSubmit({
+  const [onSubmit] = useOnSubmitHours({
     id: hour?._id,
     disponibleDays,
     company_id: user._id,

@@ -1,64 +1,77 @@
-import { useAppDispatch } from "../../../hooks";
+import { OptionsType } from "react-select";
+import { useAppDispatch } from "..";
 import {
-  Client,
-  createClient,
-  updateClient,
-} from "../../../store/ducks/clientsSlice";
+  createWorker,
+  updateWorker,
+  Worker,
+} from "../../store/ducks/workersSlice";
+import { OptionType } from "../../utils/types";
 import {
   reverseBirthDateFormat,
   reverseDocumentNumberFormat,
   reversePhoneNumberFormat,
-} from "../../../utils";
+} from "../../utils/helpers/functions";
+import { actionsTypes } from "../../utils";
 
 type OnSubmitProps = {
   type: string;
-  id: string | undefined;
+  id: string;
   documentType: string;
   genderValue: string;
   company_id?: string;
+  services: OptionsType<OptionType>;
+  accountType: string;
   image: string;
   setImage: React.Dispatch<
     React.SetStateAction<Record<string, unknown> | null>
   >;
 };
 
-const useOnSubmit = ({
+const useOnSubmitWorker = ({
   id,
   type,
   documentType,
   genderValue,
   company_id,
+  services,
+  accountType,
   image,
   setImage,
 }: OnSubmitProps) => {
   const dispatch = useAppDispatch();
-  const onSubmit = (data: Client) => {
+  const onSubmit = (data: Worker) => {
     const newPhoneNumber = reversePhoneNumberFormat(data.phone_number);
     const newBirthDate = reverseBirthDateFormat(data.birth_date);
     const newDocumentNumber = reverseDocumentNumberFormat(data.document);
+    const newServices = services.map((service) => service.value);
 
-    if (type === "update") {
+    if (type === actionsTypes.UPDATE) {
       dispatch(
-        updateClient({
-          client: {
+        updateWorker({
+          worker: {
             ...data,
             phone_number: newPhoneNumber,
-            birth_date: newBirthDate,
+            services: newServices,
             picture: image,
           },
           id: id,
         })
       );
       setImage(null);
-    } else if (type === "create") {
+    } else if (type === actionsTypes.CREATE) {
       dispatch(
-        createClient({
-          client: {
+        createWorker({
+          worker: {
             ...data,
             phone_number: newPhoneNumber,
             birth_date: newBirthDate,
             document: { number: newDocumentNumber, type: documentType },
             gender: genderValue,
+            services: newServices,
+            bank_account: {
+              ...data.bank_account,
+              acc_type: accountType,
+            },
           },
           company_id: company_id,
         })
@@ -69,4 +82,4 @@ const useOnSubmit = ({
   return [onSubmit];
 };
 
-export default useOnSubmit;
+export default useOnSubmitWorker;

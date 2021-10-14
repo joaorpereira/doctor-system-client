@@ -1,6 +1,6 @@
-import { useAppDispatch } from "../../../hooks";
-import { createCompany } from "../../../store/ducks/companiesSlice";
-import { reversePhoneNumberFormat } from "../../../utils";
+import { useAppDispatch } from "..";
+import { createCompany } from "../../store/ducks/companiesSlice";
+import { reversePhoneNumberFormat } from "../../utils";
 
 type GeoLocation = {
   type: string;
@@ -21,7 +21,7 @@ interface Props {
   coordinates: GeoLocation;
 }
 
-const useOnSubmitCompany = ({
+const useSignupCompany = ({
   cpfValue,
   cepValue,
   phoneValue,
@@ -80,4 +80,4 @@ const useOnSubmitCompany = ({
   return [onSubmitCompany];
 };
 
-export default useOnSubmitCompany;
+export default useSignupCompany;

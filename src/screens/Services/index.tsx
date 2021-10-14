@@ -48,8 +48,14 @@ import {
   actionsTypes,
 } from "../../utils";
 
-import { useAppDispatch, useAppSelector, useOnClickOutside } from "../../hooks";
-import { useOnSubmit, useHandleUpdateOrShowService } from "./hooks";
+import {
+  useAppDispatch,
+  useAppSelector,
+  useOnClickOutside,
+  useOnSubmitService,
+  useHandleUpdateOrShowService,
+} from "../../hooks";
+
 import {
   getFilteredServices,
   getServices,
@@ -153,7 +159,7 @@ const Services: React.FC = (): ReactElement => {
   });
 
   // custom hooks - submit form to create or update service
-  const [onSubmit] = useOnSubmit({
+  const [onSubmit] = useOnSubmitService({
     id: service?._id,
     type,
     statusValue,

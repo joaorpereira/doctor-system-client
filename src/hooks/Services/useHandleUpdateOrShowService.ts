@@ -1,7 +1,7 @@
 import { FieldValues, UseFormReset } from "react-hook-form";
-import { useAppDispatch } from "../../../hooks";
-import { Service, setService } from "../../../store/ducks/servicesSlice";
-import { actionsTypes } from "../../../utils";
+import { useAppDispatch } from "..";
+import { Service, setService } from "../../store/ducks/servicesSlice";
+import { actionsTypes } from "../../utils";
 
 type UpdateShowServiceProps = {
   service?: Service;

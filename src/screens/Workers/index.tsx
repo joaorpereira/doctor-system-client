@@ -50,6 +50,9 @@ import {
   useOnClickOutside,
   useHandleModalShare,
   useUpdatePicture,
+  useHandleSelectedServicesValues,
+  useOnSubmitWorker,
+  useHandleUpdateOrShowWorker,
 } from "../../hooks";
 
 import {
@@ -70,11 +73,6 @@ import {
 } from "../../utils";
 import { RowInfo, OptionType } from "../../utils/types";
 import { getFilteredServices } from "../../store/ducks/servicesSlice";
-import {
-  useHandleSelectedServicesValues,
-  useOnSubmit,
-  useHandleUpdateOrShowWorker,
-} from "./hooks";
 
 const Workers: React.FC = (): ReactElement => {
   const ref = useRef<HTMLInputElement>();
@@ -202,7 +200,7 @@ const Workers: React.FC = (): ReactElement => {
   });
 
   // custom hooks - submit form to create or update worker
-  const [onSubmit] = useOnSubmit({
+  const [onSubmit] = useOnSubmitWorker({
     id: worker?._id,
     company_id: user && user.role === "COMPANY" && user._id,
     services: selectedServices,

@@ -1,9 +1,6 @@
-import { useAppDispatch } from "../../../hooks";
-import { createClient } from "../../../store/ducks/clientsSlice";
-import {
-  reverseBirthDateFormat,
-  reversePhoneNumberFormat,
-} from "../../../utils";
+import { useAppDispatch } from "..";
+import { createClient } from "../../store/ducks/clientsSlice";
+import { reverseBirthDateFormat, reversePhoneNumberFormat } from "../../utils";
 
 interface Props {
   genderValue: string;
@@ -19,7 +16,7 @@ interface Props {
   pictureValue: string;
 }
 
-const useOnSubmitClient = ({
+const useSignupClient = ({
   genderValue,
   cpfValue,
   cepValue,
@@ -76,4 +73,4 @@ const useOnSubmitClient = ({
   return [onSubmitClient];
 };
 
-export default useOnSubmitClient;
+export default useSignupClient;

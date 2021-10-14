@@ -1,10 +1,10 @@
-import { useAppDispatch } from "../../../hooks";
+import { useAppDispatch } from "..";
 import {
   Service,
   updateService,
   createService,
-} from "../../../store/ducks/servicesSlice";
-import { actionsTypes } from "../../../utils";
+} from "../../store/ducks/servicesSlice";
+import { actionsTypes } from "../../utils";
 
 type OnSubmitProps = {
   type: string;
@@ -15,7 +15,7 @@ type OnSubmitProps = {
   images: never[];
 };
 
-const useOnSubmit = ({
+const useOnSubmitService = ({
   id,
   type,
   statusValue,
@@ -55,4 +55,4 @@ const useOnSubmit = ({
   return [onSubmit];
 };
 
-export default useOnSubmit;
+export default useOnSubmitService;
