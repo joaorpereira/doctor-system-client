@@ -2,8 +2,15 @@ import React, { ReactElement, useEffect, useRef, useState } from "react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Controller, useForm } from "react-hook-form";
 import ReactSelect from "react-select";
-import { Calendar, dateFnsLocalizer } from "react-big-calendar";
-import { format, parse, startOfWeek, getDay, addDays } from "date-fns";
+import { Calendar, dateFnsLocalizer, stringOrDate } from "react-big-calendar";
+import {
+  format,
+  parse,
+  startOfWeek,
+  getDay,
+  addDays,
+  subHours,
+} from "date-fns";
 import ptBR from "date-fns/locale/pt-BR";
 
 import {
@@ -73,6 +80,19 @@ const weekDays = [
   addDays(startDayOfWeek, 6),
 ];
 
+export interface Event {
+  allDay?: boolean;
+  title?: string;
+  start?: Date;
+  end?: Date;
+  resource?: any;
+}
+
+export interface DateRange {
+  start: Date;
+  end: Date;
+}
+
 const Hours: React.FC = (): ReactElement => {
   const ref = useRef<HTMLInputElement>();
   const dispatch = useAppDispatch();
@@ -129,6 +149,29 @@ const Hours: React.FC = (): ReactElement => {
     setDisponibleServices([]);
     setStartDay(null);
     setEndDay(null);
+  };
+
+  const handleOnSelectTime = (slotInfo: {
+    start: stringOrDate;
+    end: stringOrDate;
+  }) => {
+    const { start, end } = slotInfo;
+    handleUpdateOrShowHour({
+      hour: {
+        ...hour,
+        days: [getDay(new Date(start))],
+        start_time: subHours(new Date(start), 3).toISOString(),
+        end_time: subHours(new Date(end), 3).toISOString(),
+      },
+      type: "SLOT",
+    });
+  };
+
+  const handleOnSelectEvent = (e: Event) => {
+    handleUpdateOrShowHour({
+      hour: e.resource,
+      type: operationsTypes.UPDATE,
+    });
   };
 
   useEffect(() => {
@@ -213,13 +256,7 @@ const Hours: React.FC = (): ReactElement => {
         </Button>
       </S.HeaderRow>
       <Calendar
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        onSelectEvent={(e: any) => {
-          handleUpdateOrShowHour({
-            hour: e.resource,
-            type: operationsTypes.UPDATE,
-          });
-        }}
+        onSelectEvent={(e: Event) => handleOnSelectEvent(e)}
         localizer={localizer}
         views={["week"]}
         defaultView="week"
@@ -233,6 +270,7 @@ const Hours: React.FC = (): ReactElement => {
           dayFormat: (date, culture) =>
             localizer.format(date, "cccc", culture as string),
         }}
+        onSelectSlot={(slotInfo) => handleOnSelectTime(slotInfo)}
         defaultDate={weekDays[getDay(new Date())]}
         events={hourData}
         style={{

@@ -23,6 +23,8 @@ const useHandleUpdateOrShowHour = ({
     handleCloseModal();
     if ([actionsTypes.UPDATE, actionsTypes.SHOW].includes(type)) {
       dispatch(setHour({ hour, type }));
+    } else if (type === "SLOT") {
+      dispatch(setHour({ hour, type: actionsTypes.CREATE }));
     } else {
       dispatch(setHour({ hour: {}, type }));
     }

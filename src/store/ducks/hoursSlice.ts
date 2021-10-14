@@ -17,7 +17,7 @@ export type Hour = {
 export interface HoursSliceState {
   hours: Hour[];
   services: any[];
-  hour: Hour | Record<string, never>;
+  hour: Hour;
   loadingData?: boolean;
   loadingRequest?: boolean;
   success?: boolean;
@@ -27,7 +27,16 @@ export interface HoursSliceState {
 const initialState: HoursSliceState = {
   hours: [],
   services: [],
-  hour: {},
+  hour: {
+    services: [],
+    workers: [],
+    days: [],
+    created_at: "",
+    _id: "",
+    company_id: "",
+    start_time: "",
+    end_time: "",
+  },
   loadingRequest: false,
   loadingData: false,
   success: false,
