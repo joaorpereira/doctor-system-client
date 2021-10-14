@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Hour } from "../../../store/ducks/hoursSlice";
 import { timeDayOptions } from "../../../utils";
+import { formatDateToString } from "../../../utils/helpers/date";
 import { OptionType } from "../../../utils/types";
 
 type Props = {
@@ -11,17 +12,12 @@ type Props = {
 const useSetDefaultStartTime = ({ hour, setStartDay }: Props) => {
   useEffect(() => {
     if (hour?.start_time) {
-      const startDefaultTime = `0${new Date(
-        hour?.start_time
-      ).getHours()}:${new Date(hour?.start_time).getMinutes()}`;
-
+      const startDefaultTime = formatDateToString(hour.start_time);
       const defaultStartTimeValue = timeDayOptions.find((item) => {
-        const dateValue = `0${new Date(item.value).getHours()}:${new Date(
-          item.value
-        ).getMinutes()}`;
-
+        const dateValue = formatDateToString(item.value);
         return dateValue === startDefaultTime;
       }) as unknown as OptionType;
+
       setStartDay(defaultStartTimeValue);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
