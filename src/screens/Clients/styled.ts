@@ -78,3 +78,7 @@ export const UserInfoWrapper = styled.div`
   display: flex;
   flex-direction: column;
 `;
+
+export const Icon = styled.img`
+  margin-right: 5px;
+`;

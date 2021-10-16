@@ -171,6 +171,13 @@ const Services: React.FC = (): ReactElement => {
   const serviceColumns = useMemo(() => {
     return [
       {
+        Header: "",
+        accessor: "id",
+        sortType: "basic",
+        show: true,
+        Cell: ({ row }: RowInfo) => <h4>{row.index + 1}</h4>,
+      },
+      {
         Header: "Titulo",
         accessor: "title",
         sortType: "basic",
@@ -269,7 +276,7 @@ const Services: React.FC = (): ReactElement => {
               />
             </button>
             <button onClick={() => handleRemoveService(row.original._id)}>
-              <MdDelete size={20} />
+              <MdDelete size={20} color="#b53737" />
             </button>
           </S.ActionsRow>
         ),

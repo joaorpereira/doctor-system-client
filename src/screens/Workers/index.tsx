@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { format } from "date-fns";
+import { differenceInYears, format } from "date-fns";
 import ReactSelect, { ValueType } from "react-select";
 import { Controller, useForm } from "react-hook-form";
 
@@ -73,6 +73,9 @@ import {
 } from "../../utils";
 import { RowInfo, OptionType } from "../../utils/types";
 import { getFilteredServices } from "../../store/ducks/servicesSlice";
+
+import DownloadIcon from "../../assets/download.svg";
+import PlusIcon from "../../assets/plus-square.svg";
 
 const Workers: React.FC = (): ReactElement => {
   const ref = useRef<HTMLInputElement>();
@@ -244,6 +247,13 @@ const Workers: React.FC = (): ReactElement => {
   const workerColumns = useMemo(() => {
     return [
       {
+        Header: "",
+        accessor: "id",
+        sortType: "basic",
+        show: true,
+        Cell: ({ row }: RowInfo) => <h4>{row.index + 1}</h4>,
+      },
+      {
         Header: "Nome",
         accessor: "name",
         sortType: "basic",
@@ -275,6 +285,18 @@ const Workers: React.FC = (): ReactElement => {
         show: true,
         Cell: ({ row }: RowInfo) => (
           <Paragraph>{row.original.gender.toLowerCase()}</Paragraph>
+        ),
+      },
+      {
+        Header: "Idade",
+        accessor: "birth_date",
+        sortType: "basic",
+        show: true,
+        Cell: ({ row }: RowInfo) => (
+          <p>
+            {differenceInYears(new Date(), new Date(row.original.birth_date))}{" "}
+            anos
+          </p>
         ),
       },
       {
@@ -334,7 +356,7 @@ const Workers: React.FC = (): ReactElement => {
               />
             </button>
             <button onClick={() => handleRemoveWorker(row.original._id)}>
-              <MdDelete size={20} />
+              <MdDelete size={20} color="#b53737" />
             </button>
           </S.ActionsRow>
         ),
@@ -357,10 +379,16 @@ const Workers: React.FC = (): ReactElement => {
               })
             }
           >
+            <S.Icon src={PlusIcon} alt="Plus Icon" />
             Adicionar
           </Button>
-          <Button width="150px" color={colors.yel}>
-            Exportar CSV
+          <Button width="100px" color={colors.yel}>
+            <S.Icon src={DownloadIcon} alt="Download Icon" />
+            CSV
+          </Button>
+          <Button width="100px" color={colors.blu} margin="0px 0px 0px 10px">
+            <S.Icon src={DownloadIcon} alt="Download Icon" />
+            PDF
           </Button>
         </S.ButtonContainer>
       </S.HeaderRow>
