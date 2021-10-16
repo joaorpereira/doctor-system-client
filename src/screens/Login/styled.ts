@@ -30,7 +30,6 @@ export const FlexSection = styled.div<FlexProps>`
   width: 100%;
   background-color: ${({ color }) =>
     color ? color : `${colors.backgroundcolor}`};
-
   flex-direction: ${({ direction }) => (direction ? direction : "row")};
 `;
 
@@ -55,7 +54,8 @@ export const Input = styled.input`
   width: ${({ width }) => (width ? width : "195px")};
   transition: border 0.15s ease-out;
   height: 46px;
-  width: 375px;
+  width: 100%;
+  max-width: 375px;
   background-color: #fff;
   :focus {
     border: 2px solid ${colors.text};
@@ -66,9 +66,25 @@ export const Input = styled.input`
     color: #a9a9a9;
     background-color: #fff;
   }
+
+  :-webkit-autofill {
+    box-shadow: 0 0 0px 1000px #ffffff inset !important;
+  }
+
+  @media (min-width: 800px) {
+    width: 375px;
+  }
 `;
 
 export const Image = styled.img<FlexProps>`
+  height: ${({ height }) => (height ? height : "75%")};
+
+  @media (max-width: 800px) {
+    display: none;
+  }
+`;
+
+export const Logo = styled.img<FlexProps>`
   height: ${({ height }) => (height ? height : "75%")};
 `;
 
@@ -88,7 +104,9 @@ export const Button = styled.button`
   font-weight: 600;
   text-transform: uppercase;
   height: 58px;
-  width: 375px;
+  width: 100%;
+  min-width: 250px;
+  max-width: 375px;
   border: none;
   border-radius: 4px;
 
@@ -104,6 +122,10 @@ export const Button = styled.button`
 
   &:not(:disabled):hover {
     filter: brightness(2);
+  }
+
+  @media (min-width: 800px) {
+    width: 375px;
   }
 `;
 
@@ -146,5 +168,11 @@ export const BtnReturn = styled.button`
 
   :hover {
     filter: brightness(2);
+  }
+`;
+
+export const Form = styled.form`
+  @media (max-width: 800px) {
+    width: 250px;
   }
 `;

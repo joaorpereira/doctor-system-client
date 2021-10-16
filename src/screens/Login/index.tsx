@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import * as S from "./styled";
@@ -10,15 +11,20 @@ import { MdKeyboardReturn } from "react-icons/md";
 import { Spinner } from "../../components";
 
 import { RootState } from "../../store";
-import { useAppDispatch, useAppSelector } from "../../hooks";
+import { useAppDispatch, useAppSelector, useWindowSize } from "../../hooks";
 import { requestLogin, setSignupPage } from "../../store/ducks/authSlice";
-import { useHistory } from "react-router-dom";
 
 const profiles = {
   client: "client",
   worker: "worker",
   company: "company",
 };
+
+const buttonsOptions = [
+  { label: "Cliente", value: profiles.client },
+  { label: "Colaborador", value: profiles.worker },
+  { label: "Empresa", value: profiles.company },
+];
 
 type FormProps = {
   email: string;
@@ -29,6 +35,7 @@ const Login = () => {
   const dispatch = useAppDispatch();
   const [page, setPage] = useState("");
   const history = useHistory();
+  const size = useWindowSize();
 
   const { loading, token } = useAppSelector(
     ({ authReducers }: RootState) => authReducers
@@ -72,27 +79,26 @@ const Login = () => {
       )}
       <S.FlexSection direction="column">
         <S.Wrapper>
-          <S.Image height="200px" src={Logo} alt={Logo} />
+          <S.Logo height="200px" src={Logo} alt={Logo} />
           {page === "" ? (
             <S.BtnContainer>
-              <S.Button onClick={() => handleChangePage(profiles.client)}>
-                Cliente
-              </S.Button>
-              <S.Button onClick={() => handleChangePage(profiles.worker)}>
-                Colaborador
-              </S.Button>
-              <S.Button onClick={() => handleChangePage(profiles.company)}>
-                Empresa
-              </S.Button>
+              {buttonsOptions.map((item) => (
+                <S.Button
+                  key={item.label}
+                  onClick={() => handleChangePage(item.value)}
+                >
+                  {item.label}
+                </S.Button>
+              ))}
             </S.BtnContainer>
           ) : (
             <>
-              <form onSubmit={handleSubmit(onSubmit)}>
+              <S.Form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
                 <S.Box>
                   <S.Label htmlFor="email">Email:</S.Label>
                   <S.Input
-                    type="text"
                     autoComplete="off"
+                    type="text"
                     {...register("email")}
                   />
                 </S.Box>
@@ -117,7 +123,7 @@ const Login = () => {
                     />
                   )}
                 </S.Button>
-              </form>
+              </S.Form>
               <S.SpanLink
                 to="/cadastro"
                 align="center"
@@ -131,9 +137,11 @@ const Login = () => {
           )}
         </S.Wrapper>
       </S.FlexSection>
-      <S.FlexSection color={`${colors.primary}`}>
-        <S.Image src={DoctorAndPatients} alt={DoctorAndPatients} />
-      </S.FlexSection>
+      {size.width > 800 && (
+        <S.FlexSection color={`${colors.primary}`}>
+          <S.Image src={DoctorAndPatients} alt={DoctorAndPatients} />
+        </S.FlexSection>
+      )}
     </S.LoginSection>
   );
 };
