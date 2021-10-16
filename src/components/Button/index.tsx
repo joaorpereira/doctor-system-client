@@ -5,17 +5,25 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   isOutlined?: boolean;
   color?: string;
   width?: string;
+  margin?: string;
 };
 
 const Button = ({
   children,
   color,
   width,
+  margin,
   isOutlined = false,
   ...rest
 }: ButtonProps) => {
   return (
-    <S.Button width={width} isOutlined={isOutlined} color={color} {...rest}>
+    <S.Button
+      width={width}
+      margin={margin}
+      isOutlined={isOutlined}
+      color={color}
+      {...rest}
+    >
       {children}
     </S.Button>
   );
