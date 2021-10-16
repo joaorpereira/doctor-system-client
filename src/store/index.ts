@@ -13,7 +13,13 @@ const sagaMiddleware = createSagaMiddleware();
 
 export const store = configureStore({
   reducer: persistedReducers(reducers),
-  middleware: [...getDefaultMiddleware({ thunk: false }), sagaMiddleware],
+  middleware: [
+    ...getDefaultMiddleware({
+      thunk: false,
+      serializableCheck: false,
+    }),
+    sagaMiddleware,
+  ],
 });
 
 sagaMiddleware.run(rootSagas);
