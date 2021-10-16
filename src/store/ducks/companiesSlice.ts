@@ -15,6 +15,7 @@ export type Company = {
   password: string;
   phone_number: string;
   recipient_id: string;
+  picture: string;
   role?: string;
 };
 

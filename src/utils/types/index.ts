@@ -36,7 +36,7 @@ export type BankAccount = {
   bank_code: string;
   bank_agency: string;
   verify_digit: string;
-  cpf_or_cnpj?: string;
+  cpf_or_cnpj: string;
 };
 
 export type Address = {
