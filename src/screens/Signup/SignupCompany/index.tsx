@@ -101,10 +101,10 @@ const SignupCompanyMemoized = ({
           <h1>Dados da Empresa</h1>
           <S.FormSection>
             <InputComponent width="295px" secondary name="name" label="Nome:">
-              <S.Input type="text" {...register("name")} />
+              <S.Input type="text" autoComplete="off" {...register("name")} />
             </InputComponent>
             <InputComponent width="295px" secondary name="email" label="Email:">
-              <S.Input type="email" {...register("email")} />
+              <S.Input type="email" autoComplete="off" {...register("email")} />
             </InputComponent>
             <InputComponent
               width="180px"
@@ -114,6 +114,7 @@ const SignupCompanyMemoized = ({
             >
               <S.Input
                 type="tel"
+                autoComplete="off"
                 maxLength={12}
                 placeholder="+55 99999-9999"
                 {...register("phone_number")}
@@ -127,7 +128,11 @@ const SignupCompanyMemoized = ({
               name="password"
               label="Senha:"
             >
-              <S.Input type="password" {...register("password")} />
+              <S.Input
+                autoComplete="new-password"
+                type="password"
+                {...register("password")}
+              />
             </InputComponent>
           </S.FormSection>
           <h1>Endereço</h1>
@@ -163,6 +168,7 @@ const SignupCompanyMemoized = ({
             >
               <S.Input
                 type="text"
+                autoComplete="off"
                 maxLength={9}
                 {...register("address.cep")}
                 placeholder="99999-999"
@@ -202,6 +208,7 @@ const SignupCompanyMemoized = ({
             >
               <S.Input
                 type="text"
+                autoComplete="off"
                 defaultValue={cityValue}
                 {...register("address.city")}
               />
@@ -214,6 +221,7 @@ const SignupCompanyMemoized = ({
             >
               <S.Input
                 type="text"
+                autoComplete="off"
                 defaultValue={streetValue}
                 {...register("address.street")}
               />
@@ -224,7 +232,11 @@ const SignupCompanyMemoized = ({
               name="address.number"
               label="Número:"
             >
-              <S.Input type="text" {...register("address.number")} />
+              <S.Input
+                type="text"
+                autoComplete="off"
+                {...register("address.number")}
+              />
             </InputComponent>
           </S.FormSection>
         </>
@@ -240,6 +252,7 @@ const SignupCompanyMemoized = ({
             >
               <S.Input
                 type="text"
+                autoComplete="off"
                 {...register("bank_account.acc_user_name")}
               />
             </InputComponent>
@@ -251,6 +264,7 @@ const SignupCompanyMemoized = ({
             >
               <S.Input
                 type="text"
+                autoComplete="off"
                 value={cpfValue}
                 {...register("bank_account.cpf_or_cnpj")}
                 onChange={(e) => handleCpfOrCnpjMask(e)}
@@ -312,7 +326,11 @@ const SignupCompanyMemoized = ({
               name="bank_account.bank_agency"
               label="Agência:"
             >
-              <S.Input type="text" {...register("bank_account.bank_agency")} />
+              <S.Input
+                type="text"
+                autoComplete="off"
+                {...register("bank_account.bank_agency")}
+              />
             </InputComponent>
             <InputComponent
               width="218px"
@@ -320,7 +338,11 @@ const SignupCompanyMemoized = ({
               name="bank_account.acc_number"
               label="Número:"
             >
-              <S.Input type="text" {...register("bank_account.acc_number")} />
+              <S.Input
+                type="text"
+                autoComplete="off"
+                {...register("bank_account.acc_number")}
+              />
             </InputComponent>
             <InputComponent
               width="100px"
@@ -328,7 +350,11 @@ const SignupCompanyMemoized = ({
               name="bank_account.verify_digit"
               label="Dígito:"
             >
-              <S.Input type="text" {...register("bank_account.verify_digit")} />
+              <S.Input
+                type="text"
+                autoComplete="off"
+                {...register("bank_account.verify_digit")}
+              />
             </InputComponent>
           </S.FormSection>
         </>

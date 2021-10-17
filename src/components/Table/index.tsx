@@ -55,7 +55,7 @@ function Table<T extends Record<string, unknown>>(
             </tr>
           ))}
         </S.Head>
-        {!loading ? (
+        {!loading && (
           <S.Body {...getTableBodyProps()}>
             {page.map((row) => {
               prepareRow(row);
@@ -70,17 +70,18 @@ function Table<T extends Record<string, unknown>>(
               );
             })}
           </S.Body>
-        ) : (
-          <Spinner
-            size="45px"
-            style={{
-              position: "absolute",
-              top: "42vh",
-              left: "50%",
-            }}
-          />
         )}
       </table>
+      {loading && (
+        <Spinner
+          size="45px"
+          style={{
+            position: "absolute",
+            top: "42vh",
+            left: "50%",
+          }}
+        />
+      )}
       {!loading && (
         <S.Footer>
           <span>

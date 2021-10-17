@@ -78,12 +78,13 @@ const SignupClientMemoized = ({
       <h1>Dados Pessoais</h1>
       <S.FormSection>
         <InputComponent width="276px" secondary name="name" label="Nome:">
-          <S.Input type="text" {...register("name")} />
+          <S.Input autoComplete="off" type="text" {...register("name")} />
         </InputComponent>
         <InputComponent secondary name="birth_date" label="Data de Nascimento:">
           <S.Input
             maxLength={10}
             placeholder="dd/MM/yyyy"
+            autoComplete="off"
             type="text"
             {...register("birth_date")}
             onChange={(e) => handleDateMask(e)}
@@ -148,7 +149,7 @@ const SignupClientMemoized = ({
           />
         </InputComponent>
         <InputComponent width="256px" secondary name="email" label="Email:">
-          <S.Input type="email" {...register("email")} />
+          <S.Input autoComplete="off" type="email" {...register("email")} />
         </InputComponent>
         <InputComponent
           width="170px"
@@ -157,6 +158,7 @@ const SignupClientMemoized = ({
           label="CPF/CNPJ:"
         >
           <S.Input
+            autoComplete="off"
             type="text"
             value={cpfValue}
             {...register("document.number")}
@@ -164,7 +166,11 @@ const SignupClientMemoized = ({
           />
         </InputComponent>
         <InputComponent width="149px" secondary name="password" label="Senha:">
-          <S.Input type="password" {...register("password")} />
+          <S.Input
+            autoComplete="new-password"
+            type="password"
+            {...register("password")}
+          />
         </InputComponent>
       </S.FormSection>
       <h1>Endereço</h1>
@@ -194,6 +200,7 @@ const SignupClientMemoized = ({
         </InputComponent>
         <InputComponent width="200px" secondary name="address.cep" label="CEP:">
           <S.Input
+            autoComplete="off"
             type="text"
             maxLength={9}
             {...register("address.cep")}
@@ -233,6 +240,7 @@ const SignupClientMemoized = ({
           label="Cidade:"
         >
           <S.Input
+            autoComplete="off"
             type="text"
             defaultValue={cityValue}
             {...register("address.city")}
@@ -245,6 +253,7 @@ const SignupClientMemoized = ({
           label="Rua:"
         >
           <S.Input
+            autoComplete="off"
             type="text"
             defaultValue={streetValue}
             {...register("address.street")}
@@ -256,7 +265,11 @@ const SignupClientMemoized = ({
           name="address.number"
           label="Número:"
         >
-          <S.Input type="text" {...register("address.number")} />
+          <S.Input
+            autoComplete="off"
+            type="text"
+            {...register("address.number")}
+          />
         </InputComponent>
       </S.FormSection>
       <S.BtnDiv>

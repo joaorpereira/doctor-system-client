@@ -56,7 +56,6 @@ function* handleCreateHour({ payload }: HoursPayloadProps) {
 
 function* handleUpdateHour({ payload }: HoursPayloadProps) {
   try {
-    console.log(payload);
     const { data }: ResponseGenerator = yield call(
       api.put,
       `/work-hours/${payload.id}`,

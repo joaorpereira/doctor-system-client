@@ -81,6 +81,7 @@ const SignupWorkerMemoized = ({
               label="Titular:"
             >
               <S.Input
+                autoComplete="off"
                 type="text"
                 {...register("bank_account.acc_user_name")}
               />
@@ -92,6 +93,7 @@ const SignupWorkerMemoized = ({
               label="CPF/CNPJ:"
             >
               <S.Input
+                autoComplete="off"
                 type="text"
                 value={cpfValue}
                 {...register("bank_account.cpf_or_cnpj")}
@@ -154,7 +156,11 @@ const SignupWorkerMemoized = ({
               name="bank_account.bank_agency"
               label="Agência:"
             >
-              <S.Input type="text" {...register("bank_account.bank_agency")} />
+              <S.Input
+                autoComplete="off"
+                type="text"
+                {...register("bank_account.bank_agency")}
+              />
             </InputComponent>
             <InputComponent
               width="218px"
@@ -162,7 +168,11 @@ const SignupWorkerMemoized = ({
               name="bank_account.acc_number"
               label="Número:"
             >
-              <S.Input type="text" {...register("bank_account.acc_number")} />
+              <S.Input
+                autoComplete="off"
+                type="text"
+                {...register("bank_account.acc_number")}
+              />
             </InputComponent>
             <InputComponent
               width="100px"
@@ -170,7 +180,11 @@ const SignupWorkerMemoized = ({
               name="bank_account.verify_digit"
               label="Dígito:"
             >
-              <S.Input type="text" {...register("bank_account.verify_digit")} />
+              <S.Input
+                autoComplete="off"
+                type="text"
+                {...register("bank_account.verify_digit")}
+              />
             </InputComponent>
           </S.FormSection>
         </>
@@ -187,7 +201,7 @@ const SignupWorkerMemoized = ({
           <h1>Dados Pessoais</h1>
           <S.FormSection>
             <InputComponent width="276px" secondary name="name" label="Nome:">
-              <S.Input type="text" {...register("name")} />
+              <S.Input autoComplete="off" type="text" {...register("name")} />
             </InputComponent>
             <InputComponent
               secondary
@@ -197,6 +211,7 @@ const SignupWorkerMemoized = ({
               <S.Input
                 maxLength={10}
                 placeholder="dd/MM/yyyy"
+                autoComplete="off"
                 type="text"
                 {...register("birth_date")}
                 onChange={(e) => handleDateMask(e)}
@@ -274,7 +289,11 @@ const SignupWorkerMemoized = ({
               name="password"
               label="Senha:"
             >
-              <S.Input type="password" {...register("password")} />
+              <S.Input
+                autoComplete="new-password"
+                type="password"
+                {...register("password")}
+              />
             </InputComponent>
             <InputComponent
               width="276px"
@@ -283,6 +302,7 @@ const SignupWorkerMemoized = ({
               label="CPF/CNPJ:"
             >
               <S.Input
+                autoComplete="off"
                 type="text"
                 value={cpfValue}
                 {...register("document.number")}
