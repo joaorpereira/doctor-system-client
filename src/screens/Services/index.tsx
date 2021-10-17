@@ -167,7 +167,7 @@ const Services: React.FC = (): ReactElement => {
 
   // custom hooks - submit form to create or update service
   const [onSubmit] = useOnSubmitService({
-    id: service?._id,
+    id: service?._id as string,
     type,
     statusValue,
     companyValue: user && user.role === "COMPANY" ? user._id : companyValue,
