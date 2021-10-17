@@ -114,3 +114,7 @@ export const ParagraphNoneImage = styled.p`
   font-size: 11px;
   margin-top: 5px;
 `;
+
+export const Icon = styled.img`
+  margin-right: 5px;
+`;

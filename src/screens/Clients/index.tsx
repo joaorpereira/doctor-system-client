@@ -1,10 +1,12 @@
 import React, {
   ReactElement,
+  useCallback,
   useEffect,
   useMemo,
   useRef,
   useState,
 } from "react";
+import { CSVLink } from "react-csv";
 import { Controller, useForm } from "react-hook-form";
 import { differenceInYears, format } from "date-fns";
 import ReactSelect from "react-select";
@@ -74,6 +76,18 @@ import {
 
 import DownloadIcon from "../../assets/download.svg";
 import PlusIcon from "../../assets/plus-square.svg";
+
+const headers = [
+  { label: "Nome", key: "name" },
+  { label: "Email", key: "email" },
+  { label: "Telefone", key: "phone_number" },
+  { label: "Data Nascimento", key: "birth_date" },
+  { label: "Status", key: "status" },
+  { label: "Cidade", key: "address.city" },
+  { label: "Estado", key: "address.state" },
+  { label: "Endereço", key: "address.street" },
+  { label: "Número", key: "address.number" },
+];
 
 const Clients: React.FC = (): ReactElement => {
   const ref = useRef<HTMLInputElement>();
@@ -146,7 +160,10 @@ const Clients: React.FC = (): ReactElement => {
 
   // functions
   const handleCloseModal = () => setShowProfile(!showProfile);
-  const handleRemoveClient = (id: string) => dispatch(removeClient({ id }));
+  const handleRemoveClient = useCallback(
+    (id: string) => dispatch(removeClient({ id })),
+    [dispatch]
+  );
   const readOnlyAtShowAndUpdate = () =>
     [actionsTypes.SHOW, actionsTypes.UPDATE].includes(type);
 
@@ -332,8 +349,7 @@ const Clients: React.FC = (): ReactElement => {
         ),
       },
     ];
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [handleRemoveClient, handleShare, handleUpdateOrShowClient]);
 
   return (
     <S.ClientsSection>
@@ -352,10 +368,17 @@ const Clients: React.FC = (): ReactElement => {
             <S.Icon src={PlusIcon} alt="Plus Icon" />
             Adicionar
           </Button>
-          <Button width="100px" color={colors.yel}>
-            <S.Icon src={DownloadIcon} alt="Download Icon" />
-            CSV
-          </Button>
+          <CSVLink
+            data={clients}
+            headers={headers}
+            filename={`clientes-${format(new Date(), "dd-MM-yyyy:HH:mm")}.xlsx`}
+            target="_blank"
+          >
+            <Button width="100px" color={colors.yel}>
+              <S.Icon src={DownloadIcon} alt="Download Icon" />
+              CSV
+            </Button>
+          </CSVLink>
           <Button width="100px" color={colors.blu} margin="0px 0px 0px 10px">
             <S.Icon src={DownloadIcon} alt="Download Icon" />
             PDF

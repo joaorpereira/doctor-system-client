@@ -1,10 +1,12 @@
 import React, {
   ReactElement,
+  useCallback,
   useEffect,
   useMemo,
   useRef,
   useState,
 } from "react";
+import { CSVLink } from "react-csv";
 import { format } from "date-fns";
 import ReactSelect, { OptionTypeBase } from "react-select";
 import { Controller, useForm } from "react-hook-form";
@@ -69,7 +71,19 @@ import {
 } from "../../store/ducks/companiesSlice";
 import { AuthSliceState } from "../../store/ducks/authSlice";
 
+import DownloadIcon from "../../assets/download.svg";
+import PlusIcon from "../../assets/plus-square.svg";
+
 const maxNumber = 6;
+
+const headers = [
+  { label: "Título", key: "title" },
+  { label: "Preço (R$)", key: "price" },
+  { label: "Duração", key: "service_duration" },
+  { label: "Recorrência", key: "service_recurrence" },
+  { label: "Status", key: "status" },
+  { label: "Descrição", key: "description" },
+];
 
 const Services: React.FC = (): ReactElement => {
   const ref = useRef<HTMLInputElement>();
@@ -92,6 +106,8 @@ const Services: React.FC = (): ReactElement => {
   const { user }: AuthSliceState = useAppSelector(
     ({ authReducers }) => authReducers
   );
+
+  console.log({ services });
 
   const {
     service_recurrence,
@@ -133,8 +149,10 @@ const Services: React.FC = (): ReactElement => {
 
   // functions
   const handleCloseModal = () => setShowProfile(!showProfile);
-  const handleRemoveService = (id: string) =>
-    dispatch(removeService({ id, status: "INATIVO" }));
+  const handleRemoveService = useCallback(
+    (id: string) => dispatch(removeService({ id, status: "INATIVO" })),
+    [dispatch]
+  );
   const handleStatusChange = (e: OptionType) => setStatusValue(e.value);
   const handleCompanyChange = (e: OptionType) => setCompanyValue(e.value);
   const handleDurationChange = (e: OptionType) => setDurationValue(e.value);
@@ -282,8 +300,7 @@ const Services: React.FC = (): ReactElement => {
         ),
       },
     ];
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [handleRemoveService, handleUpdateOrShowService]);
 
   return (
     <S.ServicesSection>
@@ -299,10 +316,23 @@ const Services: React.FC = (): ReactElement => {
               })
             }
           >
+            <S.Icon src={PlusIcon} alt="Plus Icon" />
             Adicionar
           </Button>
-          <Button width="150px" color={colors.yel}>
-            Exportar CSV
+          <CSVLink
+            data={services}
+            headers={headers}
+            filename={`servicos-${format(new Date(), "dd-MM-yyyy:HH:mm")}.xlsx`}
+            target="_blank"
+          >
+            <Button width="100px" color={colors.yel}>
+              <S.Icon src={DownloadIcon} alt="Download Icon" />
+              CSV
+            </Button>
+          </CSVLink>
+          <Button width="100px" color={colors.blu} margin="0px 0px 0px 10px">
+            <S.Icon src={DownloadIcon} alt="Download Icon" />
+            PDF
           </Button>
         </S.ButtonContainer>
       </S.HeaderRow>
