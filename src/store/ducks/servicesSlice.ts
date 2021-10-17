@@ -102,7 +102,7 @@ const servicesSlice = createSlice({
     updateServiceSuccess(state, action: PayloadAction<any>) {
       const service = action.payload.service;
       const serviceIndex = state.services.findIndex(
-        (item: any) => item._id === service._id
+        (item: { _id: string }) => item._id === service._id
       );
       state.services[serviceIndex] = service;
       state.service = initialServiceState;
@@ -113,7 +113,7 @@ const servicesSlice = createSlice({
       const service = action.payload.service;
       service.status = "INATIVO";
       const serviceIndex = state.services.findIndex(
-        (item: any) => item._id === service._id
+        (item: { _id: string }) => item._id === service._id
       );
       state.services[serviceIndex] = service;
       state.loadingData = false;

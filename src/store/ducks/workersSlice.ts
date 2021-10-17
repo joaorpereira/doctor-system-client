@@ -105,11 +105,13 @@ export const workersSlice = createSlice({
     },
     setWorkersOptionsSuccess: (state, action: PayloadAction<any>) => {
       const workers = action.payload.workers;
-      const workersOptions = workers.map((worker: any) => ({
-        services: worker.services,
-        label: worker.name,
-        value: worker._id,
-      }));
+      const workersOptions = workers.map(
+        (worker: { name: string; services: string[]; _id: string }) => ({
+          services: worker.services,
+          label: worker.name,
+          value: worker._id,
+        })
+      );
 
       return { ...state, workersOptions, loadingData: false };
     },

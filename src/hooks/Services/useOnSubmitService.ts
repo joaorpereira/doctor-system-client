@@ -32,7 +32,7 @@ const useOnSubmitService = ({
       service_duration: durationValue,
       price: Number(data.price),
       service_recurrence: Number(data.service_recurrence),
-    };
+    } as Service;
 
     if (type === actionsTypes.UPDATE) {
       dispatch(

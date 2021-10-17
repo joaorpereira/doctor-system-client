@@ -82,8 +82,7 @@ export const reverseDocumentNumberFormat = (value: DocumentProps) => {
   return newDocumentNumber.number.replace(/\D+/g, "");
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const formatDurationHour = (value: string): any => {
+export const formatDurationHour = (value: string): string => {
   const formatedDurationHour = timeOptions.find(
     (item) => item.value === value
   ) as OptionType;
