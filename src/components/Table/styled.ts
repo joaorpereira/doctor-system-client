@@ -3,9 +3,6 @@ import { colors } from "../../styles";
 
 export const Container = styled.div`
   width: 100%;
-  height: 390px;
-  overflow-y: scroll;
-  position: relative;
 
   ::-webkit-scrollbar {
     display: none;
@@ -72,4 +69,27 @@ export const Head = styled.thead`
   text-align: left;
   position: sticky;
   top: 0;
+`;
+
+export const Footer = styled.footer`
+  width: 100%;
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  button {
+    outline: none;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+  }
+`;
+
+export const Input = styled.input`
+  width: 35px;
+  border-radius: 4px;
+  border: 1px solid #031234;
+  padding: 5px 0px 5px 12px;
+  margin-left: 5px;
 `;
