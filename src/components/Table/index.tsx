@@ -81,42 +81,44 @@ function Table<T extends Record<string, unknown>>(
           />
         )}
       </table>
-      <S.Footer>
-        <span>
-          Página{" "}
-          <strong>
-            {pageIndex + 1} de {pageOptions.length}
-          </strong>{" "}
-        </span>
-        <div>
-          <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-            <img src={ChevronsLeft} alt="ChevronsLeft" />
-          </button>
-          <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-            <img src={ChevronLeft} alt="ChevronLeft" />
-          </button>
-          <button onClick={() => nextPage()} disabled={!canNextPage}>
-            <img src={ChevronRight} alt="ChevronRight" />
-          </button>
-          <button
-            onClick={() => gotoPage(pageCount - 1)}
-            disabled={!canNextPage}
-          >
-            <img src={ChevronsRight} alt="ChevronsRight" />
-          </button>
-        </div>
-        <span>
-          Ir para a página:
-          <S.Input
-            type="text"
-            defaultValue={pageIndex + 1}
-            onChange={(e) => {
-              const page = e.target.value ? Number(e.target.value) - 1 : 0;
-              gotoPage(page);
-            }}
-          />
-        </span>
-      </S.Footer>
+      {!loading && (
+        <S.Footer>
+          <span>
+            Página{" "}
+            <strong>
+              {pageIndex + 1} de {pageOptions.length}
+            </strong>{" "}
+          </span>
+          <div>
+            <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+              <img src={ChevronsLeft} alt="ChevronsLeft" />
+            </button>
+            <button onClick={() => previousPage()} disabled={!canPreviousPage}>
+              <img src={ChevronLeft} alt="ChevronLeft" />
+            </button>
+            <button onClick={() => nextPage()} disabled={!canNextPage}>
+              <img src={ChevronRight} alt="ChevronRight" />
+            </button>
+            <button
+              onClick={() => gotoPage(pageCount - 1)}
+              disabled={!canNextPage}
+            >
+              <img src={ChevronsRight} alt="ChevronsRight" />
+            </button>
+          </div>
+          <span>
+            Ir para a página:
+            <S.Input
+              type="text"
+              defaultValue={pageIndex + 1}
+              onChange={(e) => {
+                const page = e.target.value ? Number(e.target.value) - 1 : 0;
+                gotoPage(page);
+              }}
+            />
+          </span>
+        </S.Footer>
+      )}
     </S.Container>
   );
 }
