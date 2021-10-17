@@ -3,7 +3,6 @@ import React, {
   useCallback,
   useEffect,
   useMemo,
-  useRef,
   useState,
 } from "react";
 import { CSVLink } from "react-csv";
@@ -53,7 +52,6 @@ import {
 import {
   useAppDispatch,
   useAppSelector,
-  useOnClickOutside,
   useOnSubmitService,
   useHandleUpdateOrShowService,
 } from "../../hooks";
@@ -86,7 +84,6 @@ const headers = [
 ];
 
 const Services: React.FC = (): ReactElement => {
-  const ref = useRef<HTMLInputElement>();
   const dispatch = useAppDispatch();
 
   const {
@@ -106,8 +103,6 @@ const Services: React.FC = (): ReactElement => {
   const { user }: AuthSliceState = useAppSelector(
     ({ authReducers }) => authReducers
   );
-
-  console.log({ services });
 
   const {
     service_recurrence,
@@ -163,12 +158,6 @@ const Services: React.FC = (): ReactElement => {
 
   const handleImagesChange = (imageList: ImageListType) =>
     setImages(imageList as never[]);
-
-  // custom hooks - close modal when clicked outside
-  useOnClickOutside({
-    ref,
-    handler: () => setShowProfile(false),
-  });
 
   // custom hooks - set service data to redux state
   const [handleUpdateOrShowService] = useHandleUpdateOrShowService({
@@ -344,7 +333,7 @@ const Services: React.FC = (): ReactElement => {
           loading={loading || loadingFiltered}
         />
       ) : null}
-      <Card ref={ref} showProfile={showProfile}>
+      <Card showProfile={showProfile} setShowProfile={setShowProfile}>
         {service && services && (
           <Form onSubmit={handleSubmit(onSubmit)}>
             <CloseModalIcon handleCloseModal={handleCloseModal} />

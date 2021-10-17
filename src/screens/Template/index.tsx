@@ -21,7 +21,7 @@ const Template: React.FC = (): ReactElement => {
   const { user } = useAppSelector(({ authReducers }) => authReducers);
 
   const [currentPath, setCurrentPath] = useState("/agendamentos");
-  const [configurationPage, setConfigurationPage] = useState(false);
+  const [, setConfigurationPage] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
   useLayoutEffect(() => {

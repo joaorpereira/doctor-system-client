@@ -105,7 +105,7 @@ const Login = () => {
                 <S.Box>
                   <S.Label htmlFor="password">Senha:</S.Label>
                   <S.Input
-                    autoComplete="off"
+                    autoComplete="new-password"
                     type="password"
                     {...register("password")}
                   />

@@ -3,7 +3,6 @@ import React, {
   useCallback,
   useEffect,
   useMemo,
-  useRef,
   useState,
 } from "react";
 import { CSVLink } from "react-csv";
@@ -49,7 +48,6 @@ import {
   useHandleCpfOrCnpjMask,
   useHandleDateMask,
   useHandlePhoneMask,
-  useOnClickOutside,
   useHandleModalShare,
   useUpdatePicture,
   useHandleSelectedServicesValues,
@@ -92,7 +90,6 @@ const headers = [
 ];
 
 const Workers: React.FC = (): ReactElement => {
-  const ref = useRef<HTMLInputElement>();
   const dispatch = useAppDispatch();
 
   const [showProfile, setShowProfile] = useState(false);
@@ -195,9 +192,6 @@ const Workers: React.FC = (): ReactElement => {
   const showContent = (): boolean => type === actionsTypes.SHOW;
   const showUpdate = (): boolean => type === actionsTypes.UPDATE;
   const showCreate = (): boolean => type === actionsTypes.CREATE;
-
-  // custom hooks - close modal when clicked outside
-  useOnClickOutside({ ref, handler: () => setShowProfile(false) });
 
   // custom hooks - set worker data to redux state
   const [handleUpdateOrShowWorker] = useHandleUpdateOrShowWorker({
@@ -426,7 +420,7 @@ const Workers: React.FC = (): ReactElement => {
           loading={loadingData}
         />
       ) : null}
-      <Card ref={ref} showProfile={showProfile}>
+      <Card showProfile={showProfile} setShowProfile={setShowProfile}>
         {worker && servicesOptions && (
           <Form onSubmit={handleSubmit(onSubmit)}>
             <CloseModalIcon handleCloseModal={handleCloseModal} />
@@ -494,6 +488,7 @@ const Workers: React.FC = (): ReactElement => {
                   <Row>
                     <Column margin="rigth">
                       <Input
+                        autoComplete="off"
                         maxLength={12}
                         placeholder="+55 99999-9999"
                         {...register("phone_number")}
@@ -505,6 +500,7 @@ const Workers: React.FC = (): ReactElement => {
                     </Column>
                     <Column margin="left">
                       <Input
+                        autoComplete="off"
                         maxLength={10}
                         readOnly={showUpdate()}
                         placeholder="Data Nascimento"
@@ -530,6 +526,7 @@ const Workers: React.FC = (): ReactElement => {
                   <Column margin="rigth">
                     <Label htmlFor="password">Nova Senha:</Label>
                     <Input
+                      autoComplete="new-password"
                       readOnly={showContent()}
                       type={
                         showPassword.password && !showContent()
@@ -547,6 +544,7 @@ const Workers: React.FC = (): ReactElement => {
                   <Column margin="left">
                     <Label htmlFor="newPassword">Repita a Senha:</Label>
                     <Input
+                      autoComplete="new-password"
                       readOnly={showContent()}
                       {...register("password2")}
                       defaultValue={password ? password : ""}

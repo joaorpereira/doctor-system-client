@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useRef, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Controller, useForm } from "react-hook-form";
 import ReactSelect from "react-select";
@@ -39,7 +39,6 @@ import {
 } from "../../store/ducks/servicesSlice";
 
 import {
-  useOnClickOutside,
   useAppDispatch,
   useAppSelector,
   useFormatHourData,
@@ -97,7 +96,6 @@ export interface DateRange {
 }
 
 const Hours: React.FC = (): ReactElement => {
-  const ref = useRef<HTMLInputElement>();
   const dispatch = useAppDispatch();
 
   const [hourData, setHourData] = useState<ResponseHoursProps[]>([]);
@@ -186,9 +184,6 @@ const Hours: React.FC = (): ReactElement => {
 
   // custom-hook
   const [formatHourData] = useFormatHourData({ setHourData, weekDays });
-
-  // custom hooks - close modal when clicked outside
-  useOnClickOutside({ ref, handler: () => setShowProfile(false) });
 
   // custom hooks - set service data to redux state
   const [handleUpdateOrShowHour] = useHandleUpdateOrShowHour({
@@ -293,7 +288,7 @@ const Hours: React.FC = (): ReactElement => {
               : 700,
         }}
       />
-      <Card ref={ref} showProfile={showProfile}>
+      <Card showProfile={showProfile} setShowProfile={setShowProfile}>
         {hours && (
           <form onSubmit={handleSubmit(onSubmit)}>
             <CloseModalIcon handleCloseModal={handleCloseModal} />

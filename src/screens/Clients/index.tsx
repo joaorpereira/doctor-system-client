@@ -3,7 +3,6 @@ import React, {
   useCallback,
   useEffect,
   useMemo,
-  useRef,
   useState,
 } from "react";
 import { CSVLink } from "react-csv";
@@ -29,10 +28,10 @@ import { MdEdit, MdRemoveRedEye, MdDelete, MdShare } from "react-icons/md";
 import {
   Table,
   Button,
+  Card,
   CloseModalIcon,
   CardTitle,
   StyledMdRemoveRedEye,
-  Card,
   Select,
   Input,
   Label,
@@ -65,7 +64,6 @@ import {
   useHandleCepMask,
   useHandleDateMask,
   useHandlePhoneMask,
-  useOnClickOutside,
   useHandleShowPassword,
   useHandleCpfOrCnpjMask,
   useHandleModalShare,
@@ -90,7 +88,6 @@ const headers = [
 ];
 
 const Clients: React.FC = (): ReactElement => {
-  const ref = useRef<HTMLInputElement>();
   const dispatch = useAppDispatch();
 
   const [showProfile, setShowProfile] = useState(false);
@@ -174,9 +171,6 @@ const Clients: React.FC = (): ReactElement => {
   const showContent = (): boolean => type === actionsTypes.SHOW;
   const showUpdate = (): boolean => type === actionsTypes.UPDATE;
   const showCreate = (): boolean => type === actionsTypes.CREATE;
-
-  // custom hooks - close modal when clicked outside
-  useOnClickOutside({ ref, handler: () => setShowProfile(false) });
 
   // custom hooks - set client data to redux state
   const [handleUpdateOrShowClient] = useHandleUpdateOrShowClient({
@@ -393,7 +387,7 @@ const Clients: React.FC = (): ReactElement => {
           loading={loadingData}
         />
       ) : null}
-      <Card ref={ref} showProfile={showProfile}>
+      <Card showProfile={showProfile} setShowProfile={setShowProfile}>
         {client && (
           <Form onSubmit={handleSubmit(onSubmit)}>
             <CloseModalIcon handleCloseModal={handleCloseModal} />
@@ -461,6 +455,7 @@ const Clients: React.FC = (): ReactElement => {
                   <Row>
                     <Column margin="rigth">
                       <Input
+                        autoComplete="off"
                         maxLength={12}
                         placeholder="+55 99999-9999"
                         {...register("phone_number")}
@@ -472,6 +467,7 @@ const Clients: React.FC = (): ReactElement => {
                     </Column>
                     <Column margin="left">
                       <Input
+                        autoComplete="off"
                         maxLength={10}
                         readOnly={showUpdate()}
                         placeholder="Data Nascimento"
@@ -495,6 +491,7 @@ const Clients: React.FC = (): ReactElement => {
               <Column margin="rigth">
                 <Label htmlFor="password">Nova Senha:</Label>
                 <Input
+                  autoComplete="new-password"
                   readOnly={showContent()}
                   type={showPassword.password ? "text" : "password"}
                   defaultValue={password}
@@ -508,6 +505,7 @@ const Clients: React.FC = (): ReactElement => {
               <Column margin="left">
                 <Label htmlFor="newPassword">Repita a Senha:</Label>
                 <Input
+                  autoComplete="new-password"
                   readOnly={showContent()}
                   {...register("password2")}
                   defaultValue={password ? password : ""}
@@ -568,12 +566,10 @@ const Clients: React.FC = (): ReactElement => {
               <Column margin="rigth" width="100%">
                 <Label htmlFor="address.country">País:</Label>
                 <Select
-                  defaultValue={address?.country ? address?.country : ""}
+                  defaultValue={address?.country ? address?.country : "br"}
                   {...register("address.country")}
                 >
-                  <option selected value="br">
-                    Brasil
-                  </option>
+                  <option>Brasil</option>
                 </Select>
               </Column>
               <Column margin="left" width="100%">
