@@ -3,8 +3,7 @@ import { colors } from "../../styles";
 
 type ModalProps = {
   opacity?: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ref: any;
+  ref: React.MutableRefObject<HTMLDivElement | null>;
 };
 
 export const Modal = styled.div<ModalProps>`

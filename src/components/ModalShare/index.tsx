@@ -32,7 +32,7 @@ const ModalShare: React.FC<ModalShareProps> = ({
     formState: { isSubmitting },
   } = useForm({});
 
-  const ref = useRef();
+  const ref = useRef<HTMLDivElement | null>(null);
   useOnClickOutside({ ref, handler: () => setOpenShareModal(false) });
 
   return (

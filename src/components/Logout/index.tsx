@@ -15,7 +15,7 @@ const Logout: React.FC<Props> = ({
   showModal = false,
   setShowModal,
 }: Props) => {
-  const ref = useRef();
+  const ref = useRef<HTMLDivElement | null>(null);
   useOnClickOutside({ ref, handler: () => setShowModal(false) });
   return (
     <S.Wrapper ref={ref} showModal={showModal}>

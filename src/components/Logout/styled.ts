@@ -2,8 +2,7 @@ import styled from "styled-components";
 import { colors } from "../../styles";
 
 type WrapperProps = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ref: any;
+  ref: React.MutableRefObject<HTMLDivElement | null>;
   showModal: boolean;
 };
 

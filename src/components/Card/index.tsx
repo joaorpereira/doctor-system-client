@@ -9,7 +9,7 @@ type Props = {
 };
 
 const Card: React.FC<Props> = ({ children, showProfile, setShowProfile }) => {
-  const ref = useRef();
+  const ref = useRef<HTMLDivElement | null>(null);
   useOnClickOutside({ ref, handler: () => setShowProfile(false) });
 
   return (

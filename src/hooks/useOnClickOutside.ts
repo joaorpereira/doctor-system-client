@@ -1,15 +1,14 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 
 type OnClickOutSideProps = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ref: any;
+  ref: React.MutableRefObject<HTMLDivElement | null>;
   handler: (value: MouseEvent | TouchEvent) => void;
 };
 
 const useOnClickOutside = ({ ref, handler }: OnClickOutSideProps) => {
   useEffect(() => {
     const listener = (event: MouseEvent | TouchEvent) => {
-      if (!ref.current || ref.current.contains(event.target)) {
+      if (!ref.current || ref.current.contains(event.target as Node)) {
         return;
       }
       handler(event);
