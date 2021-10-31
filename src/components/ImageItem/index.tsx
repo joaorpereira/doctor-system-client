@@ -2,6 +2,7 @@ import * as S from "./styled";
 
 import { MdClear } from "react-icons/md";
 import { File } from "../../store/ducks/servicesSlice";
+import { BUCKET_URL } from "../../utils";
 
 type Props = {
   images: File[];
@@ -10,7 +11,6 @@ type Props = {
 };
 
 const ImageItem = ({ images, handleRemoveImage, showUpdate }: Props) => {
-  const BUCKET_URL = process.env.REACT_APP_BUCKET_URL;
   return (
     <>
       {images &&

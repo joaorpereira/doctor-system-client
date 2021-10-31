@@ -10,6 +10,7 @@ import {
 import workers from "../../assets/workers.png";
 import { useAppSelector } from "../../hooks";
 import { RootState } from "../../store";
+import { BUCKET_URL } from "../../utils";
 
 const routes = [
   {
@@ -43,7 +44,6 @@ type ISidebarProps = {
   handleRoute: (route: string) => void;
   currentPath: string;
 };
-const BUCKET_URL = process.env.REACT_APP_BUCKET_URL;
 
 const Sidebar = ({ handleRoute, currentPath }: ISidebarProps): ReactElement => {
   const { user } = useAppSelector(

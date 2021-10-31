@@ -1,14 +1,13 @@
 import * as S from "./styled";
 import { MdExpandMore } from "react-icons/md";
 import { memo } from "react";
+import { BUCKET_URL } from "../../utils";
 
 type Props = {
   handleShowLogoutModal: () => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   user: Record<string, any>;
 };
-
-const BUCKET_URL = process.env.REACT_APP_BUCKET_URL;
 
 const Navbar: React.FC<Props> = ({ handleShowLogoutModal, user }: Props) => {
   return (

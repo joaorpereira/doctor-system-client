@@ -1,5 +1,6 @@
 import React from "react";
 import Avatar from "../../assets/avatar.png";
+import { BUCKET_URL } from "../../utils";
 import * as S from "./styled";
 
 type Props = {
@@ -11,8 +12,6 @@ type Props = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handleImage: (e: any) => void;
 };
-
-const BUCKET_URL = process.env.REACT_APP_BUCKET_URL;
 
 const ImageFileUpload: React.FC<Props> = ({
   picture,
