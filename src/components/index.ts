@@ -16,3 +16,8 @@ export { default as Select } from "./Select";
 export { TextArea } from "./TextArea/styled";
 export { Input, Label } from "./Input/styled";
 export { default as ModalShare } from "./ModalShare";
+export { default as MobileCard } from "./mobile/MobileCard";
+export { default as ServicesActions } from "./mobile/ServicesHeader";
+export { default as ServicesHeader } from "./mobile/ServicesActions";
+export { default as ServicesList } from "./mobile/ServicesList";
+export { default as MobileNavbar } from "./mobile/Navbar";
