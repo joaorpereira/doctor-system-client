@@ -70,3 +70,8 @@ export type UpdateProfilePicturePayloadProps = {
   };
   type: string;
 };
+
+export type GeolocationProps = {
+  type: string;
+  coordinates: number[];
+};

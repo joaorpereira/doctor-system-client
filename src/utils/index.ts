@@ -29,3 +29,4 @@ export {
   weekDaysOptions,
   timeDayOptions,
 } from "./constants/globalTypes";
+export { BUCKET_URL } from "./constants/bucket";
