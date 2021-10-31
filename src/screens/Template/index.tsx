@@ -4,9 +4,10 @@ import React, {
   useState,
   useCallback,
 } from "react";
+import { isMobile } from "react-device-detect";
 import { useDispatch } from "react-redux";
 import { useLocation, useHistory } from "react-router-dom";
-import { Sidebar, Navbar, Logout } from "../../components";
+import { Sidebar, Navbar, Logout, MobileNavbar } from "../../components";
 import { useAppSelector } from "../../hooks";
 
 import Routes from "../../routes/routes";
@@ -40,20 +41,27 @@ const Template: React.FC = (): ReactElement => {
   const handleConfiguration = useCallback(() => setConfigurationPage(true), []);
   const handleShowLogoutModal = () => setShowModal(!showModal);
 
+  const renderWithSidebar = () => (
+    <>
+      <Sidebar handleRoute={handleRoute} currentPath={currentPath} />
+      <Navbar user={user} handleShowLogoutModal={handleShowLogoutModal} />
+      <Logout
+        setShowModal={setShowModal}
+        showModal={showModal}
+        handleConfiguration={handleConfiguration}
+        handleLogout={handleLogout}
+      />
+    </>
+  );
+
   return (
     <>
       {!["/login", "/cadastro"].includes(currentPath) ? (
         <S.Wrapper>
-          <Sidebar handleRoute={handleRoute} currentPath={currentPath} />
-          <Navbar user={user} handleShowLogoutModal={handleShowLogoutModal} />
-          <Logout
-            setShowModal={setShowModal}
-            showModal={showModal}
-            handleConfiguration={handleConfiguration}
-            handleLogout={handleLogout}
-          />
+          {!isMobile && renderWithSidebar()}
           <S.Private>
             <Routes />
+            {isMobile && <MobileNavbar />}
           </S.Private>
         </S.Wrapper>
       ) : (
