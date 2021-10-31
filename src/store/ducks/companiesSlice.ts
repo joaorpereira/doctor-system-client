@@ -2,11 +2,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { BankAccount, Address, OptionType } from "../../utils/types";
+import {
+  BankAccount,
+  Address,
+  OptionType,
+  GeolocationProps,
+} from "../../utils/types";
 
 export type Company = {
   address: Address;
-  bank_account: BankAccount;
+  bank_account?: BankAccount;
+  geolocation?: GeolocationProps;
   status: string;
   created_at: string;
   _id: string;
@@ -17,18 +23,47 @@ export type Company = {
   recipient_id: string;
   picture: string;
   role?: string;
+  background: string;
 };
 
 export interface CompaniesSliceState {
   companies: Company[];
+  company: Company;
   companiesOptions: OptionType[];
   loading?: boolean;
+  distance: number;
 }
 
 const initialState: CompaniesSliceState = {
   companies: [],
   companiesOptions: [],
   loading: false,
+  company: {
+    address: {
+      country: "",
+      state: "",
+      city: "",
+      cep: "",
+      number: "",
+      street: "",
+    },
+    status: "",
+    geolocation: {
+      type: "",
+      coordinates: [],
+    },
+    _id: "",
+    name: "",
+    email: "",
+    password: "",
+    phone_number: "",
+    recipient_id: "",
+    picture: "",
+    role: "",
+    created_at: "",
+    background: "",
+  },
+  distance: 0,
 };
 
 const companiesSlice = createSlice({
@@ -39,6 +74,9 @@ const companiesSlice = createSlice({
       return { ...state, loading: true };
     },
     getFilteredCompanies(state) {
+      return { ...state, loading: true };
+    },
+    setCompany(state, action: PayloadAction<any>) {
       return { ...state, loading: true };
     },
     createCompany: (state, action: PayloadAction<any>) => {
@@ -57,16 +95,27 @@ const companiesSlice = createSlice({
       state.companies = [...state.companies, company];
       state.loading = false;
     },
+    setCompanySuccess: (state, action: PayloadAction<any>) => {
+      const { company, distance } = action.payload.company;
+      return {
+        ...state,
+        company,
+        distance,
+        loading: false,
+      };
+    },
   },
 });
 
 export const {
   getCompanies,
   getFilteredCompanies,
+  setCompany,
   createCompany,
   setCompanies,
   createCompanySuccess,
   setFilteredCompaniesSuccess,
+  setCompanySuccess,
 } = companiesSlice.actions;
 
 export default companiesSlice.reducer;

@@ -3,10 +3,12 @@ import { all, call, put, takeLatest } from "redux-saga/effects";
 import {
   getCompanies,
   setCompanies,
+  setCompany,
   createCompany,
   getFilteredCompanies,
   setFilteredCompaniesSuccess,
   createCompanySuccess,
+  setCompanySuccess,
   Company,
 } from "../ducks/companiesSlice";
 import { ResponseGenerator } from "../../utils/types";
@@ -17,6 +19,8 @@ type CompanyPayloadProps = {
     id?: string;
     company?: Company;
     isSignUp?: boolean;
+    lat?: number;
+    lon?: number;
   };
   type: string;
 };
@@ -52,8 +56,21 @@ function* handleCreateCompany({ payload }: CompanyPayloadProps) {
   }
 }
 
+function* handleGetCompany({ payload }: CompanyPayloadProps) {
+  try {
+    const { data } = yield call(
+      api.get,
+      `/company/${payload.id}/${payload.lat}/${payload.lon}`
+    );
+    yield put(setCompanySuccess({ company: data.data as Company }));
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export default all([
   takeLatest(getCompanies.type, handleGetCompanies),
   takeLatest(getFilteredCompanies.type, handleFilterCompanies),
   takeLatest(createCompany.type, handleCreateCompany),
+  takeLatest(setCompany.type, handleGetCompany),
 ]);
