@@ -21,9 +21,13 @@ type RowProps = {
 
 export default createGlobalStyle`
   html {
-    background-color: ${colors.backgroundcolor};
     font-size: 14px;
-
+    @media only screen and (min-width: 350px) {
+    background-color: #F1F1F1;
+  }
+  @media only screen and (min-width: 801px) {
+    background-color: ${colors.backgroundcolor};
+  }
   }
   * {
     margin: 0;
