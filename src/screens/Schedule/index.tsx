@@ -39,7 +39,7 @@ type ISelector = {
   schedules?: Schedule[];
 };
 
-const HomePage: React.FC = (): ReactElement => {
+const SchedulePage: React.FC = (): ReactElement => {
   const localizer = dateFnsLocalizer({
     format,
     parse,
@@ -143,4 +143,4 @@ const HomePage: React.FC = (): ReactElement => {
   );
 };
 
-export default HomePage;
+export default SchedulePage;
