@@ -1,7 +1,9 @@
 import React, { ReactElement, lazy, Suspense } from "react";
+import { isMobile } from "react-device-detect";
 import { Switch } from "react-router-dom";
 import Route from "./index";
 
+// desktop
 const Schedule = lazy(() => import("../screens/Schedule"));
 const Clients = lazy(() => import("../screens/Clients"));
 const Workers = lazy(() => import("../screens/Workers"));
@@ -10,6 +12,9 @@ const Hours = lazy(() => import("../screens/Hours"));
 const LoginPage = lazy(() => import("../screens/Login"));
 const SignUp = lazy(() => import("../screens/Signup"));
 
+// mobile
+const Home = lazy(() => import("../screens/Home"));
+
 const Routes: React.FC = (): ReactElement => {
   return (
     <Suspense fallback={null}>
@@ -17,9 +22,9 @@ const Routes: React.FC = (): ReactElement => {
         <Route path="/login" exact component={LoginPage} />
         <Route path="/cadastro" exact component={SignUp} />
         <Route
-          path={["/", "/agendamentos"]}
+          path={isMobile ? ["/", "/home"] : ["/", "/agendamentos"]}
           exact
-          component={Schedule}
+          component={isMobile ? Home : Schedule}
           isPrivate
         />
         <Route path="/clientes" exact component={Clients} isPrivate />
