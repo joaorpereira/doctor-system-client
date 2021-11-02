@@ -9,15 +9,9 @@ import {
 } from "../../store/ducks/companiesSlice";
 import { getServices } from "../../store/ducks/servicesSlice";
 import { useAppSelector, useGetLocation } from "../../hooks";
-import {
-  ServicesList,
-  ServicesActions,
-  ServicesHeader,
-  CallCard,
-  LocationCard,
-} from "../../components";
+import { ServicesList, HeaderCard } from "../../components";
 
-const Home: React.FC = (): ReactElement => {
+const Medics: React.FC = (): ReactElement => {
   const dispatch = useDispatch();
   const [action, setAction] = useState("Services");
 
@@ -61,13 +55,15 @@ const Home: React.FC = (): ReactElement => {
 
   return (
     <S.ScheduleSection>
-      <ServicesHeader company={company} distance={distance} />
-      <ServicesActions handleActions={handleActions} action={action} />
+      <HeaderCard
+        action={action}
+        company={company}
+        distance={distance}
+        handleActions={handleActions}
+      />
       {action === "Services" && <ServicesList services={services} />}
-      {action === "Ligar" && <CallCard company={company} />}
-      {action === "Visitar" && <LocationCard company={company} />}
     </S.ScheduleSection>
   );
 };
 
-export default Home;
+export default Medics;
