@@ -16,7 +16,7 @@ export const Wrapper = styled.div`
   position: absolute;
   bottom: 0;
   left: 0;
-  background-color: #fff;
+  background-color: ${colors.white};
 `;
 
 export const Div = styled.div`
@@ -53,7 +53,7 @@ export const ListItem = styled.li<Props>`
   display: flex;
   text-transform: uppercase;
   background-color: ${({ isSelected }) =>
-    isSelected ? `${colors.text}` : "#fff"};
+    isSelected ? colors.text : colors.white};
 `;
 
 export const HomeIcon = styled(Icon)`
@@ -80,27 +80,24 @@ export const Button = styled.button<Props>`
   align-items: center;
   justify-content: center;
   background-color: ${({ isSelected }) =>
-    isSelected ? `${colors.text}` : "#fff"};
-  color: ${({ isSelected }) => (!isSelected ? `${colors.text}` : "#fff")};
+    isSelected ? colors.text : colors.white};
+  color: ${({ isSelected }) => (!isSelected ? colors.text : colors.white)};
   border: none;
   outline: none;
 
   ${HomeIcon} {
     background-color: ${({ isSelected }) =>
-      isSelected ? `${colors.text}` : "#fff"};
+      isSelected ? colors.text : colors.white};
     margin-bottom: 5px;
-    height: 20px;
   }
   ${CalendarIcon} {
     background-color: ${({ isSelected }) =>
-      isSelected ? `${colors.text}` : "#fff"};
+      isSelected ? colors.text : colors.white};
     margin-bottom: 5px;
-    height: 20px;
   }
   ${UsersIcon} {
     background-color: ${({ isSelected }) =>
-      isSelected ? `${colors.text}` : "#fff"};
+      isSelected ? colors.text : colors.white};
     margin-bottom: 5px;
-    height: 20px;
   }
 `;

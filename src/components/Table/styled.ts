@@ -12,7 +12,7 @@ export const Container = styled.div`
 
   table {
     box-shadow: rgba(0, 0, 0, 0.04) 0px 3px 5px;
-    background-color: #fff;
+    background-color: ${colors.white};
     border-collapse: collapse;
     border-style: hidden;
     width: 100%;
@@ -55,7 +55,7 @@ export const Container = styled.div`
 
 export const Body = styled.tbody`
   width: 100%;
-  background-color: #fff;
+  background-color: ${colors.white};
 `;
 
 export const Head = styled.thead`
@@ -63,7 +63,7 @@ export const Head = styled.thead`
   border: 1px solid ${colors.primary};
   background-color: ${colors.primary};
   height: 50px;
-  color: #fff;
+  color: ${colors.white};
   text-transform: uppercase;
   font-weight: 900;
   text-align: left;

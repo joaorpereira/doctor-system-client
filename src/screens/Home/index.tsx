@@ -1,7 +1,6 @@
-import React, { ReactElement, useEffect } from "react";
+import React, { ReactElement, useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-
 import * as S from "./styled";
 
 import {
@@ -10,12 +9,18 @@ import {
 } from "../../store/ducks/companiesSlice";
 import { getServices } from "../../store/ducks/servicesSlice";
 import { useAppSelector, useGetLocation } from "../../hooks";
-import ServicesHeader from "../../components/mobile/ServicesHeader";
-import ServicesActions from "../../components/mobile/ServicesActions";
-import { ServicesList } from "../../components";
+import {
+  ServicesList,
+  ServicesActions,
+  ServicesHeader,
+  CallCard,
+  LocationCard,
+} from "../../components";
 
 const Home: React.FC = (): ReactElement => {
   const dispatch = useDispatch();
+  const [action, setAction] = useState("Services");
+
   const { company, distance }: CompaniesSliceState = useAppSelector(
     ({ companiesReducers }) => companiesReducers
   );
@@ -43,11 +48,24 @@ const Home: React.FC = (): ReactElement => {
     dispatch(getServices({ id: companyId }));
   }, [dispatch, companyId, lon, lat]);
 
+  const handleActions = useCallback(
+    (str: string) => {
+      if (str === action) {
+        setAction("Services");
+      } else {
+        setAction(str);
+      }
+    },
+    [action]
+  );
+
   return (
     <S.ScheduleSection>
       <ServicesHeader company={company} distance={distance} />
-      <ServicesActions />
-      <ServicesList services={services} />
+      <ServicesActions handleActions={handleActions} action={action} />
+      {action === "Services" && <ServicesList services={services} />}
+      {action === "Ligar" && <CallCard company={company} />}
+      {action === "Visitar" && <LocationCard company={company} />}
     </S.ScheduleSection>
   );
 };

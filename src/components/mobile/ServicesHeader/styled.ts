@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { colors } from "../../../styles";
 
 export const Wrapper = styled.div`
   position: relative;
@@ -33,7 +34,7 @@ export const Image = styled.img`
 `;
 
 export const Status = styled.span`
-  background-color: #06d6a0;
+  background-color: ${colors.lightGreen};
   padding: 5px 15px;
   border-radius: 4px;
   font-weight: 900;
@@ -43,7 +44,7 @@ export const Status = styled.span`
 
 export const Content = styled.div`
   margin-top: 15px;
-  color: #fff;
+  color: ${colors.white};
 
   > h2 {
     margin-bottom: 2px;

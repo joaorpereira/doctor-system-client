@@ -70,15 +70,15 @@ export const Input = styled.input<InputProps>`
   border-radius: 4px;
   transition: border 0.15s ease-out;
   height: 46px;
-  background-color: #fff;
+  background-color: ${colors.white};
   :focus {
     border: 2px solid ${colors.text};
   }
 
   &::placeholder {
     font-size: 0.7rem;
-    color: #a9a9a9;
-    background-color: #fff;
+    color: ${colors.gray};
+    background-color: ${colors.white};
   }
 `;
 
@@ -115,7 +115,7 @@ export const Form = styled.form`
 export const Button = styled.button`
   position: relative;
   background-color: ${colors.text};
-  color: #fff;
+  color: ${colors.white};
   font-weight: 600;
   text-transform: uppercase;
   height: 58px;
@@ -144,7 +144,7 @@ export const SpanButton = styled.a`
   align-items: center;
   justify-content: center;
   background-color: ${colors.text};
-  color: #fff;
+  color: ${colors.white};
   font-weight: 600;
   text-transform: uppercase;
   height: 58px;

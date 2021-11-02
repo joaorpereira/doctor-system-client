@@ -15,7 +15,7 @@ export const Aside = styled.aside`
     width: 125px;
     height: 125px;
     border-radius: 4px;
-    background-color: #fff;
+    background-color: ${colors.white};
     display: flex;
     align-items: center;
     justify-content: center;
@@ -35,7 +35,7 @@ export const ListItem = styled.li`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  color: #fff;
+  color: ${colors.white};
   font-weight: 700;
   line-height: 3.75rem;
   font-size: 1.2rem;
@@ -60,7 +60,7 @@ export const Logo = styled.div`
   justify-content: center;
   margin-left: 32px;
   border-radius: 4px;
-  background-color: #fff;
+  background-color: ${colors.white};
 
   > h1 {
     max-width: 125px;

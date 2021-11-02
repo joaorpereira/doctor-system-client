@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { colors } from "../../../styles";
 
 export const Wrapper = styled.div`
   display: flex;
@@ -29,12 +30,12 @@ export const Content = styled.div`
 `;
 
 export const Button = styled.button`
-  background-color: #06d6a0;
+  background-color: ${colors.lightGreen};
   outline: none;
   border: none;
   border-radius: 4px;
   padding: 7px 18px;
   text-transform: uppercase;
-  color: #fff;
+  color: ${colors.white};
   font-weight: 700;
 `;

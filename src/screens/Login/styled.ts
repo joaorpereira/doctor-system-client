@@ -56,19 +56,19 @@ export const Input = styled.input`
   height: 46px;
   width: 100%;
   max-width: 375px;
-  background-color: #fff;
+  background-color: ${colors.white};
   :focus {
     border: 2px solid ${colors.text};
   }
 
   &::placeholder {
     font-size: 0.7rem;
-    color: #a9a9a9;
-    background-color: #fff;
+    color: ${colors.gray};
+    background-color: ${colors.white};
   }
 
   :-webkit-autofill {
-    box-shadow: 0 0 0px 1000px #ffffff inset !important;
+    box-shadow: 0 0 0px 1000px ${colors.white} inset !important;
   }
 
   @media (min-width: 800px) {
@@ -100,7 +100,7 @@ export const Wrapper = styled.div`
 export const Button = styled.button`
   position: relative;
   background-color: ${colors.text};
-  color: #fff;
+  color: ${colors.white};
   font-weight: 600;
   text-transform: uppercase;
   height: 58px;

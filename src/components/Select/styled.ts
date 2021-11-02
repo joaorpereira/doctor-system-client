@@ -13,14 +13,14 @@ export const Select = styled.select<SelectProps>`
   width: ${({ width }) => (width ? width : "100%")};
   color: ${colors.text};
   transition: border 0.15s ease-out;
-  background-color: #fff;
+  background-color: ${colors.white};
   :focus {
     border: 2px solid ${colors.primary};
   }
 
   &::placeholder {
     font-size: 0.7rem;
-    color: #a9a9a9;
-    background-color: #fff;
+    color: ${colors.gray};
+    background-color: ${colors.white};
   }
 `;

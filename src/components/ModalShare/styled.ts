@@ -7,7 +7,7 @@ type ModalProps = {
 };
 
 export const Modal = styled.div<ModalProps>`
-  background-color: #fff;
+  background-color: ${colors.white};
   position: absolute;
   left: 50%;
   top: 50%;

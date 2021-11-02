@@ -25,7 +25,7 @@ export const CallIcon = styled(Call)`
 
 export const Wrapper = styled.div`
   position: relative;
-  background-color: #fff;
+  background-color: ${colors.white};
   width: 100%;
   height: 70px;
   display: flex;

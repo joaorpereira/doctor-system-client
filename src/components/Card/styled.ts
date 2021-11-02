@@ -14,7 +14,7 @@ type FontProps = {
 };
 
 export const Card = styled.div<CardProps>`
-  background-color: #fff;
+  background-color: ${colors.white};
   position: absolute;
   top: 0;
   right: -80px;
@@ -49,7 +49,7 @@ export const StyledMdRemoveRedEye = styled(MdRemoveRedEye)`
   margin-top: 29px;
   cursor: pointer;
   margin-right: 8px;
-  color: #a9a9a9;
+  color: ${colors.gray};
 
   transition: color 0.3s ease-out;
 

@@ -7,7 +7,7 @@ type WrapperProps = {
 };
 
 export const Wrapper = styled.div<WrapperProps>`
-  background-color: #fff;
+  background-color: ${colors.white};
   position: absolute;
   top: 0;
   right: 0;
@@ -32,7 +32,7 @@ export const Link = styled.li`
   transition: background-color 0.2s;
   :hover {
     background-color: ${colors.primary};
-    color: #fff;
+    color: ${colors.white};
   }
 `;
 
@@ -47,6 +47,6 @@ export const Btn = styled.button`
   padding: 8px 20px;
 
   ${Link}:hover & {
-    color: #fff;
+    color: ${colors.white};
   }
 `;
