@@ -14,6 +14,7 @@ export const ImageBackground = styled.div`
     right: 0;
     bottom: 0;
     z-index: 1;
+    height: 250px;
   }
 `;
 

@@ -9,6 +9,7 @@ export const Wrapper = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 0 20px;
+  margin-top: -2px;
 `;
 
 export const ActionsWrapper = styled.div`
