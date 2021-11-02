@@ -14,6 +14,7 @@ const SignUp = lazy(() => import("../screens/Signup"));
 
 // mobile
 const Home = lazy(() => import("../screens/Home"));
+const Medics = lazy(() => import("../screens/Medics"));
 
 const Routes: React.FC = (): ReactElement => {
   return (
@@ -28,7 +29,12 @@ const Routes: React.FC = (): ReactElement => {
           isPrivate
         />
         <Route path="/clientes" exact component={Clients} isPrivate />
-        <Route path="/colaboradores" exact component={Workers} isPrivate />
+        <Route
+          path="/colaboradores"
+          exact
+          component={isMobile ? Medics : Workers}
+          isPrivate
+        />
         <Route path="/servicos" exact component={Services} isPrivate />
         <Route path="/horarios" exact component={Hours} isPrivate />
       </Switch>

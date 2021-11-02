@@ -14,6 +14,7 @@ interface IRoutes {
 const Routes: React.FC<IRoutes> = ({
   component: Component,
   isPrivate,
+
   ...rest
 }): ReactElement => {
   const { token } = useAppSelector(({ authReducers }) => authReducers);
