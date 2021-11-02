@@ -56,16 +56,9 @@ export const ListItem = styled.li<Props>`
     isSelected ? colors.text : colors.white};
 `;
 
-export const HomeIcon = styled(Icon)`
-  fill: white;
-`;
-
-export const UsersIcon = styled(Icon3)`
-  fill: white;
-`;
-export const CalendarIcon = styled(Icon2)`
-  fill: white;
-`;
+export const HomeIcon = styled(Icon)``;
+export const UsersIcon = styled(Icon3)``;
+export const CalendarIcon = styled(Icon2)``;
 
 export const Button = styled.button<Props>`
   height: 100%;
@@ -86,18 +79,18 @@ export const Button = styled.button<Props>`
   outline: none;
 
   ${HomeIcon} {
-    background-color: ${({ isSelected }) =>
-      isSelected ? colors.text : colors.white};
+    stroke: ${({ isSelected }) => (!isSelected ? colors.text : colors.white)};
+    fill: ${({ isSelected }) => (isSelected ? colors.text : colors.white)};
     margin-bottom: 5px;
   }
   ${CalendarIcon} {
-    background-color: ${({ isSelected }) =>
-      isSelected ? colors.text : colors.white};
+    stroke: ${({ isSelected }) => (!isSelected ? colors.text : colors.white)};
+    fill: ${({ isSelected }) => (isSelected ? colors.text : colors.white)};
     margin-bottom: 5px;
   }
   ${UsersIcon} {
-    background-color: ${({ isSelected }) =>
-      isSelected ? colors.text : colors.white};
+    stroke: ${({ isSelected }) => (!isSelected ? colors.text : colors.white)};
+    fill: ${({ isSelected }) => (isSelected ? colors.text : colors.white)};
     margin-bottom: 5px;
   }
 `;

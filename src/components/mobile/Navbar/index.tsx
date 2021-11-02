@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useHistory } from "react-router";
 import * as S from "./styled";
 
 type MenuListProps = {
@@ -9,14 +10,16 @@ type MenuListProps = {
 
 const menuList: MenuListProps[] = [
   { label: "Home", link: "/", icon: <S.HomeIcon /> },
-  { label: "Médicos", link: "/", icon: <S.UsersIcon /> },
-  { label: "Agendamentos", link: "/", icon: <S.CalendarIcon /> },
+  { label: "Médicos", link: "/colaboradores", icon: <S.UsersIcon /> },
+  { label: "Agendamentos", link: "/agenda", icon: <S.CalendarIcon /> },
 ];
 
 const MobileNavbar = () => {
+  const history = useHistory();
   const [selected, setSelected] = useState("Home");
   const handleSelectedMenu = (item: MenuListProps) => {
     setSelected(item.label);
+    history.push(item.link);
   };
   return (
     <S.Wrapper>
