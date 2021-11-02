@@ -20,7 +20,7 @@ function* handleLogin({ payload }: PropsPayload) {
       `/${payload.typeUser}/login`,
       { email: payload.email, password: payload.password }
     );
-    yield put(requestLoginSuccess({ user: data.user, token: data.token }));
+    yield put(requestLoginSuccess({ user: data.data, token: data.token }));
   } catch (error) {
     localStorage.removeItem(key);
     console.log(error);
