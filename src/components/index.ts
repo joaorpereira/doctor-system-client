@@ -23,3 +23,4 @@ export { default as ServicesList } from "./mobile/ServicesList";
 export { default as MobileNavbar } from "./mobile/Navbar";
 export { default as CallCard } from "./mobile/CallCard";
 export { default as LocationCard } from "./mobile/LocationCard";
+export { default as HeaderCard } from "./mobile/HeaderCard";
