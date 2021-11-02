@@ -28,3 +28,4 @@ export { default as useSetDefaultStartTime } from "./Hours/useSetDefaultStartTim
 export { default as useSetDefaultDays } from "./Hours/useSetDefaultDays";
 export { default as useHandleUpdateOrShowClient } from "./Clients/useHandleUpdateOrShowClient";
 export { default as useOnSubmitClient } from "./Clients/useOnSubmitClient";
+export { default as useGetLocation } from "./useGetLocation";
