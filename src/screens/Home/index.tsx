@@ -9,26 +9,13 @@ import {
   setCompany,
 } from "../../store/ducks/companiesSlice";
 import { getServices } from "../../store/ducks/servicesSlice";
-import { useAppSelector } from "../../hooks";
+import { useAppSelector, useGetLocation } from "../../hooks";
 import ServicesHeader from "../../components/mobile/ServicesHeader";
 import ServicesActions from "../../components/mobile/ServicesActions";
 import { ServicesList } from "../../components";
 
 const Home: React.FC = (): ReactElement => {
   const dispatch = useDispatch();
-  const companyId = "6158d038b4baee3d0d664b59";
-
-  useEffect(() => {
-    dispatch(
-      setCompany({
-        id: "6158d038b4baee3d0d664b59",
-        lat: -19.9434929,
-        lon: -43.9433717,
-      })
-    );
-    dispatch(getServices({ id: companyId }));
-  }, [dispatch]);
-
   const { company, distance }: CompaniesSliceState = useAppSelector(
     ({ companiesReducers }) => companiesReducers
   );
@@ -36,6 +23,25 @@ const Home: React.FC = (): ReactElement => {
   const { services } = useAppSelector(
     ({ servicesReducers }) => servicesReducers
   );
+
+  const { user } = useAppSelector(({ authReducers }) => authReducers);
+
+  const companyId = user.role === "COMPANY" ? user._id : user.company_id;
+
+  const { lat, lon } = useGetLocation();
+
+  useEffect(() => {
+    if (lat && lon) {
+      dispatch(
+        setCompany({
+          id: companyId,
+          lat,
+          lon,
+        })
+      );
+    }
+    dispatch(getServices({ id: companyId }));
+  }, [dispatch, companyId, lon, lat]);
 
   return (
     <S.ScheduleSection>
