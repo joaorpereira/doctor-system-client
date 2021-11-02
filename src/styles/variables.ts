@@ -8,4 +8,6 @@ export const colors = {
   backgroundcolor: "#f6fafd",
   boxShadow: "#eef0f4",
   gray: "#a9a9a9",
+  white: "#ffffff",
+  lightGreen: "#06d6a0",
 };
