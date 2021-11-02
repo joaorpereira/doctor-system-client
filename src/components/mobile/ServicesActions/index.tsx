@@ -1,23 +1,33 @@
 import React from "react";
 import * as S from "./styled";
 
-import Share from "../../../assets/share.svg";
-import Location from "../../../assets/location.svg";
-import Call from "../../../assets/call.svg";
+export type IconListProps = {
+  label: string;
+  icon: React.ReactElement;
+};
 
-const iconsList = [
-  { label: "Ligar", link: "/", icon: Call },
-  { label: "Visitar", link: "/", icon: Location },
-  { label: "Compartilhar", link: "/", icon: Share },
+type Props = {
+  handleActions: (action: string) => void;
+  action: string;
+};
+
+const iconsList: IconListProps[] = [
+  { label: "Ligar", icon: <S.ShareIcon /> },
+  { label: "Visitar", icon: <S.LocationIcon /> },
+  { label: "Compartilhar", icon: <S.CallIcon /> },
 ];
 
-const ServicesActions = () => {
+const ServicesActions: React.FC<Props> = ({ handleActions, action }) => {
   return (
     <S.Wrapper>
       <S.ActionsWrapper>
         {iconsList.map((item) => (
-          <S.IconButton key={item.label}>
-            <img src={item.icon} alt={item.label} /> <p>{item.label}</p>
+          <S.IconButton
+            key={item.label}
+            onClick={() => handleActions(item.label)}
+            isSelected={action === item.label}
+          >
+            {item.icon} <p>{item.label}</p>
           </S.IconButton>
         ))}
       </S.ActionsWrapper>
